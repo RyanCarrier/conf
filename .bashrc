@@ -114,6 +114,7 @@ if ! shopt -oq posix; then
 fi
 
 export GOROOT=/usr/local/go
+export GOPATH=$HOME/Projects
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$HOME/Programs/idea14/bin
 export EDITOR=vim
