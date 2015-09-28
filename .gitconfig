@@ -1,3 +1,5 @@
 [user]
 	email = rcarrier@byteback.com.au
 	name = rcarrier
+[push]
+	default = simple

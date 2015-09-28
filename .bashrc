@@ -115,8 +115,11 @@ fi
 
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/Projects
+export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$HOME/Programs/idea14/bin
+export PATH=$PATH:$HOME/Programs/btsync/bin
+export PATH=$PATH:$HOME/Programs/android-studio/bin
 export EDITOR=vim
 alias omg='sudo "$BASH" -c "$(history -p !!)"'
 alias qq="exit"
