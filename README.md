@@ -3,6 +3,9 @@ A quick program that backs up current, and symlinks config files to the ones sto
 
 ## How do I get it? ##
 `cd`
+
 `git clone git@bitbucket.org:bytebackrc/conf.git`
+
 `cd conf`
-`./`
+
+`./conf`
