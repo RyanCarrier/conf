@@ -113,19 +113,3 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/Projects
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:$HOME/Programs/idea14/bin
-export PATH=$PATH:$HOME/Programs/btsync/bin
-export PATH=$PATH:$HOME/Programs/android-studio/bin
-export EDITOR=vim
-
-alias omg='sudo "$BASH" -c "$(history -p !!)"'
-alias qq="exit"
-alias sagi="sudo apt-get install"
-alias sagupd="sudo apt-get update"
-alias sagupg="sudo apt-get upgrade"
-alias sshj="ssh 192.168.100.151"
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
