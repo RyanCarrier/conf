@@ -32,7 +32,6 @@ export EDITOR=vim
 
 alias omg='sudo "$BASH" -c "$(history -p !!)"'
 alias qq="exit"
-alias sagi="sudo apt-get install"
-alias sagupd="sudo apt-get update"
-alias sagupg="sudo apt-get upgrade"
 alias jake="192.168.100.164"
+alias server="192.168.0.10"
+alias carryingpigeons="ssh carryingpigeons.com"
