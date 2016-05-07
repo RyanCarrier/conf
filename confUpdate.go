@@ -8,14 +8,14 @@ import (
 
 func main() {
 	pwd, _ := os.Getwd()
-	pwd+="/"
-	home := GetLnFolder()+"/"
+	pwd += "/"
+	home := GetLnFolder() + "/"
 	for _, file := range GetHiddenFiles() {
 		if CheckFileExists(home + file.Name()) {
-			oldFile,_ := os.Stat(home + file.Name())
+			oldFile, _ := os.Stat(home + file.Name())
 			if !os.SameFile(oldFile, file) {
 				BackupFileExists(home + file.Name())
-				lns(file.Name(),pwd,home)
+				lns(file.Name(), pwd, home)
 			}
 		} else {
 			lns(file.Name(), pwd, home)
@@ -32,6 +32,7 @@ func lns(file string, fromFolder string, toFolder string) {
 	}
 }
 
+//BackupFileExists makes a backup if the file exists
 func BackupFileExists(file string) {
 	err := os.Rename(file, file+".backup")
 	if err != nil {
@@ -39,14 +40,16 @@ func BackupFileExists(file string) {
 	}
 }
 
+//CheckFileExists returns a bool whether or not the file exists
 func CheckFileExists(file string) bool {
 	_, err := os.Stat(file)
 	return err == nil
 }
 
+//GetHiddenFiles gets the hidden files
 func GetHiddenFiles() []os.FileInfo {
 	pwd, _ := os.Getwd()
-pwd+="/"
+	pwd += "/"
 	dirs, _ := ioutil.ReadDir(pwd)
 	finalDirs := make([]os.FileInfo, len(dirs))
 	i := 0
@@ -60,6 +63,7 @@ pwd+="/"
 	return finalDirs[:i]
 }
 
+//GetLnFolder getst he ln folder? idk
 func GetLnFolder() string {
 	home := os.Getenv("HOME")
 	return home
