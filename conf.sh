@@ -25,12 +25,13 @@ do
 done
 echo "Configs copied!"
 
-echo "Adding gitstat"
-if [ "$(id -u)" != "0" ]; then
-  echo "Need sudo for copying gitstat python script;"
-  echo "sudo ln -s ./gitstat /usr/local/bin/gitstat"
-  sudo ln -s ./gitstat /usr/local/bin/gitstat
-else
-  ln -s ./gitstat /usr/local/bin/gitstat
-fi
-echo "gitstat added (I think)"
+#echo "Adding gitstat"
+#
+#if [ "$(id -u)" != "0" ]; then
+#  echo "Need sudo for copying gitstat python script;"
+#  echo "sudo ln -s ./gitstat /usr/local/bin/gitstat"
+#  sudo ln -s ./gitstat /usr/local/bin/gitstat
+#else
+#  ln -s ./gitstat /usr/local/bin/gitstat
+#fi
+#echo "gitstat added (I think)"
