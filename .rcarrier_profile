@@ -20,6 +20,10 @@ alias server="192.168.0.10"
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
 
+function gtimea() {
+	cd ~/apollo
+	python gtime/timelog.py
+}
 
 function touche() {
   touch $1
@@ -32,4 +36,8 @@ function gobench() {
   else
     go test -bench=.
   fi
+}
+
+function gitstat() {
+	find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git status -s && echo)' \;
 }
