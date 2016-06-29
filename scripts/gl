@@ -1,0 +1,59 @@
+#!/bin/bash
+GREEN="\033[92m"
+RED="\033[91m"
+BLUE="\033[36m"
+CLEAR="\033[39m"
+
+DIRTY=$RED"Dirty"
+CLEAN=$GREEN"Clean   "
+#pad that shit lmao
+
+EVEN=$GREEN"Even"
+BEHIND=$BLUE"Behind"
+AHEAD=$BLUE"Ahead"
+DIVERGED=$RED"Diverged"
+
+folders=($(ls -d */))
+
+max=0
+for f in ${folders[@]};do
+  if [ ${#f} -gt $max ];then
+    max=${#f}
+  fi
+done
+#echo ${folders[@]}
+for f in ${folders[@]};do
+  if [ ! -d "$f/.git" ]; then
+    continue
+  fi
+  cd $f
+  echo -ne $f
+  for i in `seq ${#f} $max`;do
+    echo -n " "
+  done
+  echo -ne "\t"
+  dirt=$(git status --porcelain|wc -l|xargs)
+  if [[ $dirt -eq 0 ]]; then
+    echo -ne "$CLEAN"
+   else
+     echo -ne "$DIRTY($dirt)"
+  fi
+  echo -ne "$CLEAR\t"
+  if [ "$1" = "-f" ];then
+    _=$(git fetch &2>1)
+  fi
+  behind=$(git rev-list HEAD..@{u} | wc -l|xargs)
+  ahead=$(git rev-list @{u}..HEAD | wc -l|xargs)
+
+  if [ $behind -eq 0 -a $ahead -eq 0 ]; then
+      echo -ne $EVEN
+  elif [ $behind -gt 0 -a $ahead -gt 0 ]; then
+    echo -ne "$DIVERGED a$ahead b$behind"
+  elif [ $behind -gt 0 ]; then
+      echo -ne "$BEHIND($behind)"
+  else
+      echo -ne "$AHEAD($ahead)"
+  fi
+  echo -ne "$CLEAR\n"
+  cd ..
+done
