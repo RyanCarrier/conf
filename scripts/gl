@@ -40,7 +40,7 @@ for f in ${folders[@]};do
   fi
   echo -ne "$CLEAR\t"
   if [ "$1" = "-f" ];then
-    _=$(git fetch &2>1)
+    _=$(git fetch 2>&1)
   fi
   behind=$(git rev-list HEAD..@{u} | wc -l|xargs)
   ahead=$(git rev-list @{u}..HEAD | wc -l|xargs)
