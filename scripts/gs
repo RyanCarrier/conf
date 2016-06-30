@@ -4,6 +4,11 @@ RED="\033[91m"
 BLUE="\033[36m"
 CLEAR="\033[39m"
 
+if [ -d ".git" ]; then
+  git status
+  exit $?
+fi
+
 folders=($(ls -d */))
 
 max=0
