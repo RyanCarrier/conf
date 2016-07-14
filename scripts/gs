@@ -92,4 +92,6 @@ for f in "${folders[@]}";do
   fi
   cd ..
 done
-echo ""
+if [[ $list -eq 0 ]];then
+  echo ""
+fi
