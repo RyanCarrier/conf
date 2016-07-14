@@ -1,5 +1,5 @@
 ## What is it? ##
-A quick program that backs up current, and symlinks config files to the ones stored in this directory.
+my configs and scripts to apply them also helper git status scripts
 
 ## How do I get it? ##
 `cd`
@@ -8,4 +8,4 @@ A quick program that backs up current, and symlinks config files to the ones sto
 
 `cd conf`
 
-`./conf`
+`./confs.sh`
