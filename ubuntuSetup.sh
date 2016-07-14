@@ -5,6 +5,9 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+./scripts.sh
+./confs.sh
+
 add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
 
 apt-get update

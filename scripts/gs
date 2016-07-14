@@ -4,15 +4,39 @@ RED="\033[91m"
 BLUE="\033[36m"
 CLEAR="\033[39m"
 
-if [ -d ".git" ]; then
-  git status
-  exit $?
-fi
+DIRTY=$RED"Dirty"
+CLEAN=$GREEN"Clean   "
+#pad that shit lmao
+
+EVEN=$GREEN"Even"
+BEHIND=$BLUE"Behind"
+AHEAD=$BLUE"Ahead"
+DIVERGED=$RED"Diverged"
 
 folders=($(ls -d */))
 
+force=0
+list=0
+
+if [ "$1" = "-f" -o "$2" = "-f" ];then
+  force=1
+fi
+
+if [ "$1" = "-l" -o "$2" = "-l" ];then
+  list=1
+else
+  #if current folder is git folder
+  if [ -d ".git" ]; then
+    git status
+    exit $?
+  fi
+fi
+
 max=0
 for f in ${folders[@]};do
+  if [ ! -d "$f/.git" ]; then
+    continue
+  fi
   if [ ${#f} -gt $max ];then
     max=${#f}
   fi
@@ -24,14 +48,35 @@ for f in ${folders[@]};do
   fi
   cd $f
   dirt=$(git status --porcelain|wc -l|xargs)
-  if [[ $dirt -gt 0 ]]; then
-    echo -ne "$RED"
-   else
-    if [ "$1" = "-f" ];then
-      _=$(git fetch &2>1)
+  if [ $force -eq 1 ];then
+    _=$(git fetch 2>&1)
+  fi
+  behind=$(git rev-list HEAD..@{u} | wc -l|xargs)
+  ahead=$(git rev-list @{u}..HEAD | wc -l|xargs)
+  if [ $l -eq 1 ];then
+    echo -ne $f
+    for i in `seq ${#f} $max`;do
+      echo -n " "
+    done
+    echo -ne "\t"
+
+    if [[ $dirt -eq 0 ]]; then
+      echo -ne "$CLEAN"
+    else
+      echo -ne "$DIRTY($dirt)"
+   fi
+    echo -ne "$CLEAR\t"
+    if [ $behind -eq 0 -a $ahead -eq 0 ]; then
+        echo -ne $EVEN
+    elif [ $behind -gt 0 -a $ahead -gt 0 ]; then
+      echo -ne "$DIVERGED a$ahead b$behind"
+    elif [ $behind -gt 0 ]; then
+        echo -ne "$BEHIND($behind)"
+    else
+        echo -ne "$AHEAD($ahead)"
     fi
-    behind=$(git rev-list HEAD..@{u} | wc -l|xargs)
-    ahead=$(git rev-list @{u}..HEAD | wc -l|xargs)
+    echo -ne "$CLEAR\n"
+  else
     if [ $behind -eq 0 -a $ahead -eq 0 ]; then
         echo -ne "$GREEN"
     elif [ $behind -gt 0 -a $ahead -gt 0 ]; then
@@ -41,12 +86,12 @@ for f in ${folders[@]};do
     else
         echo -ne "$BLUE"
     fi
+    echo -ne "$f"
+    for i in `seq ${#f} $max`;do
+      echo -n " "
+    done
+    echo -ne "$CLEAR\t"
   fi
-  echo -ne $f
-  for i in `seq ${#f} $max`;do
-    echo -n " "
-  done
-  echo -ne "$CLEAR\t"
   cd ..
 done
 echo ""
