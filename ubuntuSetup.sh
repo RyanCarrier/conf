@@ -12,7 +12,7 @@ add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
 
 apt-get update
 
-apt-get install -y curl ubuntu-restricted-extras tar tmux thefuck vim rsync openssh-server traceroute qbittorrent vlc htop zip unzip python-pip shellcheck
+apt-get install -y curl ubuntu-restricted-extras tar tmux vim rsync openssh-server traceroute qbittorrent vlc htop zip unzip python-pip shellcheck
 
 pip install pep8
 pip install autopep8
