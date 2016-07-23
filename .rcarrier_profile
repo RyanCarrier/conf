@@ -19,6 +19,7 @@ alias jake="192.168.100.164"
 alias server="192.168.0.10"
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
+alias grun="go run main.go"
 
 function gtimea() {
 	cd ~/apollo
