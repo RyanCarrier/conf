@@ -12,6 +12,7 @@ export PATH=$PATH:/usr/local/groovy/bin
 export PATH=$PATH:$HOME/Programs/idea14/bin
 export PATH=$PATH:$HOME/Programs/btsync/bin
 export PATH=$PATH:$HOME/Programs/android-studio/bin
+export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 export EDITOR=vim
 
 alias omg='sudo "$BASH" -c "$(history -p !!)"'
@@ -21,6 +22,10 @@ alias server="192.168.0.10"
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
 alias grun="go run main.go"
+alias gb="git branch"
+alias gc="git checkout"
+alias lns="ln -s"
+alias cd..="cd .."
 
 function gtimea() {
 	cd ~/apollo
@@ -40,6 +45,6 @@ function gobench() {
   fi
 }
 
-function gitstat() {
-	find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git status -s && echo)' \;
+function gacp() {
+		git add . &&  git commit -am "$1" && git push
 }
