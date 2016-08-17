@@ -27,6 +27,7 @@ esac
 fi
 
 if [ "$SCRIPTS" = true ];then
+		echo "Starting scripts"
   if [[ "$OSTYPE" != "darwin"* ]];then
 	   sudo ./scripts.sh
   else
@@ -34,15 +35,18 @@ if [ "$SCRIPTS" = true ];then
   fi
 fi
 #oh my zsh
+echo "getting oh my zsh"
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+echo "getting fonts"
 git clone git@github.com:powerline/fonts.git
 cd fonts
 sudo ./install
 cd ..
-
+echo "getting pure theme"
 git clone https://github.com/sindresorhus/pure.git
 cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
 
+echo "applying confs"
 if [ "$CONFS" = true ];then
 	./confs.sh
 fi
