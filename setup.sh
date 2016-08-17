@@ -1,5 +1,5 @@
 #!/bin/bash
-GOLANGVERSION = "1.6.2"
+GOLANGVERSION="1.6.2"
 if [ "$(id -u)" != "0" ]; then
   if [[ "$OSTYPE" != "darwin"* ]];then
    echo "sudo this shit fam" 1>&2
