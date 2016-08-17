@@ -37,6 +37,7 @@ fi
 #oh my zsh
 echo "getting oh my zsh"
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+cd /home/rcarrier/
 echo "getting fonts"
 git clone git@github.com:powerline/fonts.git
 cd fonts
@@ -44,8 +45,10 @@ sudo ./install
 cd ..
 echo "getting pure theme"
 git clone https://github.com/sindresorhus/pure.git
+mkdir ~/.oh-my-zsh/custom/themes
 cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
 
+cd conf
 echo "applying confs"
 if [ "$CONFS" = true ];then
 	./confs.sh
