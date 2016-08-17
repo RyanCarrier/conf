@@ -15,6 +15,8 @@ export PATH=$PATH:$HOME/Programs/android-studio/bin
 export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 export EDITOR=vim
 
+export SHELL=/bin/zsh
+
 alias omg='sudo "$BASH" -c "$(history -p !!)"'
 alias qq="exit"
 alias jake="192.168.100.164"
