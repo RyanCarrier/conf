@@ -40,6 +40,9 @@ cd fonts
 sudo ./install
 cd ..
 
+git clone https://github.com/sindresorhus/pure.git
+cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
+
 if [ "$CONFS" = true ];then
 	./confs.sh
 fi
