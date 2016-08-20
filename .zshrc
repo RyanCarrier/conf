@@ -84,3 +84,9 @@ source ~/.rcarrier_profile
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 DEFAULT_USER="rcarrier"
+
+alias rsync="noglob rsync"
+alias rsync-copy="noglob rsync -avz --progress -h"
+alias rsync-move="noglob rsync -avz --progress -h --remove-source-files"
+alias rsync-update="noglob rsync -avzu --progress -h"
+alias rsync-synchronize="noglob rsync -avzu --delete --progress -h"
