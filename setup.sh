@@ -39,13 +39,14 @@ echo "getting oh my zsh"
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 cd /home/rcarrier/
 echo "getting fonts"
-git clone git@github.com:powerline/fonts.git
+git clone https://github.com/powerline/fonts.git
 cd fonts
-sudo ./install
+
+sudo ./install.sh
 cd ..
 echo "getting pure theme"
 git clone https://github.com/sindresorhus/pure.git
-mkdir ~/.oh-my-zsh/custom/themes
+mkdir -p ~/.oh-my-zsh/custom/themes
 cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
 
 cd conf
@@ -54,7 +55,7 @@ if [ "$CONFS" = true ];then
 	./confs.sh
 fi
 
-if [[ "$OSTYPE" != "darwin"* ]];then
+if [[ "$OSTYPE" != "darwin" ]];then
   ./mac.sh
   exit 0
 fi
