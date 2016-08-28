@@ -49,15 +49,11 @@ CASE_SENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang adb battery brew bundler colored-man-pages colorize command-not-found common-aliases cp emoji emoji-clock gnu-utils gradle history osx pip python pep8 rsync tmux ssh-agent web-search)
+plugins=(git golang adb battery brew bundler colored-man-pages colorize command-not-found common-aliases emoji emoji-clock gnu-utils gradle history osx pip python rsync tmux ssh-agent web-search)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile
 
 DEFAULT_USER="rcarrier"
 
-alias rsync="noglob rsync"
-alias rsync-copy="noglob rsync -avz --progress -h"
-alias rsync-move="noglob rsync -avz --progress -h --remove-source-files"
-alias rsync-update="noglob rsync -avzu --progress -h"
-alias rsync-synchronize="noglob rsync -avzu --delete --progress -h"
+noglob

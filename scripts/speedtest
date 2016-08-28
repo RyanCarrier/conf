@@ -1,0 +1,2 @@
+#!/bin/bash
+wget http://mirror.internode.on.net/pub/test/100meg.test -O /dev/null
