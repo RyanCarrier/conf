@@ -16,9 +16,16 @@ export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export EDITOR=vim
 
-export SHELL=/bin/zsh
+#export SHELL=/bin/zsh
 
-alias omg='sudo "$BASH" -c "$(history -p !!)"'
+if [ -z "$ZSH_NAME" ];then
+	alias omg='sudo "$BASH" -c "$(history -p !!)"'
+	SHELL="$(which bash)"
+else
+	alias omg='sudo $(fc -ln -1)'
+	SHELL="$(which zsh)"
+fi
+
 alias qq="exit"
 alias jake="192.168.100.164"
 alias server="192.168.0.10"
