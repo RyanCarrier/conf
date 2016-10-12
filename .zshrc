@@ -56,4 +56,4 @@ source ~/.rcarrier_profile
 
 DEFAULT_USER="rcarrier"
 
-noglob
+unsetopt nomatch
