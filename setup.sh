@@ -51,10 +51,10 @@ cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
 
 echo "applying rcarrier patch to zsh"
 cd ~/.oh-my-zsh/
-cp ~/.conf/.oh-my-zsh.patch ./
+cp ~/conf/.oh-my-zsh.patch ./
 git apply ./.oh-my-zsh.patch
 rm ./.oh-my-zsh.patch
-cd ~/.conf
+cd ~/conf
 
 cd conf
 echo "applying confs"

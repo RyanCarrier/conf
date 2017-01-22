@@ -30,7 +30,6 @@ else
 fi
 
 alias qq="exit"
-alias jake="192.168.100.164"
 alias server="192.168.0.10"
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
@@ -40,7 +39,10 @@ alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
-alias rm="rm"
+alias rm="rm"	#overwrite oh my zsh rm -i
+
+shopt -s dotglob
+noglob
 
 function gtimea() {
 	cd ~/apollo
