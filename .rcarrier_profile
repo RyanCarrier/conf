@@ -41,7 +41,6 @@ alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rm="rm"	#overwrite oh my zsh rm -i
 
-shopt -s dotglob
 noglob
 
 function gtimea() {
