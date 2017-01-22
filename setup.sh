@@ -1,5 +1,5 @@
 #!/bin/bash
-GOLANGVERSION="1.6.2"
+GOLANGVERSION="1.7.4"
 if [ "$(id -u)" != "0" ]; then
   if [[ "$OSTYPE" != "darwin"* ]];then
    echo "sudo this shit fam" 1>&2
@@ -56,7 +56,7 @@ if [ "$CONFS" = true ];then
 fi
 
 if [[ "$OSTYPE" != "darwin" ]];then
-  ./mac.sh
+  ./.mac.sh
   exit 0
 fi
 
