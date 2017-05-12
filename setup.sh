@@ -62,7 +62,7 @@ if [ "$CONFS" = true ];then
 	./confs.sh
 fi
 
-if [[ "$OSTYPE" != "darwin" ]];then
+if [[ "$OSTYPE" == "darwin" ]];then
   ./.mac.sh
   exit 0
 fi
@@ -82,7 +82,7 @@ pip install autopep8
 curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
 tar -C /usr/local -xzf go*.tar.gz
 rm go*.tar.gz
-if [ "$XSERVER" = true -a  ];then
+if [ "$XSERVER" = true ];then
 	#qbit
 	apt-get install -y qbittorrent
 
