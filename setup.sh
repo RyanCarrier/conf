@@ -1,5 +1,5 @@
 #!/bin/bash
-GOLANGVERSION="1.6.2"
+GOLANGVERSION="1.7.4"
 if [ "$(id -u)" != "0" ]; then
   if [[ "$OSTYPE" != "darwin"* ]];then
    echo "sudo this shit fam" 1>&2
@@ -49,14 +49,21 @@ git clone https://github.com/sindresorhus/pure.git
 mkdir -p ~/.oh-my-zsh/custom/themes
 cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
 
+echo "applying rcarrier patch to zsh"
+cd ~/.oh-my-zsh/
+cp ~/conf/.oh-my-zsh.patch ./
+git apply ./.oh-my-zsh.patch
+rm ./.oh-my-zsh.patch
+cd ~/conf
+
 cd conf
 echo "applying confs"
 if [ "$CONFS" = true ];then
 	./confs.sh
 fi
 
-if [[ "$OSTYPE" != "darwin" ]];then
-  ./mac.sh
+if [[ "$OSTYPE" == "darwin" ]];then
+  ./.mac.sh
   exit 0
 fi
 
@@ -75,7 +82,7 @@ pip install autopep8
 curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
 tar -C /usr/local -xzf go*.tar.gz
 rm go*.tar.gz
-if [ "$XSERVER" = true -a  ];then
+if [ "$XSERVER" = true ];then
 	#qbit
 	apt-get install -y qbittorrent
 
