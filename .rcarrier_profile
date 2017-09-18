@@ -44,7 +44,7 @@ alias rm="rm"	#overwrite oh my zsh rm -i
 noglob
 
 function gtimea() {
-	cd ~/apollo
+	cd ~/Business/apollo
 	python gtime/timelog.py
 }
 
