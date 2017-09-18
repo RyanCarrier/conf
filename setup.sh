@@ -26,6 +26,12 @@ case $yn in
 esac
 fi
 
+LW=true;
+read -p "Heavy install (install everything) [Y/N] (default Y):" yn
+case $yn in
+		[Nn]* ) LW=false ;;
+esac
+
 if [ "$SCRIPTS" = true ];then
 		echo "Starting scripts"
   if [[ "$OSTYPE" != "darwin"* ]];then
@@ -43,11 +49,6 @@ git clone https://github.com/powerline/fonts.git
 cd fonts
 
 sudo ./install.sh
-cd ..
-echo "getting pure theme"
-git clone https://github.com/sindresorhus/pure.git
-mkdir -p ~/.oh-my-zsh/custom/themes
-cp pure/pure.zsh ~/.oh-my-zsh/custom/themes/pure.zsh-theme
 
 echo "applying rcarrier patch to zsh"
 cd ~/.oh-my-zsh/
@@ -67,7 +68,7 @@ if [[ "$OSTYPE" == "darwin" ]];then
   exit 0
 fi
 
-if [ "$XSERVER" = true ];then
+if [ "$XSERVER" = true -a "$LW" = false ];then
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 fi
 
@@ -75,6 +76,7 @@ apt-get update
 
 apt-get install -y curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck
 
+if [ "$LW" = false ];then
 pip install pep8
 pip install autopep8
 
@@ -101,4 +103,5 @@ if [ "$XSERVER" = true ];then
 	apm install autocomplete-go builder-go file-icons git-plus go-config go-get go-plus go-rename gofmt gometalinter-linter gorename linter navigator-godev tester-go atom-beautify python-yapf autocomplete-python
 	#Atom Themes
 	apm install atom-material-syntax atom-material-syntax-dark atom-material-syntax-light atom-material-ui genesis-syntax genesis-ui one-dark-vivid-syntax
+fi
 fi
