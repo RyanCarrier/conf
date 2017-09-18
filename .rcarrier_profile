@@ -64,3 +64,5 @@ function gobench() {
 function gacp() {
 		git add . &&  git commit -am "$1" && git push
 }
+zcashT="t1c1YqjVd81HY3ALYE9oRWeR3pQAf6YwbhC"
+zcashTW=$zcashT".uServer"
