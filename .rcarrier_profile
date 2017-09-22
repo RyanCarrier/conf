@@ -13,6 +13,8 @@ export PATH=$PATH:$HOME/Programs/idea14/bin
 export PATH=$PATH:$HOME/Programs/btsync/bin
 export PATH=$PATH:$HOME/Programs/android-studio/bin
 export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
+
+export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export EDITOR=vim
 alias gitlab="$HOME/Projects/src/gitlab.com/rcarrier/"
