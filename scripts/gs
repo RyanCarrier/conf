@@ -14,8 +14,6 @@ BEHIND=$BLUE"Behind"
 AHEAD=$BLUE"Ahead"
 DIVERGED=$RED"Diverged"
 
-folders=($(ls -d ./*/))
-
 force=0
 list=0
 
@@ -32,6 +30,8 @@ else
     exit $?
   fi
 fi
+
+folders=($(ls -d ./*/))
 
 max=0
 for f in "${folders[@]}";do

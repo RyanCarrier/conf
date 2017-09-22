@@ -2,7 +2,7 @@
 files=($(ls -A | grep '^\.'))
 PWD=$(pwd)
 
-for f in ${files[@]}
+for f in "${files[@]}"
 do
   if [ "$f" == ".git" ];then
     continue
@@ -11,7 +11,7 @@ do
   current="$PWD/$f"
   rl=$(readlink -f ~/$f)
   if [ -f ~/$f ]; then
-    if [ $rl == $current ]; then
+    if [ "$rl" == "$current" ]; then
       echo -e "\tOK!"
       continue
     else
@@ -20,7 +20,7 @@ do
     fi
   fi
   echo -ne "\nLinking $f..."
-  ln -s $current ~/$f
+  ln -s "$current" ~/$f
   echo -e "\tOK!"
 done
 echo "Configs copied!"

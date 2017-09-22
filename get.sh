@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+if [[ "$OSTYPE" == *"linux-gnu"* ]]; then
 	echo "installing wget zsh and git"
 	sudo apt-get install wget zsh git -y
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -8,7 +8,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 	brew install git -y
 fi
 echo "changing default to zsh"
-chsh -s $(which zsh)
+chsh -s "$(which zsh)"
 
 
 echo "getting RyanCarrier/conf"

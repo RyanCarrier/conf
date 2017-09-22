@@ -46,7 +46,7 @@ alias rm="rm"	#overwrite oh my zsh rm -i
 noglob
 
 function gtimea() {
-	cd ~/apollo
+	cd ~/Business/apollo
 	python gtime/timelog.py
 }
 
@@ -66,3 +66,5 @@ function gobench() {
 function gacp() {
 		git add . &&  git commit -am "$1" && git push
 }
+zcashT="t1c1YqjVd81HY3ALYE9oRWeR3pQAf6YwbhC"
+zcashTW=$zcashT".uServer"
