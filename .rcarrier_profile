@@ -51,8 +51,9 @@ function gtimea() {
 }
 
 function touche() {
-  touch $1
-  chmod a+x $1
+	if [ -z "$1" ];then echo "gib filename";exit;fi
+  touch "$1"
+  chmod a+x "$1"
 }
 
 function gobench() {
