@@ -76,3 +76,4 @@ function gacp() {
 }
 zcashT="t1c1YqjVd81HY3ALYE9oRWeR3pQAf6YwbhC"
 zcashTW=$zcashT".uServer"
+SORTME="server:/mnt/data/TV/SORTME"
