@@ -13,12 +13,17 @@ export PATH=$PATH:$HOME/Programs/idea14/bin
 export PATH=$PATH:$HOME/Programs/btsync/bin
 export PATH=$PATH:$HOME/Programs/android-studio/bin
 export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
+export PATH=$PATH:"$HOME/.cargo/bin"
 
 export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export EDITOR=vim
+
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+
 alias gitlab="$HOME/Projects/src/gitlab.com/rcarrier/"
 alias github="$HOME/Projects/src/github.com/RyanCarrier/"
+fpath+=~/.zfunc
 
 
 #export SHELL=/bin/zsh
@@ -51,9 +56,11 @@ function gtimea() {
 }
 
 function touche() {
-	if [ -z "$1" ];then echo "gib filename";exit;fi
+	if [ -z "$1" ];then echo "gib filename"
+			else
   touch "$1"
   chmod a+x "$1"
+  fi
 }
 
 function gobench() {
