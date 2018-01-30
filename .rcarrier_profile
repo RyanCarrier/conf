@@ -19,7 +19,9 @@ export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export EDITOR=vim
 
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
+	export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+fi
 
 alias gitlab="$HOME/Projects/src/gitlab.com/rcarrier/"
 alias github="$HOME/Projects/src/github.com/RyanCarrier/"
