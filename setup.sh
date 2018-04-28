@@ -1,5 +1,5 @@
 #!/bin/bash
-GOLANGVERSION="1.7.4"
+GOLANGVERSION="1.10.1"
 if [ "$(id -u)" != "0" ]; then
   if [[ "$OSTYPE" != "darwin"* ]];then
    echo "sudo this shit fam" 1>&2
@@ -42,7 +42,9 @@ if [ "$SCRIPTS" = true ];then
 fi
 #oh my zsh
 echo "getting oh my zsh"
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+
+sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sed '/\s*env\s\s*zsh\s*/d')"
+
 cd /home/rcarrier/
 echo "getting fonts"
 git clone https://github.com/powerline/fonts.git
@@ -72,9 +74,9 @@ if [ "$XSERVER" = true -a "$LW" = false ];then
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 fi
 
-apt-get update
+apt update
 
-apt-get install -y curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck
+apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf
 
 if [ "$LW" = false ];then
 pip install pep8
@@ -99,8 +101,9 @@ if [ "$XSERVER" = true ];then
 	dpkg -i atom*.deb
 	apt-get install -fy
 	rm atom*.deb
+
 	#Atom Packages
-	apm install autocomplete-go builder-go file-icons git-plus go-config go-get go-plus go-rename gofmt gometalinter-linter gorename linter navigator-godev tester-go atom-beautify python-yapf autocomplete-python
+	apm install file-icons git-plus go-plus go-rename linter atom-beautify python-yapf autocomplete-python
 	#Atom Themes
 	apm install atom-material-syntax atom-material-syntax-dark atom-material-syntax-light atom-material-ui genesis-syntax genesis-ui one-dark-vivid-syntax
 fi
