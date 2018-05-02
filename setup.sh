@@ -26,10 +26,10 @@ case $yn in
 esac
 fi
 
-LW=true;
+HW=true;
 read -p "Heavy install (install everything) [Y/N] (default Y):" yn
 case $yn in
-		[Nn]* ) LW=false ;;
+		[Nn]* ) HW=false ;;
 esac
 
 if [ "$SCRIPTS" = true ];then
@@ -70,15 +70,15 @@ if [[ "$OSTYPE" == "darwin" ]];then
   exit 0
 fi
 
-if [ "$XSERVER" = true -a "$LW" = false ];then
+if [ "$XSERVER" = true -a "$HW" = false ];then
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 fi
 
 apt update
 
-apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf
+apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf ncdu tree neofetch kazam nmap htop nethogs
 
-if [ "$LW" = false ];then
+if [ "$HW" = false ];then
 pip install pep8
 pip install autopep8
 
