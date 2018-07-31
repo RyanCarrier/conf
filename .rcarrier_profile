@@ -8,10 +8,9 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/Projects
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:/usr/local/groovy/bin
-export PATH=$PATH:$HOME/Programs/idea14/bin
-export PATH=$PATH:$HOME/Programs/btsync/bin
-export PATH=$PATH:$HOME/Programs/android-studio/bin
+export PATH=$PATH:$HOME/Applications/idea/bin
+export PATH=$PATH:$HOME/Applications/btsync/bin
+export PATH=$PATH:$HOME/Applications/android-studio/bin
 export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 export PATH=$PATH:"$HOME/.cargo/bin"
 
@@ -33,6 +32,7 @@ fpath+=~/.zfunc
 if [ -z "$ZSH_NAME" ];then
 	alias omg='sudo "$BASH" -c "$(history -p !!)"'
 	SHELL="$(which bash)"
+	noglob
 else
 	alias omg='sudo $(fc -ln -1)'
 	SHELL="$(which zsh)"
@@ -50,7 +50,6 @@ alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rm="rm"	#overwrite oh my zsh rm -i
 
-noglob
 
 function gtimea() {
 	cd ~/Business/apollo
