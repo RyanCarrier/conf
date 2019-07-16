@@ -1,11 +1,13 @@
 #!/bin/bash
 GOLANGVERSION="1.10.1"
-if [ "$(id -u)" != "0" ]; then
-  if [[ "$OSTYPE" != "darwin"* ]];then
-   echo "sudo this shit fam" 1>&2
-   exit 1
- fi
-fi
+#if [ "$(id -u)" != "0" ]; then
+#  if [[ "$OSTYPE" != "darwin"* ]];then
+#   echo "sudo this shit fam" 1>&2
+#   exit 1
+# fi
+#fi
+
+sudo echo ""
 
 CONFS=true;
 read -rp "ln confs? [Y/N] (default Y):" yn
@@ -37,7 +39,7 @@ if [ "$SCRIPTS" = true ];then
   if [[ "$OSTYPE" != "darwin"* ]];then
 	   sudo ./scripts.sh
   else
-    ./scripts.sh
+    sudo ./scripts.sh
   fi
 fi
 #oh my zsh
@@ -70,9 +72,9 @@ if [[ "$OSTYPE" == "darwin" ]];then
 fi
 
 
-apt update
+sudo apt update
 
-apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf ncdu tree neofetch kazam nmap htop nethogs
+sudo apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf ncdu tree neofetch kazam nmap htop nethogs
 
 if [ "$HW" = true ];then
 	pip install pep8
@@ -80,19 +82,19 @@ if [ "$HW" = true ];then
 	
 	#Go
 	curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
-	tar -C /usr/local -xzf go*.tar.gz
+	sudo tar -C /usr/local -xzf go*.tar.gz
 	rm go*.tar.gz
 	if [ "$XSERVER" = true ];then
 		#Chrome
 		curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-		dpkg -i google-chrome*.deb
-		apt-get install -fy
+		sudo dpkg -i google-chrome*.deb
+		sudo apt-get install -fy
 		rm google-chrome*.deb
 	
 		#Atom
 		curl -OL https://atom.io/download/deb
-		dpkg -i atom*.deb
-		apt-get install -fy
+		sudo dpkg -i atom*.deb
+		sudo apt-get install -fy
 		rm atom*.deb
 	
 		#Atom Packages

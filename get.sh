@@ -16,8 +16,4 @@ cd ~
 git clone https://github.com/RyanCarrier/conf.git
 cd conf
 echo "starting setup.sh"
-if [[ "$OSTYPE" == "darwin"* ]]; then
-	./setup.sh
-	exit 0
-fi
-sudo ./setup.sh
+./setup.sh
