@@ -48,16 +48,16 @@ sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 echo "getting fonts"
 mkdir /tmp/fonts
 git clone https://github.com/powerline/fonts.git /tmp/fonts
-cd /tmp/fonts || { echo "no fonts folder" ; exit }
+cd /tmp/fonts || { echo "no fonts folder"; exit ; }
 
 sudo ./install.sh
 
 echo "applying rcarrier patch to zsh"
-cd ~/.oh-my-zsh/ || { echo "no .oh-my-zsh folder"; exit }
+cd ~/.oh-my-zsh/ || { echo "no .oh-my-zsh folder"; exit ; }
 cp ~/conf/.oh-my-zsh.patch ./
 git apply ./.oh-my-zsh.patch
 rm ./.oh-my-zsh.patch
-cd ~/conf || { echo "fail to cd to conf" ; exit }
+cd ~/conf || { echo "fail to cd to conf"; exit ; }
 
 echo "applying confs"
 if [ "$CONFS" = true ];then
@@ -69,9 +69,6 @@ if [[ "$OSTYPE" == "darwin" ]];then
   exit 0
 fi
 
-if [ "$XSERVER" = true ] && [ "$HW" = false ];then
-	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-fi
 
 apt update
 
