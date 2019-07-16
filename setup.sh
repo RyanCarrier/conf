@@ -46,17 +46,18 @@ echo "getting oh my zsh"
 sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sed '/\s*env\s\s*zsh\s*/d')"
 
 echo "getting fonts"
-git clone https://github.com/powerline/fonts.git /tmp/
-cd /tmp/fonts || {echo "no fonts folder" ; exit}
+mkdir /tmp/fonts
+git clone https://github.com/powerline/fonts.git /tmp/fonts
+cd /tmp/fonts || { echo "no fonts folder" ; exit }
 
 sudo ./install.sh
 
 echo "applying rcarrier patch to zsh"
-cd ~/.oh-my-zsh/ || {echo "no .oh-my-zsh folder"; exit}
+cd ~/.oh-my-zsh/ || { echo "no .oh-my-zsh folder"; exit }
 cp ~/conf/.oh-my-zsh.patch ./
 git apply ./.oh-my-zsh.patch
 rm ./.oh-my-zsh.patch
-cd ~/conf || {echo "fail to cd to conf" ; exit}
+cd ~/conf || { echo "fail to cd to conf" ; exit }
 
 echo "applying confs"
 if [ "$CONFS" = true ];then
