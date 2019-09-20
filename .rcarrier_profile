@@ -14,6 +14,7 @@ export PATH=$PATH:$HOME/Applications/btsync/bin
 export PATH=$PATH:$HOME/Applications/android-studio/bin
 export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 export PATH=$PATH:"$HOME/.cargo/bin"
+export PATH=$PATH:"/snap/bin"
 
 export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
