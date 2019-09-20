@@ -66,6 +66,12 @@ function touche() {
   fi
 }
 
+function vime() {
+	touche "$1"
+	echo "#!/bin/bash" >> "$1"
+	vim "$1"
+}
+
 function gobench() {
   if [ "$1" ];then
     go test -bench=. -benchtime="$1s"
