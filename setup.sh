@@ -47,10 +47,9 @@ sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 cd /home/rcarrier/
 echo "getting fonts"
-git clone https://github.com/powerline/fonts.git
-cd fonts
-
-sudo ./install.sh
+#git clone https://github.com/powerline/fonts.git
+#cd fonts
+#sudo ./install.sh
 
 echo "applying rcarrier patch to zsh"
 cd ~/.oh-my-zsh/
@@ -70,7 +69,7 @@ if [[ "$OSTYPE" == "darwin" ]];then
   exit 0
 fi
 
-if [ "$XSERVER" = true -a "$HW" = false ];then
+if [ "$XSERVER" = true -a "$HW" = true ];then
 	add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 fi
 
@@ -78,7 +77,7 @@ apt update
 
 apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf ncdu tree neofetch kazam nmap htop nethogs
 
-if [ "$HW" = false ];then
+if [ "$HW" = true ];then
 pip install pep8
 pip install autopep8
 
@@ -86,6 +85,8 @@ pip install autopep8
 curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
 tar -C /usr/local -xzf go*.tar.gz
 rm go*.tar.gz
+echo "Installing vim-go"
+git clone https://github.com/fatih/vim-go.git ~/.vim/pack/plugins/start/vim-go
 if [ "$XSERVER" = true ];then
 	#qbit
 	apt-get install -y qbittorrent
@@ -95,16 +96,5 @@ if [ "$XSERVER" = true ];then
 	dpkg -i google-chrome*.deb
 	apt-get install -fy
 	rm google-chrome*.deb
-
-	#Atom
-	curl -OL https://atom.io/download/deb
-	dpkg -i atom*.deb
-	apt-get install -fy
-	rm atom*.deb
-
-	#Atom Packages
-	apm install file-icons git-plus go-plus go-rename linter atom-beautify python-yapf autocomplete-python
-	#Atom Themes
-	apm install atom-material-syntax atom-material-syntax-dark atom-material-syntax-light atom-material-ui genesis-syntax genesis-ui one-dark-vivid-syntax
 fi
 fi
