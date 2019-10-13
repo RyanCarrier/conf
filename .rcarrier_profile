@@ -8,11 +8,13 @@ export GOROOT=/usr/local/go
 export GOPATH=$HOME/Projects
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:/usr/local/flutter/bin
 export PATH=$PATH:$HOME/Applications/idea/bin
 export PATH=$PATH:$HOME/Applications/btsync/bin
 export PATH=$PATH:$HOME/Applications/android-studio/bin
 export PATH=$PATH:"/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 export PATH=$PATH:"$HOME/.cargo/bin"
+export PATH=$PATH:"/snap/bin"
 
 export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
@@ -62,6 +64,12 @@ function touche() {
   touch "$1"
   chmod a+x "$1"
   fi
+}
+
+function vime() {
+	touche "$1"
+	echo "#!/bin/bash" >> "$1"
+	vim "$1"
 }
 
 function gobench() {

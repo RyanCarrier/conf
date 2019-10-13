@@ -2,16 +2,16 @@
 PWD=$(pwd)
 
 if [ "$(id -u)" != "0" ]; then
- echo "Can't rm -rf /* without root"
- exit 1
+		echo "Can't rm -rf /* without root"
+		exit 1
 fi
-cd scripts
+cd scripts || { echo "fail to cd in scripts"; exit ; }
 echo "Adding scripts"
-for f in $(ls);do
-  echo -ne "Linking $f... "
-  ln -s "$PWD/$f" "/usr/local/bin/$f"
-  if [ $? -eq 0 ];then
-    echo -e "\tOK!"
-  fi
+for f in *;do
+		echo -ne "Linking $f... "
+		if ln -s "$PWD/$f" "/usr/local/bin/$f"
+		then
+				echo -e "\tOK!"
+		fi
 done
-cd "$PWD"
+cd "$PWD" || { echo "fail to cd to $PWD"; exit ; }
