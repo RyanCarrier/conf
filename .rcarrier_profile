@@ -18,6 +18,7 @@ export PATH=$PATH:"/snap/bin"
 
 export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
+export PATH=$PATH:"$HOME/.local/bin"
 export EDITOR=vim
 
 if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
