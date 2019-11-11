@@ -1,2 +1,2 @@
 #!/bin/bash
-gs -l $1
+gs -l "$1"

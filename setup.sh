@@ -1,12 +1,5 @@
 #!/bin/bash
 GOLANGVERSION="1.10.1"
-#if [ "$(id -u)" != "0" ]; then
-#  if [[ "$OSTYPE" != "darwin"* ]];then
-#   echo "sudo this shit fam" 1>&2
-#   exit 1
-# fi
-#fi
-
 sudo echo ""
 
 CONFS=true;
@@ -20,39 +13,39 @@ read -rp "ln scripts? [Y/N] (default Y):" yn
 case $yn in
 		[Nn]* ) SCRIPTS=false ;;
 esac
-if [[ "$OSTYPE" != "darwin"* ]];then
-		XSERVER=true;
-		read -rp "X server enabled? [Y/N] (default Y):" yn
-		case $yn in
-				[Nn]* ) XSERVER=false ;;
-		esac
-fi
 
 HW=true;
-read -rp "Heavy install (install everything) [Y/N] (default Y):" yn
+read -rp "Heavy install (install go, rust) [Y/N] (default Y):" yn
 case $yn in
 		[Nn]* ) HW=false ;;
 esac
 
+XSERVER=true;
+read -rp "X server enabled(install vscode, qbittorrent, flameshot, kdenlive and chrome)? [Y/N] (default Y):" yn
+case $yn in
+	[Nn]* ) XSERVER=false ;;
+esac
+
 if [ "$SCRIPTS" = true ];then
-		echo "Starting scripts"
-		if [[ "$OSTYPE" != "darwin"* ]];then
-				# wtf is happening here lol???
-				sudo ./scripts.sh
-		else
-				sudo ./scripts.sh
-		fi
+	echo "Starting scripts"
+	sudo ./scripts.sh
 fi
+PACKAGES="zsh wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs snapd"
+echo "installing $PACKAGES"
+
+if [ -f "/etc/arch-release" ]; then
+		pacman -Syu
+		pacman --noconfirm -S "$PACKAGES"
+else
+		apt upgrade && apt install -y "$PACKAGES"
+fi
+
 #oh my zsh
 echo "getting oh my zsh"
 
-sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sed '/\s*env\s\s*zsh\s*/d')"
-
-echo "getting fonts"
-mkdir /tmp/fonts
-git clone https://github.com/powerline/fonts.git /tmp/fonts
-cd /tmp/fonts || { echo "no fonts folder"; exit ; }
-sudo ./install.sh
+sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
+chsh -s "$(which zsh)"
+sudo chsh -s "$(which zsh)" root
 
 echo "applying rcarrier patch to zsh"
 cd ~/.oh-my-zsh/ || { echo "no .oh-my-zsh folder"; exit ; }
@@ -71,29 +64,37 @@ if [[ "$OSTYPE" == "darwin" ]];then
 		exit 0
 fi
 
-if [ "$XSERVER" = true ] && [ "$HW" = true ];then
-		add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-fi
-
-sudo apt update
-sudo apt install -y wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils v4l-conf ncdu tree neofetch kazam nmap htop nethogs
-
 if [ "$HW" = true ];then
-		pip install pep8
-		pip install autopep8
 		#Go
+		echo "installing go"
 		curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
-		tar -C /usr/local -xzf go*.tar.gz
+		sudo tar -C /usr/local -xzf go*.tar.gz
 		rm go*.tar.gz
 		echo "Installing vim-go"
 		git clone https://github.com/fatih/vim-go.git ~/.vim/pack/plugins/start/vim-go
+		echo "Installing rust"
+		curl https://sh.rustup.rs -sSf | sh
+
 		if [ "$XSERVER" = true ];then
-				#qbit
-				apt-get install -y qbittorrent
+				sudo snap install code --classic
 				#Chrome
-				curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-				dpkg -i google-chrome*.deb
-				apt-get install -fy
-				rm google-chrome*.deb
+				if [ -f "/etc/arch-release" ]; then
+						cd /tmp/ || { echo "fail to cd to chrome"; exit ; }
+						git clone https://aur.archlinux.org/google-chrome.git
+						cd google-chrome || { echo "fail to cd to chrome"; exit ; }
+						makepkg -s --noconfirm
+						sudo pacman --noconfirm -U google-chrome*.xz
+						cd ~ || { echo "fail to cd ~"; exit ; }
+
+						sudo pacman --noconfirm -Sy kdenlive flameshot qbittorrent
+				else
+					curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+					dpkg -i google-chrome*.deb
+					apt-get install -fy
+					rm google-chrome*.deb
+
+					sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+					sudo apt install -y kdenlive flameshot qbittorrent
+				fi
 		fi
 fi

@@ -3,4 +3,8 @@ if [[ $EUID -ne 0 ]]; then
 	echo "Run as root" 1>&2
 	exit 1
 fi
-apt update && apt upgrade -y
+if [ -f "/etc/arch-release" ]; then
+	pacman -Syu
+else
+	apt update && apt upgrade -y
+fi
