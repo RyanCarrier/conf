@@ -30,14 +30,14 @@ if [ "$SCRIPTS" = true ];then
 	echo "Starting scripts"
 	sudo ./scripts.sh
 fi
-PACKAGES="zsh wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs snapd"
+PACKAGES="zsh wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs snapd iperf"
 echo "installing $PACKAGES"
 
 if [ -f "/etc/arch-release" ]; then
-		pacman -Syu
-		pacman --noconfirm -S "$PACKAGES"
+		sudo pacman -Syu
+		sudo pacman --noconfirm -S "$PACKAGES"
 else
-		apt upgrade && apt install -y "$PACKAGES"
+		sudo apt upgrade && sudo apt install -y "$PACKAGES"
 fi
 
 #oh my zsh
@@ -82,15 +82,15 @@ if [ "$HW" = true ];then
 						cd /tmp/ || { echo "fail to cd to chrome"; exit ; }
 						git clone https://aur.archlinux.org/google-chrome.git
 						cd google-chrome || { echo "fail to cd to chrome"; exit ; }
-						makepkg -s --noconfirm
+						sudo makepkg -s --noconfirm
 						sudo pacman --noconfirm -U google-chrome*.xz
 						cd ~ || { echo "fail to cd ~"; exit ; }
 
 						sudo pacman --noconfirm -Sy kdenlive flameshot qbittorrent
 				else
 					curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-					dpkg -i google-chrome*.deb
-					apt-get install -fy
+					sudo dpkg -i google-chrome*.deb
+					sudo apt-get install -fy
 					rm google-chrome*.deb
 
 					sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
