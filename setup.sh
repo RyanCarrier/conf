@@ -35,7 +35,7 @@ echo "installing $PACKAGES"
 
 if [ -f "/etc/arch-release" ]; then
 		sudo pacman -Syu
-		sudo pacman --noconfirm -S $PACKAGES
+		sudo pacman --noconfirm -S $PACKAGES fakeroot
 else
 		sudo apt upgrade && sudo apt install -y $PACKAGES openssh-server
 fi
@@ -82,7 +82,7 @@ if [ "$HW" = true ];then
 						cd /tmp/ || { echo "fail to cd to chrome"; exit ; }
 						git clone https://aur.archlinux.org/google-chrome.git
 						cd google-chrome || { echo "fail to cd to chrome"; exit ; }
-						sudo makepkg -s --noconfirm
+						makepkg -s --noconfirm
 						sudo pacman --noconfirm -U google-chrome*.xz
 						cd ~ || { echo "fail to cd ~"; exit ; }
 
