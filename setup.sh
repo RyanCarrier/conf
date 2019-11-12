@@ -30,14 +30,14 @@ if [ "$SCRIPTS" = true ];then
 	echo "Starting scripts"
 	sudo ./scripts.sh
 fi
-PACKAGES="zsh wget curl tar tmux vim rsync openssh-server traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs snapd iperf"
+PACKAGES="zsh wget curl tar tmux vim rsync traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs snapd iperf"
 echo "installing $PACKAGES"
 
 if [ -f "/etc/arch-release" ]; then
 		sudo pacman -Syu
-		sudo pacman --noconfirm -S "$PACKAGES"
+		sudo pacman --noconfirm -S $PACKAGES
 else
-		sudo apt upgrade && sudo apt install -y "$PACKAGES"
+		sudo apt upgrade && sudo apt install -y $PACKAGES openssh-server
 fi
 
 #oh my zsh
