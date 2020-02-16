@@ -12,11 +12,10 @@ export PATH=$PATH:/usr/local/flutter/bin
 export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"/snap/bin"
-
-export PATH=$PATH:"/Applications/VLC.app/Contents/MacOS"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export PATH=$PATH:"$HOME/.local/bin"
 export EDITOR=vim
+export ANDROID_SDK_ROOT="~/Android/Sdk"
 
 if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
 	export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
@@ -42,7 +41,6 @@ alias qq="exit"
 alias server="192.168.0.10"
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
-alias grun="go run main.go"
 alias cd..="cd .."
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
@@ -81,5 +79,3 @@ function gobench() {
 function gacp() {
 		git add . &&  git commit -am "$1" && git push
 }
-zcashT="t1c1YqjVd81HY3ALYE9oRWeR3pQAf6YwbhC"
-zcashTW=$zcashT".uServer"
