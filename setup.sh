@@ -35,7 +35,7 @@ echo "installing $PACKAGES"
 
 if [ -f "/etc/arch-release" ]; then
 		sudo pacman -Syu --noconfirm
-		sudo pacman --noconfirm -S $PACKAGES fakeroot
+		sudo pacman --noconfirm -S $PACKAGES fakeroot openssh make base-devel
 		cd /tmp
 		git clone https://aur.archlinux.org/snapd.git
 		cd snapd
@@ -73,14 +73,19 @@ fi
 
 if [ "$HW" = true ];then
 		#Go
-		echo "installing go"
-		curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
-		sudo tar -C /usr/local -xzf go*.tar.gz
-		rm go*.tar.gz
+		if [ -f "/etc/arch-release" ]; then
+				sudo pacman --noconfirm -Sy go rust
+		else
+			echo "installing go"
+			curl -O https://storage.googleapis.com/golang/go$GOLANGVERSION.linux-amd64.tar.gz
+			sudo tar -C /usr/local -xzf go*.tar.gz
+			rm go*.tar.gz
+			echo "Installing rust"
+			curl https://sh.rustup.rs -sSf | sh
+		fi
+
 		echo "Installing vim-go"
 		git clone https://github.com/fatih/vim-go.git ~/.vim/pack/plugins/start/vim-go
-		echo "Installing rust"
-		curl https://sh.rustup.rs -sSf | sh
 
 		if [ "$XSERVER" = true ];then
 				sudo snap install code --classic

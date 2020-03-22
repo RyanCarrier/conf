@@ -4,7 +4,11 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-export GOROOT=/usr/local/go
+if [ -f "/etc/arch-release" ]; then
+	export GOROOT=/usr/lib/go
+else
+	export GOROOT=/usr/local/go
+fi
 export GOPATH=$HOME/Projects
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
@@ -15,7 +19,8 @@ export PATH=$PATH:"/snap/bin"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export PATH=$PATH:"$HOME/.local/bin"
 export EDITOR=vim
-export ANDROID_SDK_ROOT="~/Android/Sdk"
+export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+export ANDROID_HOME="$ANDROID_SDK_ROOT"
 
 if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
 	export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
