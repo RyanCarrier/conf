@@ -18,6 +18,7 @@ export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"/snap/bin"
 export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export PATH=$PATH:"$HOME/.local/bin"
+export PATH=$PATH:"$HOME/University/matlab-R2019B/bin"
 export EDITOR=vim
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
@@ -52,6 +53,7 @@ alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rm="rm"	#overwrite oh my zsh rm -i
+alias xo="xdg-open"
 
 
 function gtimea() {
