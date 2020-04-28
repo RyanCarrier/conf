@@ -13,6 +13,7 @@ export GOPATH=$HOME/Projects
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:/opt/flutter/bin
+export PATH=$PATH:/usr/local/flutter/bin
 export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"/snap/bin"
@@ -45,6 +46,7 @@ fi
 
 alias qq="exit"
 alias server="192.168.0.10"
+#haha this should be in my hosts but what if it isn't!?!?
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
 alias cd..="cd .."
@@ -54,6 +56,7 @@ alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rm="rm"	#overwrite oh my zsh rm -i
 alias xo="xdg-open"
+alias p1="ping 1.1.1.1"
 
 
 function gtimea() {
