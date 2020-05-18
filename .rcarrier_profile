@@ -65,16 +65,16 @@ function gtimea() {
 }
 
 function touche() {
-	if [ -z "$1" ];then echo "gib filename"
+  if [ -z "$1" ];then echo "gib filename"
 			else
-  touch "$1"
+  touch "$1"	
   chmod a+x "$1"
+  echo "#!/bin/bash" >> "$1"
   fi
 }
 
 function vime() {
 	touche "$1"
-	echo "#!/bin/bash" >> "$1"
 	vim "$1"
 }
 
