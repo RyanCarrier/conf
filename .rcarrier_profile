@@ -57,6 +57,8 @@ alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rm="rm"	#overwrite oh my zsh rm -i
 alias xo="xdg-open"
 alias p1="ping 1.1.1.1"
+alias ip='ip -color=auto'
+alias diff='diff -color=auto'
 
 
 function gtimea() {
