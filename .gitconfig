@@ -3,3 +3,6 @@
 	name = Ryan Carrier
 [push]
 	default = simple
+[includeIf "gitdir:~/Projects/byteback/"]
+		path = ~/Projects/byteback/.gitconfig
+
