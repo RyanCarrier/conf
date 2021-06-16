@@ -23,6 +23,7 @@ export PATH=$PATH:"$HOME/University/matlab-R2019B/bin"
 export EDITOR=vim
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
+export CHROME_EXECUTABLE=$(which google-chrome-stable)
 
 if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
 	export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
