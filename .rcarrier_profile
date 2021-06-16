@@ -17,11 +17,16 @@ export PATH=$PATH:/usr/local/flutter/bin
 export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"/snap/bin"
-export PATH=$PATH:"/Users/rcarrier/Android/sdk/platform-tools"
 export PATH=$PATH:"$HOME/.local/bin"
 export PATH=$PATH:"$HOME/University/matlab-R2019B/bin"
 export EDITOR=vim
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+#export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+ANDROID_SDK_ROOT="/opt/android-sdk"
+export PATH=$PATH:"$ANDROID_SDK_ROOT"
+export PATH=$PATH:"$ANDROID_SDK_ROOT/platform-tools"
+export PATH=$PATH:"$ANDROID_SDK_ROOT/tools"
+export PATH=$PATH:"$ANDROID_SDK_ROOT/tools/bin"
+
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 export CHROME_EXECUTABLE=$(which google-chrome-stable)
 
