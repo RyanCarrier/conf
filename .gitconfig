@@ -3,6 +3,9 @@
 	name = Ryan Carrier
 [push]
 	default = simple
+	autoSetupRemote = true
 [includeIf "gitdir:~/Projects/byteback/"]
 		path = ~/Projects/byteback/.gitconfig
 
+[safe]
+	directory = /opt/flutter
