@@ -98,3 +98,10 @@ function gobench() {
 function gacp() {
 		git add . &&  git commit -am "$1" && git push
 }
+
+if [ ! -f "$HOME/.config/nvim/init.lua" ]; then
+	git clone https://github.com/RyanCarrier/nvim-conf.git $HOME/.config/nvim/
+fi
+if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
+	git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
+fi
