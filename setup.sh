@@ -37,9 +37,11 @@ if [ -f "/etc/arch-release" ]; then
 		sudo pacman -Syu --noconfirm
 		sudo pacman --noconfirm -S $PACKAGES fakeroot openssh make base-devel
 		cd /tmp
-		git clone https://aur.archlinux.org/snapd.git
-		cd snapd
-		makepkg -si --noconfirm
+		pacman -S --needed git base-devel
+		git clone https://aur.archlinux.org/yay.git
+		cd yay
+		makepkg -si
+		yay -Syyu --noconfirm snapd
 		sudo systemctl enable --now snapd.socket
 		sudo ln -s /var/lib/snapd/snap /snap
 		cd ~/conf
@@ -88,16 +90,11 @@ if [ "$HW" = true ];then
 		git clone https://github.com/fatih/vim-go.git ~/.vim/pack/plugins/start/vim-go
 
 		if [ "$XSERVER" = true ];then
-				sudo snap install code --classic
-				#Chrome
+				#sudo snap install code --classic
+			
 				if [ -f "/etc/arch-release" ]; then
-						cd /tmp/ || { echo "fail to cd to chrome"; exit ; }
-						git clone https://aur.archlinux.org/google-chrome.git
-						cd google-chrome || { echo "fail to cd to chrome"; exit ; }
-						makepkg -s --noconfirm
-						sudo pacman --noconfirm -U google-chrome*.xz
-						cd ~ || { echo "fail to cd ~"; exit ; }
 
+						yay -Sy --noconfirm visual-studio-code-bin google-chrome kdenlive flameshot qbittorrent
 						sudo pacman --noconfirm -Sy kdenlive flameshot qbittorrent
 				else
 					curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
