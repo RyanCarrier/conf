@@ -30,23 +30,23 @@ if [ "$SCRIPTS" = true ];then
 	echo "Starting scripts"
 	sudo ./scripts.sh
 fi
-PACKAGES="which zsh wget curl tar tmux vim rsync traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs iperf"
+PACKAGES="which zsh wget curl tar tmux vim rsync traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs iperf ripgrep"
 echo "installing $PACKAGES"
 
 if [ -f "/etc/arch-release" ]; then
 		sudo pacman -Syu --noconfirm
-		sudo pacman --noconfirm -S $PACKAGES fakeroot openssh make base-devel
-		cd /tmp
+		sudo pacman --noconfirm -S "$PACKAGES" fakeroot openssh make base-devel
+		cd /tmp || exit
 		pacman -S --needed git base-devel
 		git clone https://aur.archlinux.org/yay.git
-		cd yay
+		cd yay || exit
 		makepkg -si
 		yay -Syyu --noconfirm snapd
 		sudo systemctl enable --now snapd.socket
 		sudo ln -s /var/lib/snapd/snap /snap
-		cd ~/conf
+		cd ~/conf || exit
 else
-		sudo apt upgrade && sudo apt install -y $PACKAGES openssh-server snapd
+		sudo apt upgrade && sudo apt install -y "$PACKAGES" openssh-server snapd
 fi
 
 #oh my zsh
