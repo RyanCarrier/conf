@@ -70,7 +70,7 @@ alias ip='ip -color=auto'
 alias open='xdg-open'
 alias vim='nvim'
 alias grep='rg'
-alias neovide='env -u WAYLAND_DISPLAY neovide'
+alias neovide='env -u WAYLAND_DISPLAY neovide --multigrid'
 alias gvim='neovide'
 
 
