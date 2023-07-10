@@ -104,6 +104,7 @@ function gobench() {
 function gacp() {
 		git add . &&  git commit -am "$1" && git push
 }
+[[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
 
 if [ ! -f "$HOME/.config/nvim/init.lua" ]; then
 	git clone https://github.com/RyanCarrier/nvim-conf.git $HOME/.config/nvim/
