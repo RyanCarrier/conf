@@ -58,8 +58,8 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+-- vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+-- vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 
 vim.keymap.set('n', '<leader>pg', require('telescope.builtin').git_files, { desc = '[P]roject [G]it files' })
 vim.keymap.set('n', '<leader>pf', require('telescope.builtin').find_files, { desc = '[P]rojcet [F]iles' })
@@ -488,10 +488,10 @@ vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down)
 vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up)
 vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right)
 -- moving between splits
--- vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
--- vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
--- vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
--- vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+vim.keymap.set('n', '<leader>h', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<leader>j', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<leader>k', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<leader>l', require('smart-splits').move_cursor_right)
 -- swapping buffers between windows
 vim.keymap.set('n', '<leader><A-h>', require('smart-splits').swap_buf_left)
 vim.keymap.set('n', '<leader><A-j>', require('smart-splits').swap_buf_down)
@@ -504,12 +504,19 @@ vim.keymap.set("n", "<down>", "<C-w>j")
 vim.keymap.set("n", "<up>", "<C-w>k")
 vim.keymap.set("n", "<right>", "<C-w>l")
 -- remap increment/decrement (just inc)
+-- (note that C-x dec)
 vim.keymap.set("n", "<M-x>", "<C-a>")
+vim.keymap.set('n', "vp", [[viw"_dP]], { desc = "paste in word" })
+
 
 --TODO:
 --ok heres the deal, we always qa....q,
 --What about <C-a>....<C-a>🤯🤯🤯
+-- because that's your tmux leader dummy
 --then we go <A-a> to run
+-- ok how about;
+vim.keymap.set('n', '<C-1>', 'q1', { noremap = true, desc = 'Record macro to register 1' })
+vim.keymap.set('n', '<A-1>', '@1<cr>', { noremap = true, desc = 'Run macro reg 1' })
 
 if vim.g.neovide then
   -- scaling
@@ -528,7 +535,7 @@ if vim.g.neovide then
 
   -- gamer moments
   vim.g.neovide_refresh_rate = 60
-  vim.g.neovide_scroll_animation_length = 0.05
+  vim.g.neovide_scroll_animation_length = 0.1
   -- vim.g.neovide_profiler = true
 
 

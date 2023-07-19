@@ -23,36 +23,13 @@ return {
   config = function()
     local dap = require('dap')
     local dapui = require('dapui')
-    -- dap.adapters.dart = {
-    --   type = 'executable',
-    --   command = 'flutter',
-    --   args = { 'debug_adapter' },
-    -- }
-    -- dap.configurations.dart = {
-    --   {
-    --     -- The first three options are required by nvim-dap
-    --     type = 'dart',
-    --     request = 'launch',
-    --     name = 'Flutter',
-    --     -- If you have a flutter project, use flutterRunDebug
-    --     program = "${file}",
-    --     cwd = "${workspaceFolder}",
-    --     toolArgs = { "-d", "linux" }
-    --     --program = 'lib/main.dart',
-    --     -- flutterRunDebug is the default if no 'program' is specified
-    --     -- flutterRunDebug = 'lib/main.dart',
-    --   },
-    -- }
-
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
       automatic_setup = true,
-
       -- You can provide additional configuration to the handlers,
       -- see mason-nvim-dap README for more information
       handlers = {},
-
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
       ensure_installed = {
@@ -64,7 +41,6 @@ return {
       if desc then desc = 'DAP: ' .. desc end
       vim.keymap.set('n', keys, func, { desc = desc })
     end
-
     -- Basic debugging keymaps, feel free to change to your liking!
     nmap('<F5>', dap.continue, "Continue")
     nmap('<F1>', dap.step_into, "Step into")
@@ -134,13 +110,8 @@ return {
     -- trougg = trouble+toggle+debug
     local function trouggle()
       local t = require('trouble')
-      local dap = require('dap')
-      -- local controls = require("dapui.controls")
       dap.repl.close()
       t.close()
-      -- local View = require("trouble.view")
-      -- trouble will also select buffer once complete (so the future vsplit applies)
-      -- correctly
       t.open({ mode = 'document_diagnostics' })
       --have a secret small layout for a mini repl (size 1), to enable the controlls
       -- controlls will then be passed to any other repl window too
@@ -149,13 +120,6 @@ return {
       dapui.open({ layout = 4 })
       dapui.close()
       dap.repl.open({}, 'vsplit')
-      -- need this for those little icons from dapui lmao I don't even know
-      -- dapui.update_render({})
-      -- local config = require("dapui.config")
-      -- if config.controls.enabled and config.controls.element ~= "" then
-      --   controls.enable_controls(dapui.elements[config.controls.element])
-      -- end
-      -- controls.refresh_control_panel()
     end
 
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
@@ -164,17 +128,17 @@ return {
       dapui.toggle({ layout = 1 })
     end, "Open default small")
     nmap("<F8>", dapui.close, "DapUI Close")
-    nmap("<leader>es", dap.set_exception_breakpoints, "[e]xception [s]et breakpoints")
-    nmap("<leader>en", function() dap.set_exception_breakpoints({}) end, "[e]xception [n]o breakpoints")
-    nmap("<leader>eu", function() dap.set_exception_breakpoints({ 'uncaught' }) end, "[e]xception [u]nset breakpoints")
+    nmap("<leader>de", dap.set_exception_breakpoints, "[D]ebug [E]xception catch all")
+    nmap("<leader>dn", function() dap.set_exception_breakpoints({}) end, "[D]ebug [N]o exception catching")
+    nmap("<leader>du", function() dap.set_exception_breakpoints({ 'uncaught' }) end,
+      "[D]ebug [U]ncaught (only) exception catching")
 
-    -- dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({ layout = 3 }) end
     dap.listeners.after.event_initialized['dapui_config'] = trouggle
-    -- require('trouble').open({ mode = 'document_diagnostics' })
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- Install golang specific config
+    -- wot
     require('dap-go').setup()
   end,
 }
