@@ -22,6 +22,7 @@ return {
                 },
                 settings = {
                     showTodos = false,
+                    analysisExcludedFolders = { vim.fn.expand("/opt/flutter/packages"), vim.fn.expand("$HOME/.pub-cache") }
                 }
             },
             debugger = {

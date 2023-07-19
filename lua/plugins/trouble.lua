@@ -53,5 +53,8 @@ return {
         vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
         vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
         vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
+        vim.keymap.set('n', '<C-t>', function()
+            require("trouble").next({ skip_groups = true, jump = true });
+        end, { silent = true, noremap = true, desc = "Trouble next" })
     end
 }
