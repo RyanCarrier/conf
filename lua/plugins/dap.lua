@@ -128,7 +128,9 @@ return {
       dapui.toggle({ layout = 1 })
     end, "Open default small")
     nmap("<F8>", dapui.close, "DapUI Close")
-    nmap("<leader>de", dap.set_exception_breakpoints, "[D]ebug [E]xception catch all")
+    -- nmap("<leader>de", dap.set_exception_breakpoints(""), "[D]ebug [E]xception catch all")
+    nmap("<leader>dd", function() dap.set_exception_breakpoints({ 'default' }) end, "[D]ebug [D]efault exception")
+    nmap("<leader>dr", function() dap.set_exception_breakpoints({ 'raised' }) end, "[D]ebug [R]aised exceptions")
     nmap("<leader>dn", function() dap.set_exception_breakpoints({}) end, "[D]ebug [N]o exception catching")
     nmap("<leader>du", function() dap.set_exception_breakpoints({ 'uncaught' }) end,
       "[D]ebug [U]ncaught (only) exception catching")
