@@ -68,7 +68,9 @@ return {
 
   --undo list
   'mbbill/undotree',
-  'machakann/vim-sandwich',
+  {
+    'machakann/vim-sandwich',
+  },
   -- zenmode
   'folke/zen-mode.nvim',
   {
