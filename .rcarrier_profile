@@ -72,6 +72,7 @@ alias vim='nvim'
 alias grep='rg'
 alias neovide='env -u WAYLAND_DISPLAY neovide --multigrid'
 alias gvim='neovide'
+unset fd
 
 
 function gtimea() {
