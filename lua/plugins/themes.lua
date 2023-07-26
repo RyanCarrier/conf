@@ -82,7 +82,7 @@ return {
     config = function()
       require('onedark').setup({
         style = 'darker',
-        toggle_style_key = '<leader>tt',
+        -- toggle_style_key = '<leader>tt',
       })
       -- require('onedark').load()
       -- vim.cmd.colorscheme('onedark')

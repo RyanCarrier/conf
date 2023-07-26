@@ -23,7 +23,7 @@ return {
   config = function()
     local dap = require('dap')
     local dapui = require('dapui')
-    require('mason-nvim-dap').setup {
+    require('mason-nvim-dap').setup({
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
       automatic_setup = true,
@@ -36,12 +36,12 @@ return {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
       },
-    }
+    })
     local nmap = function(keys, func, desc)
       if desc then desc = 'DAP: ' .. desc end
       vim.keymap.set('n', keys, func, { desc = desc })
     end
-    -- Basic debugging keymaps, feel free to change to your liking!
+    nmap("<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, "Debug Nearest")
     nmap('<F5>', dap.continue, "Continue")
     nmap('<F1>', dap.step_into, "Step into")
     nmap('<F2>', dap.step_over, "Step over")

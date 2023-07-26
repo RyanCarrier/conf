@@ -12,6 +12,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 })
 
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+  group = vim.api.nvim_create_augroup("resize_splits", { clear = true }),
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
+})
+
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 local actions = require('telescope.actions')
@@ -36,13 +44,6 @@ require("telescope").setup({
   }
 })
 
--- require("telescope").load_extension("file_browser")
--- vim.keymap.set('n', "<leader>fb", function()
---   require("telescope").extensions.file_browser.file_browser({
---     hidden = true,
---     cwd = vim.fn.expand('%:p:h'),
---   })
--- end, { desc = "[F]ile [B]rowser" })
 
 
 -- Enable telescope fzf native, if installed
@@ -74,10 +75,10 @@ vim.keymap.set('n', '<leader>tk', require('telescope.builtin').keymaps, { desc =
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'bash', 'dart',
-    'zig', 'toml', 'yaml', 'gomod' },
+    'zig', 'toml', 'yaml', 'gomod', },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself! )
   auto_install = true,
@@ -138,7 +139,7 @@ require('nvim-treesitter.configs').setup {
       },
     },
   },
-}
+})
 
 
 
@@ -251,8 +252,10 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
+  move_analyzer = {},
   -- tsserver = {},
   -- eslint = {},
+
 
   --flutter-tools maybe set lsp here, that probably would work? idk
   lua_ls = {
@@ -271,10 +274,11 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
+local mason_lspconfig = require('mason-lspconfig')
 
 mason_lspconfig.setup({
   ensure_installed = vim.tbl_keys(servers),
+  automatic_installation = true,
 })
 
 mason_lspconfig.setup_handlers({
@@ -442,7 +446,6 @@ vim.diagnostic.config {
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- TS file_browser
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true, desc = "[U]ndo tree" })
 
 vim.keymap.set('i', "<C-Del>", "<C-o>dw", { noremap = true })
@@ -549,8 +552,8 @@ vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = "[G]it [S]tatus" })
 -- because that's your tmux leader dummy
 --then we go <A-a> to run
 -- ok how about;
-vim.keymap.set('n', '<C-1>', 'q1', { noremap = true, desc = 'Record macro to register 1' })
-vim.keymap.set('n', '<A-1>', '@1<cr>', { noremap = true, desc = 'Run macro reg 1' })
+vim.keymap.set('n', '<C-1>', 'qa', { noremap = true, desc = 'Record macro to register a' })
+vim.keymap.set('n', '<A-1>', '@a<cr>', { noremap = true, desc = 'Run macro reg a' })
 
 if vim.g.neovide then
   -- scaling
