@@ -40,6 +40,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 --not suuuuper clear on this one though lol
 vim.opt.isfname:append("@-@")
+vim.opt.ff = "unix"
 
 -- [[ Basic Keymaps ]]
 
