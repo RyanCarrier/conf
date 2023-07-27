@@ -49,7 +49,8 @@ CASE_SENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang adb battery brew bundler colored-man-pages colorize command-not-found common-aliases emoji emoji-clock gnu-utils gradle history pip python ssh-agent web-search)
+# acs aliases cheat shees (aliases cheat sheet)
+plugins=( git golang adb battery colored-man-pages rust command-not-found common-aliases  pip python ssh-agent web-search)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile
