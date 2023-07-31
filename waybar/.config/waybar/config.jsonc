@@ -1,0 +1,136 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 10,
+    "spacing": 0,
+    "modules-left": [
+        "wlr/workspaces"
+    ],
+    "modules-center": [
+        "hyprland/window"
+    ],
+    "modules-right": [
+        "backlight",
+        "custom/wl-gammarelay-temperature",
+        // "custom/wl-gammarelay-brightness",
+        "network",
+        "pulseaudio",
+        "battery",
+        "clock",
+        "tray"
+    ],
+    // Modules configuration
+    "clock": {
+        "format": "{:%I:%M%p %d/%m/%y}",
+        "tooltip": "false",
+        //        	"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%a %d %B %Y}"
+    },
+    "custom/wl-gammarelay-temperature": {
+        "format": " {}",
+        "exec": "wl-gammarelay --subscribe Temperature",
+        "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +25",
+        "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -25"
+    },
+    //     "custom/wl-gammarelay-brightness": {
+    //   "format": "{} ",
+    //   "exec": "wl-gammarelay --subscribe Brightness",
+    //   "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
+    //   "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
+    // },
+    "wlr/workspaces": {
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        },
+        "disable-scroll": true,
+        // "all-outputs": true,
+        "active-only": false,
+        "on-click": "activate",
+        "warp-on-scroll": false,
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        // "format": "{icon}",
+        "format-icons": {
+            // "1": "",
+            // "2": "",
+            // "3": "",
+            // "4": "",
+            // "0": "",
+            "urgent": "",
+            "active": "",
+            "default": "",
+            "sort-by-number": true
+        }
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{icon} {time}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    "network": {
+        "format-wifi": "  {essid}",
+        "format-ethernet": " Connesso",
+        "format-linked": " {ifname} (No IP)",
+        "format-disconnected": "Disconnesso",
+        "format-alt": " {ifname}: {ipaddr}/{cidr}"
+    },
+    "tray": {
+        "icon-size": 17,
+        "spacing": 5
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{icon} {percent}%",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+        //	"on-scroll-up":,
+        //	"on-scroll-down":,
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " muto",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "on-click": "pamixer --toggle-mute",
+        "on-click-right": "/home/fra/scripts/volume/on-off.sh"
+    }
+}
