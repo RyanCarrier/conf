@@ -3,12 +3,7 @@
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-
-if [ -f "/etc/arch-release" ]; then
-	export GOROOT=/usr/lib/go
-else
-	export GOROOT=/usr/local/go
-fi
+export GOROOT=/usr/lib/go
 export GOPATH=$HOME/Projects
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
@@ -16,9 +11,8 @@ export PATH=$PATH:/opt/flutter/bin
 export PATH=$PATH:/usr/local/flutter/bin
 export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
-export PATH=$PATH:"/snap/bin"
 export PATH=$PATH:"$HOME/.local/bin"
-export PATH=$PATH:"$HOME/University/matlab-R2019B/bin"
+export PATH=$PATH:"/snap/bin"
 export EDITOR=vim
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 #ANDROID_SDK_ROOT="/opt/android-sdk"
@@ -74,16 +68,13 @@ alias vim='nvim'
 alias grep='rg'
 alias neovide='env -u WAYLAND_DISPLAY neovide --multigrid'
 alias gvim='neovide'
+alias gs='$HOME/.local/bin/gs'
 unset fd
-
-
-function gtimea() {
-	cd ~/Business/apollo
-	python gtime/timelog.py
-}
+# unset gl
 
 function touche() {
-  if [ -z "$1" ];then echo "gib filename"
+  if [ -z "$1" ];then 
+	  echo "gib filename"
 			else
   touch "$1"	
   chmod a+x "$1"
@@ -104,14 +95,8 @@ function gobench() {
   fi
 }
 
-function gacp() {
-		git add . &&  git commit -am "$1" && git push
-}
 [[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
 
-if [ ! -f "$HOME/.config/nvim/init.lua" ]; then
-	git clone https://github.com/RyanCarrier/nvim-conf.git $HOME/.config/nvim/
-fi
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
 	git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
 fi
