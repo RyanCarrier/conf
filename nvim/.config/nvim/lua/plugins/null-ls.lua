@@ -11,5 +11,6 @@ return {
                 null_ls.builtins.formatting.beautysh,
             },
         })
+        null_ls.disable({ filetype = 'dart' });
     end,
 }

@@ -154,7 +154,12 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
+  -- if client is null-ls and filtype is dart, then disable null-ls
+  -- if client.name == 'dartls' then
+  --   require('null-ls').disable({ filetype = 'dart' });
+  --   -- client.resolved_capabilities.document_formatting = false
+  -- end
   -- In this case, we create a function that lets us more easily define mappings specific
   -- for LSP related items. It sets the mode, buffer and description for us each time.
   local nmap = function(keys, func, desc)
@@ -184,6 +189,7 @@ local on_attach = function(_, bufnr)
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
   nmap('<leader>ww', cafilter('Wrap with widget'), '[W]rap [W]idget')
   nmap('<leader>wr', cafilter('Wrap with Row'), '[W]rap [R]ow')
   nmap('<leader>wc', cafilter('Wrap with Col'), '[W]rap [C]olumn')
