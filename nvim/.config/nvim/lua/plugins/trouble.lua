@@ -43,6 +43,11 @@ return {
             },
             -- use_lsp_diagnostic_signs = false
         })
+        local trouble_next = function()
+            require("trouble").next({ skip_groups = true, jump = true });
+        end
+
+
 
         -- Lua -- TROUBLE
         vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
@@ -53,8 +58,7 @@ return {
         vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
         vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
         vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
-        vim.keymap.set('n', '<C-t>', function()
-            require("trouble").next({ skip_groups = true, jump = true });
-        end, { silent = true, noremap = true, desc = "Trouble next" })
+        vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
+        vim.keymap.set('n', '<leader>tn', trouble_next, { silent = true, noremap = true, desc = "[T]rouble [N]ext" })
     end
 }
