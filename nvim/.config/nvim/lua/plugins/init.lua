@@ -84,6 +84,8 @@ return {
       require('incline').setup()
     end
   },
+  -- move language support
+  "rvmelkonian/move.vim",
 
   --highlight hovered
   "RRethy/vim-illuminate",
