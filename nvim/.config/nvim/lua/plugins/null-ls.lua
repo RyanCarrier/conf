@@ -12,5 +12,6 @@ return {
             },
         })
         null_ls.disable({ filetype = 'dart' });
+        null_ls.disable({ filetype = 'lua' });
     end,
 }
