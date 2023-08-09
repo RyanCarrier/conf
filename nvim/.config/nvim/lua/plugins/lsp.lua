@@ -25,7 +25,6 @@ return {
     --     update_in_insert = true,
     --   }
     -- )
-
     -- Switch for controlling whether you want autoformatting.
     --  Use :FormatToggle to toggle autoformatting on or off
     local format_is_enabled = true
@@ -57,18 +56,13 @@ return {
         local client_id = args.data.client_id
         local client = vim.lsp.get_client_by_id(client_id)
         local bufnr = args.buf
-
+        if client.name == "eslint" then
+          client.server_capabilities.documentFormattingProvider = true
+        end
         -- Only attach to clients that support document formatting
-        if not client.server_capabilities.documentFormattingProvider then
-          return
-        end
-
-        -- Tsserver usually works poorly. Sorry you work with bad languages
-        -- You can remove this line if you know what you're doing :)
-        if client.name == 'tsserver' then
-          return
-        end
-
+        if not client.server_capabilities.documentFormattingProvider then return end
+        --eslint instead yo
+        if client.name == 'tsserver' then return end
         -- Create an autocmd that will run *before* we save the buffer.
         --  Run the formatting command for the LSP that has just attached.
         vim.api.nvim_create_autocmd('BufWritePre', {
@@ -76,6 +70,7 @@ return {
           buffer = bufnr,
           callback = function()
             if not format_is_enabled then
+              vim.notify(client.id .. 'FORMAT NOT ENABLED ')
               return
             end
 
@@ -85,6 +80,7 @@ return {
                 return c.id == client.id
               end,
             })
+            -- vim.notify(client.name .. ' FORMATED')
           end,
         })
       end,

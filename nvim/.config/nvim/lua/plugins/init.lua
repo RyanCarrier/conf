@@ -35,7 +35,8 @@ return {
     config = function()
       local o = require('overseer')
       o.setup()
-      vim.keymap.set('n', '<leader>ta', o.run_template, { desc = '[Ta]sks' })
+      vim.keymap.set('n', '<leader>taa', o.run_template, { desc = '[Ta]sks' })
+      vim.keymap.set('n', '<leader>tao', o.toggle, { desc = '[Ta]sks [O]pen' })
     end
   },
   'akinsho/bufferline.nvim',

@@ -6,24 +6,17 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-    -- config = function()
-    --   require('telescope').setup({
-    --     defaults = {
-    --       vimgrep_arguments = {
-    --         'rg',
-    --         '--color=never',
-    --         '--no-heading',
-    --         '--with-filename',
-    --         '--line-number',
-    --         '--column',
-    --         '--smart-case',
-    --         '--hidden',
-    --         '-g',
-    --         '!.git',
-    --       }
-    --     }
-    --   })
-    -- end,
+    config = function()
+      require('telescope').setup({
+        pickers = {
+          live_grep = {
+            additional_args = function(opts)
+              return { "--hidden", "--no-ignore-vcs", "--glob", "!.git" }
+            end
+          }
+        }
+      })
+    end,
   },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
