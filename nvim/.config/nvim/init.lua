@@ -176,14 +176,19 @@ local on_attach = function(client, bufnr)
   local cafilter = function(filter)
     return function() cafilterapply(filter) end
   end
+  if client.name == "dartls" then
+    nmap('<leader>ww', cafilter('Wrap with widget'), '[W]rap [W]idget')
+    nmap('<leader>wr', cafilter('Wrap with Row'), '[W]rap [R]ow')
+    nmap('<leader>wc', cafilter('Wrap with Col'), '[W]rap [C]olumn')
+    nmap('<leader>wp', cafilter('Wrap with Pad'), '[W]rap [P]adding')
+  end
+  if client.name == "gopls" then
+    nmap("<leader>ee", "oif err != nil {<CR>}<ESC>Oreturn err")
+  end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('<leader>ww', cafilter('Wrap with widget'), '[W]rap [W]idget')
-  nmap('<leader>wr', cafilter('Wrap with Row'), '[W]rap [R]ow')
-  nmap('<leader>wc', cafilter('Wrap with Col'), '[W]rap [C]olumn')
-  nmap('<leader>wp', cafilter('Wrap with Pad'), '[W]rap [P]adding')
   -- mostly cause I've gotten semi use to C-Q, and idk how much i love the trouble extension
   nmap('<leader>fq', cafilter('Fix All'), '[F]ix... [Q]uick!')
   nmap('<leader>q', function()
