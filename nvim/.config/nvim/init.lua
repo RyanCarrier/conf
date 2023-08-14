@@ -181,6 +181,7 @@ local on_attach = function(client, bufnr)
     nmap('<leader>wr', cafilter('Wrap with Row'), '[W]rap [R]ow')
     nmap('<leader>wc', cafilter('Wrap with Col'), '[W]rap [C]olumn')
     nmap('<leader>wp', cafilter('Wrap with Pad'), '[W]rap [P]adding')
+    nmap('<leader>fa', cafilter('required argument'), '[F]ix required [A]rgument')
   end
   if client.name == "gopls" then
     nmap("<leader>ee", "oif err != nil {<CR>}<ESC>Oreturn err")
