@@ -203,7 +203,7 @@ local on_attach = function(client, bufnr)
     if client.name == "eslint" or client.name == "tsserver" then
       cafilterapply("import")
     else
-      cafilterapply("Import library 'package")
+      cafilterapply("Import library '")
     end
   end, '[F]ix [I]mport')
 
