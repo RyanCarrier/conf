@@ -171,10 +171,82 @@ local on_attach = function(client, bufnr)
       end
     })
   end
+  local function make_position_param()
+    local buf = vim.api.nvim_win_get_buf(0)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    row = row - 1
+    local line = vim.api.nvim_buf_get_lines(buf, row, row + 1, true)[1]
+    if not line then
+      return { line = 0, character = 0 }
+    end
+    local _, col_encoded = vim.str_utfindex(line, col)
+    return { line = row, character = col_encoded }
+  end
+
+  local cafilterorapply = function(filter1, filter2)
+    -- local bufnr = vim.api.nvim_get_current_buf()
+    local method = 'textDocument/codeAction'
+    local buf = vim.api.nvim_win_get_buf(0)
+    -- offset_encoding = vim.validate({
+    --   bufnr = { bufnr, 'n', true },
+    -- })
+    local position = make_position_param()
+    local params = {
+      textDocument = { uri = vim.uri_from_bufnr(bufnr or 0) },
+      range = { start = position, ['end'] = position },
+      context = {
+        triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
+        diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
+      }
+    }
+
+    vim.lsp.buf_request_all(bufnr, method, params, function(results)
+      local found = 0
+      for _, result in pairs(results) do
+        for _, action in pairs(result.result or {}) do
+          if string.find(action.title, filter1) then
+            found = found + 1
+          end
+        end
+        if found == 1 then
+          cafilterapply(filter1)
+        else
+          cafilterapply(filter2)
+        end
+      end
+    end)
+  end
   -- cafilter to disgustingly code action filter
   --  return a function so can be directly called with no issue
   local cafilter = function(filter)
     return function() cafilterapply(filter) end
+  end
+
+  local cafilteror = function(filter1, filter2)
+    return function() cafilterorapply(filter1, filter2) end
+  end
+
+
+  local quickFix = function()
+    -- this reallllyyyy should just filter code action type cause there is one for fixall im pre sure
+    if client.name == "eslint" or client.name == "tsserver" then
+      cafilterapply('Fix all')
+    else
+      cafilterapply('Fix All')
+    end
+  end
+
+  local fixImport = function()
+    -- could probs make this better with checking type too
+    if client.name == "eslint" or client.name == "tsserver" then
+      cafilterapply("import")
+    else
+      -- obviously luas escape char is %
+      cafilterorapply("Import library '%.", "Import library 'package")
+      -- lmao we then want to order them
+      -- quickFix()
+      -- that didn't work lol
+    end
   end
   if client.name == "dartls" then
     nmap('<leader>ww', cafilter('Wrap with widget'), '[W]rap [W]idget')
@@ -191,21 +263,13 @@ local on_attach = function(client, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   -- mostly cause I've gotten semi use to C-Q, and idk how much i love the trouble extension
-  nmap('<leader>fq', cafilter('Fix All'), '[F]ix... [Q]uick!')
-  nmap('<leader>q', function()
-    if client.name == "eslint" or client.name == "tsserver" then
-      cafilterapply('Fix all')
-    else
-      cafilterapply('Fix All')
-    end
-  end, '[Q]uicky fixy')
-  nmap('<leader>fi', function()
-    if client.name == "eslint" or client.name == "tsserver" then
-      cafilterapply("import")
-    else
-      cafilterapply("Import library '")
-    end
-  end, '[F]ix [I]mport')
+  nmap('<leader>fq', quickFix, '[F]ix... [Q]uick!')
+  nmap('<leader>q', quickFix, '[Q]uicky fixy')
+  nmap('<leader>fdi', function()
+    vim.diagnostic.goto_next()
+    fixImport()
+  end, '[F]ix [D]iagnostic [I]mport');
+  nmap('<leader>fi', fixImport, '[F]ix [I]mport')
 
   nmap('gd', function() vim.lsp.buf.definition({ reuse_win = true }) end, '[G]oto [D]efinition')
   nmap('gsd', function()

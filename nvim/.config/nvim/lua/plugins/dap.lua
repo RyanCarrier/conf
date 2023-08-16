@@ -78,11 +78,11 @@ return {
             -- Provide IDs as strings or tables with "id" and "size" keys
             {
               id = "scopes",
-              size = 0.25, -- Can be float or integer > 1
+              size = 0.50, -- Can be float or integer > 1
             },
-            { id = "breakpoints", size = 0.25 },
-            { id = "stacks",      size = 0.25 },
-            { id = "watches",     size = 0.25 },
+            { id = "breakpoints", size = 0.15 },
+            { id = "stacks",      size = 0.15 },
+            { id = "watches",     size = 0.10 },
           },
           size = 40,
           position = "left", -- Can be "left" or "right"
@@ -134,6 +134,8 @@ return {
     nmap("<leader>dn", function() dap.set_exception_breakpoints({}) end, "[D]ebug [N]o exception catching")
     nmap("<leader>du", function() dap.set_exception_breakpoints({ 'uncaught' }) end,
       "[D]ebug [U]ncaught (only) exception catching")
+    nmap("<leader>dU", function() dap.set_exception_breakpoints({ 'Unhandled' }) end,
+      "[D]ebug [U]handled (only) exception catching")
 
     dap.listeners.after.event_initialized['dapui_config'] = trouggle
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close

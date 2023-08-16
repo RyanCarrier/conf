@@ -265,6 +265,11 @@ class <>State extends ConsumerState<<<>>> {
 			fmt("children: [\n\t{},\n\t],\n", i(1)),
 		})
 	),
+	s({ trig = "ctx", name = "BuildContext" },
+		fmta([[
+		BuildContext context<>
+		]], { i(1) })
+	),
 
 })
 print("dart snippets loaded")
