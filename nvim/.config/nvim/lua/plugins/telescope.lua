@@ -11,7 +11,8 @@ return {
         pickers = {
           live_grep = {
             additional_args = function(opts)
-              return { "--hidden", "--no-ignore-vcs", "--glob", "!.git" }
+              -- return { "--hidden", "--no-ignore-vcs", "--glob", "!.git" }
+              return { "--hidden", "--glob", "!.git" }
             end
           }
         }

@@ -183,13 +183,21 @@ local on_attach = function(client, bufnr)
     return { line = row, character = col_encoded }
   end
 
-  local cafilterorapply = function(filter1, filter2)
+  local ca_count = function(results, filter)
+    local found = 0
+    for _, result in pairs(results) do
+      for _, action in pairs(result.result or {}) do
+        if string.find(action.title, filter) then
+          found = found + 1
+        end
+      end
+    end
+    return found
+  end
+
+  local cafilterorapply = function(filter1, filter2, filter3)
     -- local bufnr = vim.api.nvim_get_current_buf()
     local method = 'textDocument/codeAction'
-    local buf = vim.api.nvim_win_get_buf(0)
-    -- offset_encoding = vim.validate({
-    --   bufnr = { bufnr, 'n', true },
-    -- })
     local position = make_position_param()
     local params = {
       textDocument = { uri = vim.uri_from_bufnr(bufnr or 0) },
@@ -201,18 +209,13 @@ local on_attach = function(client, bufnr)
     }
 
     vim.lsp.buf_request_all(bufnr, method, params, function(results)
-      local found = 0
-      for _, result in pairs(results) do
-        for _, action in pairs(result.result or {}) do
-          if string.find(action.title, filter1) then
-            found = found + 1
-          end
-        end
-        if found == 1 then
-          cafilterapply(filter1)
-        else
-          cafilterapply(filter2)
-        end
+      if ca_count(results, filter1) == 1 then
+        cafilterapply(filter1)
+      end
+      if ca_count(results, filter2) == 1 then
+        cafilterapply(filter2)
+      else
+        cafilterapply(filter3)
       end
     end)
   end
@@ -242,7 +245,7 @@ local on_attach = function(client, bufnr)
       cafilterapply("import")
     else
       -- obviously luas escape char is %
-      cafilterorapply("Import library '%.", "Import library 'package")
+      cafilterorapply("Import library '%.", "Import library 'package", "Import library 'dart")
       -- lmao we then want to order them
       -- quickFix()
       -- that didn't work lol
