@@ -73,6 +73,10 @@ return {
               vim.notify(client.id .. 'FORMAT NOT ENABLED ')
               return
             end
+            -- if client.name == 'dartls' then
+            --   vim.notify("not formatting dart")
+            --   return
+            -- end
 
             vim.lsp.buf.format({
               async = false,
@@ -81,7 +85,7 @@ return {
               end,
             })
             -- fix that dumbass bug when sometimes after format call diag will peace out
-            if client.name == 'dartls' then vim.diagnostic.enable(bufnr) end
+            -- if client.name == 'dartls' then vim.diagnostic.enable(bufnr) end
             --this didn't work either >.>
             vim.notify(client.name .. ' FORMATED')
           end,
