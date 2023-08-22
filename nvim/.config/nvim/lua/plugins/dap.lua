@@ -104,6 +104,11 @@ return {
           elements = { "repl" },
           size = 1,
           position = "bottom",
+        },
+        {
+          elements = { "repl" },
+          size = 40,
+          position = "left",
         }
       },
     })
@@ -118,8 +123,32 @@ return {
       -- there was some issue doing this before trouble, I don't remember what,
       -- no harm but it works here... just weird
       dapui.open({ layout = 4 })
-      dapui.close()
+      dapui.close({ layout = 4 })
       dap.repl.open({}, 'vsplit')
+    end
+
+    local function trouggle_but_bigger()
+      local t = require('trouble')
+      dap.repl.close()
+      t.close()
+      t.open({ mode = 'document_diagnostics' })
+      --have a secret small layout for a mini repl (size 1), to enable the controlls
+      -- controlls will then be passed to any other repl window too
+      -- there was some issue doing this before trouble, I don't remember what,
+      -- no harm but it works here... just weird
+      dapui.open({ layout = 4 })
+      dapui.close({ layout = 4 })
+      dapui.open({ layout = 5 })
+    end
+    local function set_dap_ex_bp(filter)
+      return function()
+        if not filter then
+          dap.set_exception_breakpoints()
+        else
+          dap.set_exception_breakpoints({ filter })
+          vim.notify('Exception breakpoints set to ' .. filter)
+        end
+      end
     end
 
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
@@ -127,14 +156,14 @@ return {
     nmap("<F7>", function()
       dapui.toggle({ layout = 1 })
     end, "Open default small")
-    nmap("<F8>", dapui.close, "DapUI Close")
+    nmap("<F8>", trouggle_but_bigger, "Trouggle but bigger (repl on full left, diag full bottom)")
     -- nmap("<leader>de", dap.set_exception_breakpoints(""), "[D]ebug [E]xception catch all")
-    nmap("<leader>dd", function() dap.set_exception_breakpoints({ 'default' }) end, "[D]ebug [D]efault exception")
-    nmap("<leader>dr", function() dap.set_exception_breakpoints({ 'raised' }) end, "[D]ebug [R]aised exceptions")
+    nmap("<leader>dd", set_dap_ex_bp('default'), "[D]ebug [D]efault exception")
+    nmap("<leader>dr", set_dap_ex_bp('raised'), "[D]ebug [R]aised exceptions")
     nmap("<leader>dn", function() dap.set_exception_breakpoints({}) end, "[D]ebug [N]o exception catching")
-    nmap("<leader>du", function() dap.set_exception_breakpoints({ 'uncaught' }) end,
+    nmap("<leader>du", set_dap_ex_bp('uncaught'),
       "[D]ebug [U]ncaught (only) exception catching")
-    nmap("<leader>dU", function() dap.set_exception_breakpoints({ 'Unhandled' }) end,
+    nmap("<leader>dU", set_dap_ex_bp('Unhandled'),
       "[D]ebug [U]handled (only) exception catching")
 
     dap.listeners.after.event_initialized['dapui_config'] = trouggle

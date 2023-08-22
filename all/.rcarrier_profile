@@ -22,6 +22,7 @@ export PATH=$PATH:"$ANDROID_SDK_ROOT/platform-tools"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/emulator"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/tools/bin"
 export PATH=$PATH:"$HOME/.pub-cache/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 export JAVA_HOME='/usr/lib/jvm/default'
 export PATH="$JAVA_HOME/bin:$PATH"
@@ -49,12 +50,18 @@ else
 	SHELL="$(which zsh)"
 fi
 
+unset fd
+unset rm
+unset t
+
 alias qq="exit"
 alias server="192.168.0.10"
 #haha this should be in my hosts but what if it isn't!?!?
 alias carryingpigeons="ssh carryingpigeons.com"
 alias myip="curl http://ipecho.net/plain; echo"
 alias cd..="cd .."
+alias cd...="cd ../.."
+alias cd....="cd ../../.."
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-update="rsync -avzu --progress -h"
@@ -69,7 +76,23 @@ alias grep='rg'
 alias neovide='env -u WAYLAND_DISPLAY neovide --multigrid'
 alias gvim='neovide'
 alias gs='$HOME/.local/bin/gs'
-unset fd
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+alias gb="git branch"
+alias gc="git checkout"
+alias lns="ln -s"
+alias t="tmux"
+alias ta="tmux attach"
+alias tn="tmux new-session -s"
+alias tl="tmux ls"
+## Project specific
+alias jg="j gym_"
+alias tng="jg && tn gym_score"
 # unset gl
 
 function touche() {
