@@ -156,34 +156,6 @@ return {
     end
   },
   {
-    -- Autocompletion
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'onsails/lspkind-nvim',
-      --     'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-vsnip',
-      'hrsh7th/cmp-path',
-      --     'hrsh7th/cmp-buffer',
-      'hrsh7th/vim-vsnip',
-
-      -- Snippet Engine & its associated nvim-cmp source
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-
-      -- Adds LSP completion capabilities
-      'hrsh7th/cmp-nvim-lsp',
-
-      -- Adds a number of user-friendly snippets
-      'rafamadriz/friendly-snippets',
-    },
-  },
-  -- Useful plugin to show you pending keybinds.
-  {
-    'folke/which-key.nvim',
-    opts = {}
-  },
-  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -238,15 +210,6 @@ return {
       vim.keymap.set('n', '<leader>tp', ':TSPlaygroundToggle<CR>',
         { desc = "[T]reesitter [P]layground", noremap = true, silent = true })
     end
-  },
-
-  {
-    -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-    build = ':TSUpdate',
   },
   {
     "windwp/nvim-autopairs",

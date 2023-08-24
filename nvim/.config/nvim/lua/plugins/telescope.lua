@@ -7,15 +7,33 @@ return {
       'nvim-lua/plenary.nvim',
     },
     config = function()
-      require('telescope').setup({
+      local telescope = require('telescope')
+      local actions = require('telescope.actions')
+      -- Enable telescope fzf native, if installed
+      pcall(require('telescope').load_extension, 'fzf')
+      telescope.setup({
         pickers = {
           live_grep = {
             additional_args = function(opts)
               -- return { "--hidden", "--no-ignore-vcs", "--glob", "!.git" }
               return { "--hidden", "--glob", "!.git" }
             end
+          },
+          colorscheme = {
+            enable_preview = true
           }
-        }
+        },
+        defaults = {
+          mappings = {
+            i = {
+              ['<C-u>'] = false,
+              ['<C-d>'] = false,
+              ['<C-j>'] = actions.move_selection_next,
+              ['<C-k>'] = actions.move_selection_previous,
+            },
+            -- n = {},
+          },
+        },
       })
     end,
   },
