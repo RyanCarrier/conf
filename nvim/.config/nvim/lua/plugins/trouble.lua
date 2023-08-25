@@ -52,12 +52,15 @@ return {
 
         -- Lua -- TROUBLE
         -- Lua
-        vim.keymap.set("n", "<leader>xx", function() t.open() end)
-        vim.keymap.set("n", "<leader>xw", function() t.open("workspace_diagnostics") end)
-        vim.keymap.set("n", "<leader>xd", function() t.open("document_diagnostics") end)
-        vim.keymap.set("n", "<leader>xq", function() t.open("quickfix") end)
-        vim.keymap.set("n", "<leader>xl", function() t.open("loclist") end)
-        vim.keymap.set("n", "gR", function() t.open("lsp_references") end)
+        local nmap = function(input, trouble_type, desc)
+            vim.keymap.set("n", input, function() t.open(trouble_type) end, { desc = "[Trouble] " .. desc })
+        end
+        nmap("<leader>xx", "", "Toggle")
+        nmap("<leader>xw", "workspace_diagnostics", "Workspace diagnostics")
+        nmap("<leader>xd", "document_diagnostics", "Document diagnostics")
+        nmap("<leader>xq", "quickfix", "Quickfix")
+        nmap("<leader>xl", "loclist", "Loclist")
+        nmap("gR", "lsp_references", "LSP references")
 
         vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
         vim.keymap.set('n', '<leader>tn', trouble_next, { silent = true, noremap = true, desc = "[T]rouble [N]ext" })

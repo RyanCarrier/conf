@@ -78,6 +78,7 @@ alias gvim='neovide'
 alias gs='$HOME/.local/bin/gs'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias cat='bat'
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
