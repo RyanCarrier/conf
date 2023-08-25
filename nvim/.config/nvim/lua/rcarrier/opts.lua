@@ -36,7 +36,7 @@ vim.opt.colorcolumn = "80"
 
 -- smart indent will indent to expected on new line
 vim.opt.smartindent = true
-vim.opt.tabstop = 4
+vim.opt.tabstop = 2
 vim.opt.shiftwidth = 4
 --not suuuuper clear on this one though lol
 vim.opt.isfname:append("@-@")
