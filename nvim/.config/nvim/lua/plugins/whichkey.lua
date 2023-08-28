@@ -5,8 +5,8 @@ return {
         wk.setup()
         wk.register({
             w = {
-                w = {
-                    name = "Workspace",
+                o = {
+                    name = "[Wo]rkspace",
                 }
             },
         }, {
