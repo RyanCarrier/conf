@@ -61,9 +61,9 @@ local on_attach = function(client, bufnr)
 
 	-- Lesser used LSP functionality
 	nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-	nmap('<leader>wwa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-	nmap('<leader>wwd', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [D]elete Folder')
-	nmap('<leader>wwl', function()
+	nmap('<leader>woa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+	nmap('<leader>wod', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [D]elete Folder')
+	nmap('<leader>wol', function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, '[W]orkspace [L]ist Folders')
 end
