@@ -6,6 +6,7 @@ return {
     end
   },
 
+  "luckasRanarison/tree-sitter-hypr",
 
   "ThePrimeagen/vim-be-good",
   "nvim-tree/nvim-web-devicons", -- optional dependency
