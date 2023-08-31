@@ -6,7 +6,17 @@ return {
     },
     build = ':TSUpdate',
     config = function()
-        require('nvim-treesitter.configs').setup({
+        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        parser_config.hypr = {
+            install_info = {
+                url = "https://github.com/luckasRanarison/tree-sitter-hypr",
+                files = { "src/parser.c" },
+                branch = "master",
+            },
+            filetype = "hypr",
+        }
+        local nts = require('nvim-treesitter.configs')
+        nts.setup({
             -- Add languages to be installed here that you want installed for treesitter
             ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'bash',
                 'dart',
