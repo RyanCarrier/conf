@@ -87,7 +87,7 @@ return {
             -- fix that dumbass bug when sometimes after format call diag will peace out
             -- if client.name == 'dartls' then vim.diagnostic.enable(bufnr) end
             --this didn't work either >.>
-            vim.notify(client.name .. ' FORMATED')
+            -- vim.notify(client.name .. ' FORMATED')
           end,
         })
       end,
