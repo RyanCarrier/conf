@@ -54,7 +54,14 @@ return {
     end
   },
 
-  'mrjones2014/smart-splits.nvim',
+  {
+    'mrjones2014/smart-splits.nvim',
+    config = function()
+      require('smart-splits').setup({
+        default_amount = 10,
+      })
+    end,
+  },
 
   --todo: it fucked up my - for oil
   -- {
@@ -62,6 +69,11 @@ return {
   --   event = "VeryLazy",
   --   config = function()
   --     require("hardtime").setup({
+  --       restriction_mode = "hint",
+  --       disabled_keys = {
+  --         ["-"] = {},
+  --       },
+  --       disabled_filetypes = { "oil" },
   --     })
   --   end
   -- },
