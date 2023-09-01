@@ -19,7 +19,7 @@ return {
                 }
             },
             openai_params = {
-                max_tokens = 10000,
+                max_tokens = 1000,
             }
         })
         local wk = require("which-key")
