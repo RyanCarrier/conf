@@ -21,10 +21,10 @@ nmap('<leader>fdi', function()
 end, '[F]ix [D]iagnostic [I]mport');
 
 nmap('<leader>we', "biExpanded(<CR>child: <Esc>f(%$i,)<Esc>%<Cmd>lua vim.lsp.buf.format()<CR>", '[W]rap [E]xpanded')
-nmap('<C-,>', "F)i,<Esc><Cmd>lua vim.lsp.buf.format()<CR>", 'COMMAAAAAA')
+nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 
 
 --assuming we have a comma lol...
 --otherwise we would only do 1x
 --we are also assuming child is the last field lol
-nmap('<leader>wd', 'w%xx<C-o>bv/child<CR>wd<Cmd>lua vim.lsp.buf.format()<CR>', '[W]rap [D]elete')
+nmap('<leader>wd', 'w%xx<C-o>bv/child<CR>wd', '[W]rap [D]elete')
