@@ -38,28 +38,31 @@
     //   "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
     //   "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
     // },
-    "wlr/workspaces": {
+    "hyprland/window": {
+        "rewrite": {
+            "(.*) - Google Chrome": "$1 -  ",
+            "(.*) — Konsole": "$1 -  "
+        }
+    },
+    "hyprland/workspaces": {
         "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": []
+            "eDP-1": 5
         },
         "disable-scroll": true,
-        // "all-outputs": true,
+        "all-outputs": false,
         "active-only": false,
+        // "show-special": true,
         "on-click": "activate",
         "warp-on-scroll": false,
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         // "format": "{icon}",
         "format-icons": {
-            // "1": "",
-            // "2": "",
-            // "3": "",
-            // "4": "",
-            // "0": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "0": "",
             "urgent": "",
             "active": "",
             "default": "",
@@ -88,9 +91,9 @@
     },
     "network": {
         "format-wifi": "  {essid}",
-        "format-ethernet": " Connesso",
+        "format-ethernet": " Connected",
         "format-linked": " {ifname} (No IP)",
-        "format-disconnected": "Disconnesso",
+        "format-disconnected": "Disconnected",
         "format-alt": " {ifname}: {ipaddr}/{cidr}"
     },
     "tray": {
