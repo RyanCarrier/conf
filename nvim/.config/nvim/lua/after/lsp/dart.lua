@@ -12,7 +12,8 @@ nmap('<leader>fq', qf, '[F]ix... [Q]uick!')
 nmap('<leader>q', qf, '[Q]uicky fixy')
 
 local fix_import = function()
-	filter_or_apply("Import library '%.", "Import library 'package", "Import library 'dart")
+	filter_or_apply("Import library 'dart:developer'", "Import library '%.", "Import library 'package",
+		"Import library 'dart")
 end
 nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 nmap('<leader>fdi', function()

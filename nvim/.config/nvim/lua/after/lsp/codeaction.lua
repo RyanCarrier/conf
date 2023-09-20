@@ -31,12 +31,13 @@ function count(results, filter)
 	return found
 end
 
-function filter_or_apply(filter1, filter2, filter3)
+function filter_or_apply(filter1, filter2, filter3, filter4)
+	-- at this point it should just be a table but idc
 	-- local bufnr = vim.api.nvim_get_current_buf()
 	local method = 'textDocument/codeAction'
 	local position = make_position_param()
 	local params = {
-		textDocument = { uri = vim.uri_from_bufnr(bufnr or 0) },
+		textDocument = { uri = vim.uri_from_bufnr(0) },
 		range = { start = position, ['end'] = position },
 		context = {
 			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
@@ -50,8 +51,11 @@ function filter_or_apply(filter1, filter2, filter3)
 		end
 		if count(results, filter2) == 1 then
 			filter_apply(filter2)
-		else
+		end
+		if count(results, filter3) == 1 then
 			filter_apply(filter3)
+		else
+			filter_apply(filter4)
 		end
 	end)
 end

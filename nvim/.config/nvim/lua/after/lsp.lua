@@ -4,6 +4,9 @@ local on_attach = function(client, bufnr)
 	require('after.lsp.codeaction')
 	require('after.lsp.generic')
 
+	if client.name == "rust_analyzer" then
+		require('after.lsp.rust')
+	end
 	if client.name == "dartls" then
 		require('after.lsp.dart')
 	end
