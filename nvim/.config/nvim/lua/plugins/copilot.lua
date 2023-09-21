@@ -20,8 +20,8 @@ return
                 enabled = true,
                 auto_refresh = false,
                 keymap = {
-                    jump_prev = "[[",
-                    jump_next = "]]",
+                    jump_prev = "M-[",
+                    jump_next = "M-]",
                     accept = "<CR>",
                     refresh = "gr",
                     open = "<M-CR>"

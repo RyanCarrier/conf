@@ -1,4 +1,5 @@
 function filter_apply(filter)
+	vim.print("Applying ca filter: " .. filter)
 	vim.lsp.buf.code_action({
 		apply = true,
 		filter = function(action)
