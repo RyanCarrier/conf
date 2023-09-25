@@ -21,3 +21,13 @@ nmap('<leader>fdi', function()
 	vim.diagnostic.goto_next()
 	fix_import()
 end, '[F]ix [D]iagnostic [I]mport');
+
+local wrap = function(with)
+	return "F a" .. with .. "(<Esc>lf(%a)<Esc>h%"
+end
+nmap('<leader>wo', wrap("Ok"), '[W]rap [O]k')
+nmap('<leader>we', wrap("Err"), '[W]rap [E]rr')
+nmap('<leader>ws', wrap("Some"), '[W]rap [S]ome')
+-- this needs to be tested lul
+--
+nmape('<leader>wd', 'T dt(lsd(', '[W]rap [D]elete')

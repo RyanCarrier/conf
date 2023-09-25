@@ -53,7 +53,7 @@ local on_attach = function(client, bufnr)
 	nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 	nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
 	nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-	nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+	nmap('<leader>wOs', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[WO]rkspace [S]ymbols')
 
 	nmap('<leader>ff', vim.lsp.buf.format, '[FF]ormat')
 	-- See `:help K` for why this keymap
@@ -64,9 +64,9 @@ local on_attach = function(client, bufnr)
 
 	-- Lesser used LSP functionality
 	nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-	nmap('<leader>woa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-	nmap('<leader>wod', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [D]elete Folder')
-	nmap('<leader>wol', function()
+	nmap('<leader>wOa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+	nmap('<leader>wOd', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [D]elete Folder')
+	nmap('<leader>wOl', function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, '[W]orkspace [L]ist Folders')
 end

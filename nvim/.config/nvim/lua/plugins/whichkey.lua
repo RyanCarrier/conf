@@ -5,8 +5,8 @@ return {
         wk.setup()
         wk.register({
             w = {
-                o = {
-                    name = "[Wo]rkspace",
+                O = {
+                    name = "[WO]rkspace",
                 }
             },
         }, {
