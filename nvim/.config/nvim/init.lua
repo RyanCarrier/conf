@@ -73,6 +73,9 @@ vim.diagnostic.config {
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true, desc = "[U]ndo tree" })
 
 vim.keymap.set('i', "<C-Del>", "<C-o>dw", { noremap = true })
@@ -90,6 +93,7 @@ vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting
 -- TODO: we should make it so we can go <leader>p in 'n' and do select after (<leader>piw, to paste in word (or pib etc))
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = "delete to void" })
+vim.keymap.set({ 'n', 'v' }, '<leader>n', [[:norm!]], { desc = "Normal mode" })
 vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
 vim.keymap.set('n', "X", '"_X', { desc = "Delete without overwriting register", silent = true, noremap = true })
 
