@@ -21,6 +21,8 @@ return {
   'tpope/vim-sleuth',
 
   'nvim-tree/nvim-tree.lua',
+  -- bottom bar stuff make fancy
+  'gelguy/wilder.nvim',
   'stevearc/dressing.nvim',
   {
     --regex explanation
@@ -153,12 +155,12 @@ return {
       })
     end
   },
-  {
-    'simrat39/rust-tools.nvim',
-    config = function()
-      require("rust-tools").setup({})
-    end
-  },
+  -- {
+  --   'simrat39/rust-tools.nvim',
+  --   config = function()
+  --     require("rust-tools").setup({})
+  --   end
+  -- },
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',

@@ -94,6 +94,7 @@ vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = "delete to void" })
 vim.keymap.set({ 'n', 'v' }, '<leader>n', [[:norm!]], { desc = "Normal mode" })
+vim.keymap.set({ 'n', 'v' }, '<leader>s', [[:s/]], { desc = "Substitituter" })
 vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
 vim.keymap.set('n', "X", '"_X', { desc = "Delete without overwriting register", silent = true, noremap = true })
 
