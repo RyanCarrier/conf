@@ -144,6 +144,8 @@ vim.keymap.set('n', "vp", [[viw"_dP]], { desc = "paste in word" })
 
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = "[G]it [S]tatus" })
 
+vim.keymap.set('n', '<leader>mp', "<cmd>:MarkdownPreviewToggle<CR>", { desc = "[M]arkdown [P]review" })
+
 
 -- GIT STUFF FIGURE OUT LATER
 local ThePrimeagen_Fugitive = vim.api.nvim_create_augroup("ThePrimeagen_Fugitive", {})
