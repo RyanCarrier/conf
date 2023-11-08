@@ -26,7 +26,7 @@ return {
             auto_install = true,
 
             highlight = { enable = true },
-            indent = { enable = true, disable = { 'python', 'dart' } },
+            indent = { enable = true, disable = { 'python', 'dart', 'dartls' } },
             incremental_selection = {
                 enable = true,
                 keymaps = {
@@ -40,7 +40,8 @@ return {
                 select = {
                     --BROKEN FOR DART QQ
                     -- or atleast it's just slow af
-                    enable = false,
+                    enable = true,
+                    disable = { 'python', 'dart', 'dartls' },
                     lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
                     keymaps = {
                         -- You can use the capture groups defined in textobjects.scm
