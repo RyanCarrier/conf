@@ -80,7 +80,7 @@ return {
   --     })
   --   end
   -- },
-  { 'folke/noice.nvim', enabled = false },
+  { 'folke/noice.nvim',    enabled = false },
 
   --undo list
   'mbbill/undotree',
@@ -230,5 +230,48 @@ return {
     config = function()
       require("nvim-autopairs").setup({})
     end
+  },
+  {
+    'dgagn/diagflow.nvim',
+    opts = {
+      toggle_event = { "InsertEnter" },
+      update_event = { "DiagnosticChanged" },
+    }
+  },
+  {
+    "HampusHauffman/block.nvim",
+    config = function()
+      require("block").setup({
+        percent = 0.95,
+      })
+    end
+  },
+  { 'chentoast/marks.nvim' },
+  {
+    'Wansmer/treesj',
+    -- TODO: double check this is enough to set the default keys, might have to change in the config too
+    keys = { '<space>nm', '<space>nj', '<space>ns' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('treesj').setup({ --[[ your config ]] })
+    end,
+  },
+  {
+    'nacro90/numb.nvim',
+    config = function()
+      require('numb').setup({})
+    end
+  },
+  { 'abecodes/tabout.nvim' },
+  {
+    -- testing this idk if i will keep it
+    'folke/flash.nvim',
+    event = "VeryLazy",
+  },
+  {
+    "aznhe21/actions-preview.nvim",
+    config = function()
+      vim.keymap.set({ "v", "n" }, "cp", require("actions-preview").code_actions, { desc = "[C]ode actions [P]review" })
+    end,
   }
 }

@@ -93,8 +93,9 @@ vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting
 -- TODO: we should make it so we can go <leader>p in 'n' and do select after (<leader>piw, to paste in word (or pib etc))
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = "delete to void" })
-vim.keymap.set({ 'n', 'v' }, '<leader>n', [[:norm!]], { desc = "Normal mode" })
-vim.keymap.set({ 'n', 'v' }, '<leader>s', [[:s/]], { desc = "Substitituter" })
+vim.keymap.set('v', '<leader>n', [[:norm!]], { desc = "Normal mode" })
+vim.keymap.set('v', '<leader>s', [[:s/]], { desc = "Substitituter" })
+vim.keymap.set('n', '<leader>s', [[:%s/]], { desc = "Substitituter" })
 vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
 vim.keymap.set('n', "X", '"_X', { desc = "Delete without overwriting register", silent = true, noremap = true })
 
@@ -143,6 +144,24 @@ vim.keymap.set("n", "<M-x>", "<C-a>")
 vim.keymap.set('n', "vp", [[viw"_dP]], { desc = "paste in word" })
 
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = "[G]it [S]tatus" })
+vim.keymap.set('n', '<leader>gb', "<cmd>:Git blame<CR>", { desc = "[G]it [B]lame" })
+-- maybe do this stuff for git later
+-- " fugitive git bindings
+-- nnoremap <space>ga :Git add %:p<CR><CR>
+-- nnoremap <space>gs :Gstatus<CR>
+-- nnoremap <space>gc :Gcommit -v -q<CR>
+-- nnoremap <space>gt :Gcommit -v -q %:p<CR>
+-- nnoremap <space>gd :Gdiff<CR>
+-- nnoremap <space>ge :Gedit<CR>
+-- nnoremap <space>gr :Gread<CR>
+-- nnoremap <space>gw :Gwrite<CR><CR>
+-- nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+-- nnoremap <space>gp :Ggrep<Space>
+-- nnoremap <space>gm :Gmove<Space>
+-- nnoremap <space>gb :Git branch<Space>
+-- nnoremap <space>go :Git checkout<Space>
+-- nnoremap <space>gps :Dispatch! git push<CR>
+-- nnoremap <space>gpl :Dispatch! git pull<CR>
 
 vim.keymap.set('n', '<leader>mp', "<cmd>:MarkdownPreviewToggle<CR>", { desc = "[M]arkdown [P]review" })
 
