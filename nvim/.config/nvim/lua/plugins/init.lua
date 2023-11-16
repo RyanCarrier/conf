@@ -20,7 +20,7 @@ return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
-  'nvim-tree/nvim-tree.lua',
+  -- 'nvim-tree/nvim-tree.lua',
   -- bottom bar stuff make fancy
   'gelguy/wilder.nvim',
   'stevearc/dressing.nvim',

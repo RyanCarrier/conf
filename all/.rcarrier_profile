@@ -97,6 +97,7 @@ alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
 alias tng="jg && tn gym_score"
+alias vimlc="vim leetcode.nvim"
 # unset gl
 
 function touche() {
