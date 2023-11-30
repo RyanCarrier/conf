@@ -25,6 +25,14 @@ return {
   'gelguy/wilder.nvim',
   'stevearc/dressing.nvim',
   {
+    'saecki/crates.nvim',
+    tag = 'stable',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('crates').setup()
+    end,
+  },
+  {
     --regex explanation
     'tomiis4/hypersonic.nvim',
     config = function()
