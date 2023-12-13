@@ -76,7 +76,9 @@ local servers = {
 	-- clangd = {},
 	-- gopls = {},
 	-- pyright = {},
-	-- rust_analyzer = {},
+	rust_analyzer = {
+		format = { enable = true },
+	},
 	move_analyzer = {},
 	tsserver = {
 		format = { enable = false },
