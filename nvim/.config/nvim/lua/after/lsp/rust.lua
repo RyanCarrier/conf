@@ -24,14 +24,15 @@ end, '[F]ix [D]iagnostic [I]mport');
 
 local wrap = function(with)
 	-- haha this doens't work
+	-- u will need to tresitter this
 	return "F a" .. with .. "(<Esc>lf(%a)<Esc>h%"
 end
 nmap('<leader>wo', wrap("Ok"), '[W]rap [O]k')
 nmap('<leader>we', wrap("Err"), '[W]rap [E]rr')
 nmap('<leader>ws', wrap("Some"), '[W]rap [S]ome')
-vim.keymap.set('v', "<leader>ws", "sa(hiSome<Esc>", { desc = "[W]rap [S]ome", silent = true, noremap = true })
-vim.keymap.set('v', "<leader>we", "sa(hiErr<Esc>", { desc = "[W]rap [E]rr", silent = true, noremap = true })
-vim.keymap.set('v', "<leader>wo", "sa(hiOk<Esc>", { desc = "[W]rap [O]k", silent = true, noremap = true })
+vmap("<leader>ws", "sa(hiSome<Esc>", "[W]rap [S]ome")
+vmap("<leader>we", "sa(hiErr<Esc>", "[W]rap [E]rr")
+vmap("<leader>wo", "sa(hiOk<Esc>", "[W]rap [O]k")
 -- this needs to be tested lul
 --
-nmape('<leader>wd', 'T dt(lsd(', '[W]rap [D]elete')
+nmape('<leader>wd', 'mdf(%x`ddiwx', '[W]rap [D]elete')
