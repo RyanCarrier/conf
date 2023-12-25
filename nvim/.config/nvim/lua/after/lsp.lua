@@ -83,8 +83,10 @@ end
 local servers = {
 	-- clangd = {},
 	-- gopls = {},
+	rust_analyzer = {
+		format = { enable = true },
+	},
 	pyright = {},
-	-- rust_analyzer = {},
 	move_analyzer = {},
 	tsserver = {
 		format = { enable = false },
