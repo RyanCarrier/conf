@@ -43,6 +43,14 @@ local on_attach = function(client, bufnr)
 		vim.api.nvim_command("wincmd l")
 		vim.lsp.buf.definition()
 	end, '[G]oto [D]efinition with a [S]plit')
+	-- vim.keymap.set('n', 'gvff', function()
+	-- 	-- create a vertical split
+	-- 	vim.api.nvim_command("vsplit")
+	-- 	-- jump to the new split
+	-- 	vim.api.nvim_command("wincmd l")
+	-- 	require('telescope.builtin').find_files()
+	-- end, { desc = 'JAMES' })
+
 	nmap('gr', function()
 		require('telescope.builtin').lsp_references({
 			-- it pays to know how to spell declaration
