@@ -73,6 +73,7 @@ return {
               vim.notify(client.id .. 'FORMAT NOT ENABLED ')
               return
             end
+            -- this does not work so it must be when saving is the issue
             -- if client.name == 'dartls' then
             --   vim.notify("not formatting dart")
             --   return

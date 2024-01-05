@@ -1,6 +1,7 @@
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
+	vim.notify(vim.inspect(client.name));
 	require('after.lsp.codeaction')
 	require('after.lsp.generic')
 

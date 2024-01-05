@@ -22,7 +22,7 @@ if [[ $I -eq -1 ]]; then
     exit 1
 fi
 
-PL=(235 257 275) # watts
+PL=(231 257 275) # watts
 SCLK_MAX=(2600 2895 2900) # mhz
 MCLK_MAX=(1050 1250 1200) # mhz
 VOLT_OFF=(-144 0 -50) # mvolts

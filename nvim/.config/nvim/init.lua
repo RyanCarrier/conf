@@ -11,8 +11,6 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
--- vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
--- vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 
 vim.keymap.set('n', '<leader>pg', require('telescope.builtin').git_files, { desc = '[P]roject [G]it files' })
 vim.keymap.set('n', '<leader>pf', require('telescope.builtin').find_files, { desc = '[P]rojcet [F]iles' })
@@ -70,6 +68,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 vim.diagnostic.config {
   float = { border = _border }
 }
+
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -104,7 +103,7 @@ vim.keymap.set('i', '<C-c>', '<Esc>')
 vim.keymap.set('n', 'n', "nzzzv", { desc = "[n]ext but centered" })
 vim.keymap.set('n', 'N', "Nzzzv", { desc = "[N]ext but centered" })
 
-vim.keymap.set("n", "<leader>xc", "<cmd>!chmod +x %<CR>", { silent = true, desc = 'chmod +x' })
+vim.keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true, desc = 'chmod +x' })
 
 -- need to learn about cnext and lnext
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")

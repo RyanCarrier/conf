@@ -74,20 +74,6 @@ return {
     end,
   },
 
-  --todo: it fucked up my - for oil
-  -- {
-  --   'm4xshen/hardtime.nvim',
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("hardtime").setup({
-  --       restriction_mode = "hint",
-  --       disabled_keys = {
-  --         ["-"] = {},
-  --       },
-  --       disabled_filetypes = { "oil" },
-  --     })
-  --   end
-  -- },
   { 'folke/noice.nvim',    enabled = false },
 
   --undo list
@@ -214,19 +200,7 @@ return {
   },
 
   -- "gc" to comment visual regions/lines
-  {
-    'numToStr/Comment.nvim',
-    opts = {
-      -- config = function()
-      --   require('Comment').setup({
-      --     toggler = {
-      --     this didn't work lol
-      --       line = { "<leader>/", "gcc" },
-      --     }
-      --   })
-      -- end
-    }
-  },
+  'numToStr/Comment.nvim',
   {
     'nvim-treesitter/playground',
     config = function()
@@ -241,6 +215,7 @@ return {
     end
   },
   {
+    --show diag in top right
     'dgagn/diagflow.nvim',
     opts = {
       toggle_event = { "InsertEnter" },
@@ -255,17 +230,27 @@ return {
       })
     end
   },
-  { 'chentoast/marks.nvim' },
   {
-    'Wansmer/treesj',
-    -- TODO: double check this is enough to set the default keys, might have to change in the config too
-    keys = { '<space>nm', '<space>nj', '<space>ns' },
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    -- show marks on the left
+    'chentoast/marks.nvim',
     config = function()
-      require('treesj').setup({ --[[ your config ]] })
-    end,
+      require("marks").setup({
+        default_mappings = true,
+      })
+    end
   },
+  -- {
+  -- maybe later when i care
+  --   'Wansmer/treesj',
+  --   -- TODO: double check this is enough to set the default keys, might have to change in the config too
+  --   keys = { '<space>nm', '<space>nj', '<space>ns' },
+  --   dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  --   config = function()
+  --     require('treesj').setup({ --[[ your config ]] })
+  --   end,
+  -- },
   {
+    -- jumps to line while still typing (like :270)
     'nacro90/numb.nvim',
     config = function()
       require('numb').setup({})
@@ -280,7 +265,8 @@ return {
   {
     "aznhe21/actions-preview.nvim",
     config = function()
-      vim.keymap.set({ "v", "n" }, "cp", require("actions-preview").code_actions, { desc = "[C]ode actions [P]review" })
+      vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
+        { desc = "[C]ode actions [P]review" })
     end,
   }
 }

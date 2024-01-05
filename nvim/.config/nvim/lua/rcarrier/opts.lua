@@ -1,7 +1,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-
 vim.opt.exrc = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
