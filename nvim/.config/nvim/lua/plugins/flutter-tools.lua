@@ -1,5 +1,6 @@
 return {
-    'RyanCarrier/flutter-tools.nvim',
+    'akinsho/flutter-tools.nvim',
+    -- 'RyanCarrier/flutter-tools.nvim',
     lazy = false,
     dependencies = {
         'nvim-lua/plenary.nvim',
@@ -27,7 +28,9 @@ return {
                         vim.fn.expand("/opt/flutter/bin/cache"),
                         vim.fn.expand("$HOME/.pub-cache"),
                     }
-                }
+                },
+                -- lol?
+                on_attach = require("after.lsp.on_attach").on_attach,
             },
             decorations = {
                 statusline = {
@@ -57,5 +60,11 @@ return {
         end, { desc = "[Fl]utter" })
         vim.keymap.set("n", "<leader>fr", "<cmd>FlutterRestart<cr>",
             { desc = "[F]lutter [R]estart (not reload, just save a file bro)" })
+        require("dap").adapters.dart = {
+            type = "executable",
+            command = "flutter",
+            args = { "debug-adapter" },
+
+        }
     end
 }
