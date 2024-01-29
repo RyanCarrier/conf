@@ -56,6 +56,9 @@ return {
         local client_id = args.data.client_id
         local client = vim.lsp.get_client_by_id(client_id)
         local bufnr = args.buf
+        -- if client.name == 'dartls' then
+        --   return
+        -- end
         if client.name == "eslint" then
           client.server_capabilities.documentFormattingProvider = true
         end
@@ -80,7 +83,8 @@ return {
             -- end
 
             vim.lsp.buf.format({
-              async = false,
+              async = true,
+              -- async = false,
               filter = function(c)
                 return c.id == client.id
               end,

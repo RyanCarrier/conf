@@ -29,6 +29,9 @@ return {
                         vim.fn.expand("$HOME/.pub-cache"),
                     }
                 },
+                -- capabilities = function(config)
+                --     config.enableSdkFormatter = false
+                -- end,
                 -- lol?
                 on_attach = require("after.lsp.on_attach").on_attach,
             },

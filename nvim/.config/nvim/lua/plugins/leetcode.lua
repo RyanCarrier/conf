@@ -12,7 +12,8 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     opts = {
-        lang = "rust"
+        -- lang = "rust"
+        lang = "golang"
     },
 
 }

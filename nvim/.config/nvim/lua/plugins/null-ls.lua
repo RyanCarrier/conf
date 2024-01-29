@@ -47,6 +47,7 @@ return {
             -- end,
         })
         null_ls.disable({ filetype = 'dart' });
+        null_ls.disable({ filetype = 'dartls' });
         null_ls.disable({ filetype = 'lua' });
         -- null_ls.disable({ filetype = 'ts' });
         null_ls.disable({ filetype = 'typescript' });

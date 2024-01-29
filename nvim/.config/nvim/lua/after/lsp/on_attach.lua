@@ -1,6 +1,6 @@
 local M = {}
 M.on_attach = function(client, bufnr)
-	vim.notify(vim.inspect(client.name));
+	vim.notify('on_attach:' .. vim.inspect(client.name));
 	require('after.lsp.codeaction')
 	require('after.lsp.generic')
 
