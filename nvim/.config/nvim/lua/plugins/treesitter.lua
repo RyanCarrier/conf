@@ -6,17 +6,23 @@ return {
     },
     build = ':TSUpdate',
     config = function()
-        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-        parser_config.hypr = {
-            install_info = {
-                url = "https://github.com/luckasRanarison/tree-sitter-hypr",
-                files = { "src/parser.c" },
-                branch = "master",
-            },
-            filetype = "hypr",
-        }
+        -- local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        -- parser_config.hypr = {
+        --     install_info = {
+        --         url = "https://github.com/luckasRanarison/tree-sitter-hypr",
+        --         files = { "src/parser.c" },
+        --         branch = "master",
+        --     },
+        --     filetype = "hypr",
+        -- }
         local nts = require('nvim-treesitter.configs')
+        local tspre = 'TS'
+        local tsselect = tspre .. ' Select: '
+        local tsmove = tspre .. ' Move: '
         nts.setup({
+            modules = {},
+            sync_install = true,
+            ignore_install = {},
             -- Add languages to be installed here that you want installed for treesitter
             ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'bash',
                 'dart',
@@ -41,36 +47,37 @@ return {
                     --BROKEN FOR DART QQ
                     -- or atleast it's just slow af
                     enable = true,
-                    disable = { 'python', 'dart', 'dartls' },
+                    -- disable = { 'python', 'dart', 'dartls' },
+                    disable = { 'python' },
                     lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
                     keymaps = {
                         -- You can use the capture groups defined in textobjects.scm
-                        ['aa'] = '@parameter.outer',
-                        ['ia'] = '@parameter.inner',
-                        ['af'] = '@function.outer',
-                        ['if'] = '@function.inner',
-                        ['ac'] = '@class.outer',
-                        ['ic'] = '@class.inner',
+                        ['ag'] = { query = '@parameter.outer', desc = tsselect .. 'idk around parameter?' },
+                        ['ia'] = { query = '@parameter.inner', desc = tsselect .. 'idk inside parameter?' },
+                        ['af'] = { query = '@function.outer', desc = tsselect .. 'Around function' },
+                        ['if'] = { query = '@function.inner', desc = tsselect .. 'Inside function' },
+                        ['ac'] = { query = '@class.outer', desc = tsselect .. 'Around class' },
+                        ['ic'] = { query = '@class.inner', desc = tsselect .. 'Inside class' },
                     },
                 },
                 move = {
                     enable = true,
                     set_jumps = true, -- whether to set jumps in the jumplist
                     goto_next_start = {
-                        [']m'] = '@function.outer',
-                        -- [']]'] = '@class.outer',
+                        [']f'] = { query = '@function.outer', desc = tsmove .. 'Next Function Start' },
+                        [']c'] = { query = '@class.outer', desc = tsmove .. 'Next Class Start' },
                     },
                     goto_next_end = {
-                        [']M'] = '@function.outer',
-                        [']['] = '@class.outer',
+                        [']F'] = { query = '@function.outer', desc = tsmove .. 'Next Function End' },
+                        [']C'] = { query = '@class.outer', desc = tsmove .. 'Next Class End' },
                     },
                     goto_previous_start = {
-                        ['[m'] = '@function.outer',
-                        -- ['[['] = '@class.outer',
+                        ['[f'] = { query = '@function.outer', desc = tsmove .. 'Previous Function Start' },
+                        ['[c'] = { query = '@class.outer', desc = tsmove .. 'Previous Class Start' },
                     },
                     goto_previous_end = {
-                        ['[M'] = '@function.outer',
-                        ['[]'] = '@class.outer',
+                        ['[F'] = { query = '@function.outer', desc = tsmove .. 'Previous Function End' },
+                        ['[C'] = { query = '@class.outer', desc = tsmove .. 'Previous Class End' },
                     },
                 },
                 swap = {

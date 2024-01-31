@@ -35,10 +35,11 @@ end
 function filter_or_apply(filter1, filter2, filter3, filter4)
 	-- at this point it should just be a table but idc
 	-- local bufnr = vim.api.nvim_get_current_buf()
+	local bufnr = 0
 	local method = 'textDocument/codeAction'
 	local position = make_position_param()
 	local params = {
-		textDocument = { uri = vim.uri_from_bufnr(0) },
+		textDocument = { uri = vim.uri_from_bufnr(bufnr) },
 		range = { start = position, ['end'] = position },
 		context = {
 			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
