@@ -26,7 +26,7 @@ return {
             -- Add languages to be installed here that you want installed for treesitter
             ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'bash',
                 'dart',
-                'zig', 'toml', 'yaml', 'gomod', },
+                'zig', 'toml', 'yaml', 'gomod', 'json' },
 
             -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself! )
             auto_install = true,
@@ -58,6 +58,8 @@ return {
                         ['if'] = { query = '@function.inner', desc = tsselect .. 'Inside function' },
                         ['ac'] = { query = '@class.outer', desc = tsselect .. 'Around class' },
                         ['ic'] = { query = '@class.inner', desc = tsselect .. 'Inside class' },
+                        ['al'] = { query = '@loop.outer', desc = tsselect .. 'Around loop' },
+                        ['il'] = { query = '@loop.inner', desc = tsselect .. 'Inside loop' },
                     },
                 },
                 move = {

@@ -40,5 +40,7 @@ return
                 }
             }
         })
+        vim.keymap.set('n', '<leader>ct', '<cmd>Copilot toggle<CR>',
+            { desc = "[C]opilot [T]oggle", noremap = true, silent = true })
     end
 }

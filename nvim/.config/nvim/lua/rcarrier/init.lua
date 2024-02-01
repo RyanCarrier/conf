@@ -1,2 +1,5 @@
 require("rcarrier.opts")
 require("rcarrier.lazy")
+require("rcarrier.keymaps")
+require("rcarrier.theme")
+require("rcarrier.neovide")

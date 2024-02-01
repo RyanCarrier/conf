@@ -6,27 +6,25 @@ return {
             sources = {
                 null_ls.builtins.formatting.stylua,
                 null_ls.builtins.diagnostics.eslint,
-
                 null_ls.builtins.completion.spell,
-
                 null_ls.builtins.code_actions.shellcheck,
                 null_ls.builtins.formatting.beautysh,
                 -- null_ls.builtins.formatting.prettierd
-                -- null_ls.builtins.formatting.prettier.with({
-                --     filetypes = {
-                --         "javascript",
-                --         "typescript",
-                --         "css",
-                --         "scss",
-                --         "html",
-                --         "json",
-                --         "yaml",
-                --         "markdown",
-                --         "graphql",
-                --         "md",
-                --         "txt",
-                --     },
-                -- })
+                null_ls.builtins.formatting.prettier.with({
+                    filetypes = {
+                        -- "javascript",
+                        -- "typescript",
+                        "css",
+                        "scss",
+                        "html",
+                        "json",
+                        "yaml",
+                        "markdown",
+                        "graphql",
+                        "md",
+                        "txt",
+                    },
+                })
             },
             on_attach = require("after.lsp.on_attach").on_attach,
             -- on_attach = function(client, bufnr)
