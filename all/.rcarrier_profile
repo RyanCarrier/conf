@@ -123,6 +123,10 @@ function gobench() {
   fi
 }
 
+if [ -d "$HOME/.host_profile" ] ; then
+	source "$HOME/.host_profile"
+fi
+
 [[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
