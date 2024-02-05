@@ -50,7 +50,7 @@ CASE_SENSITIVE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # acs aliases cheat shees (aliases cheat sheet)
-plugins=( git golang adb battery colored-man-pages rust command-not-found common-aliases  pip python ssh-agent web-search)
+plugins=(git golang adb colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile

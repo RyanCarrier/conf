@@ -10,7 +10,7 @@ local servers = {
 		format = { enable = true },
 	},
 	pyright = {},
-	move_analyzer = {},
+	-- move_analyzer = {},
 	tsserver = {
 		format = { enable = false },
 	},

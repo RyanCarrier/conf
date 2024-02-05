@@ -31,23 +31,22 @@ export ANDROID_HOME="$ANDROID_SDK_ROOT"
 export CHROME_EXECUTABLE=$(which google-chrome-stable)
 
 if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
-	export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
 
 alias gitlab="$HOME/Projects/src/gitlab.com/rcarrier/"
 alias github="$HOME/Projects/src/github.com/RyanCarrier/"
 fpath+=~/.zfunc
 
-
 #export SHELL=/bin/zsh
 
 if [ -z "$ZSH_NAME" ];then
-	alias omg='sudo "$BASH" -c "$(history -p !!)"'
-	SHELL="$(which bash)"
-	noglob
+    alias omg='sudo "$BASH" -c "$(history -p !!)"'
+    SHELL="$(which bash)"
+    noglob
 else
-	alias omg='sudo $(fc -ln -1)'
-	SHELL="$(which zsh)"
+    alias omg='sudo $(fc -ln -1)'
+    SHELL="$(which zsh)"
 fi
 
 unset fd
@@ -101,34 +100,34 @@ alias vimlc="vim leetcode.nvim"
 # unset gl
 
 function touche() {
-  if [ -z "$1" ];then 
-	  echo "gib filename"
-			else
-  touch "$1"	
-  chmod a+x "$1"
-  echo "#!/bin/bash" >> "$1"
-  fi
+    if [ -z "$1" ];then
+        echo "gib filename"
+    else
+        touch "$1"
+        chmod a+x "$1"
+        echo "#!/bin/bash" >> "$1"
+    fi
 }
 
 function vime() {
-	touche "$1"
-	vim "$1"
+    touche "$1"
+    vim "$1"
 }
 
 function gobench() {
-  if [ "$1" ];then
-    go test -bench=. -benchtime="$1s"
-  else
-    go test -bench=.
-  fi
+    if [ "$1" ];then
+        go test -bench=. -benchtime="$1s"
+    else
+        go test -bench=.
+    fi
 }
 
-if [ -d "$HOME/.host_profile" ] ; then
-	source "$HOME/.host_profile"
+if [ -f "$HOME/.host_profile" ] ; then
+    source "$HOME/.host_profile"
 fi
 
 [[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
-	git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
+    git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
 fi
