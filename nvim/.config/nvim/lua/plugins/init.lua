@@ -260,11 +260,11 @@ return {
     end
   },
   { 'abecodes/tabout.nvim' },
-  {
-    -- testing this idk if i will keep it
-    'folke/flash.nvim',
-    event = "VeryLazy",
-  },
+  -- {
+  --   -- testing this idk if i will keep it
+  --   'folke/flash.nvim',
+  --   event = "VeryLazy",
+  -- },
   {
     "aznhe21/actions-preview.nvim",
     config = function()

@@ -47,13 +47,13 @@ return {
                     --BROKEN FOR DART QQ
                     -- or atleast it's just slow af
                     enable = true,
-                    -- disable = { 'python', 'dart', 'dartls' },
-                    disable = { 'python' },
+                    disable = { 'python', 'dart', 'dartls' },
+                    -- disable = { 'python' },
                     lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
                     keymaps = {
                         -- You can use the capture groups defined in textobjects.scm
-                        ['ag'] = { query = '@parameter.outer', desc = tsselect .. 'idk around parameter?' },
-                        ['ia'] = { query = '@parameter.inner', desc = tsselect .. 'idk inside parameter?' },
+                        ['aa'] = { query = '@parameter.outer', desc = tsselect .. 'Inside parameter (yes \',\')' },
+                        ['ia'] = { query = '@parameter.inner', desc = tsselect .. 'Inside parameter (no \',\')' },
                         ['af'] = { query = '@function.outer', desc = tsselect .. 'Around function' },
                         ['if'] = { query = '@function.inner', desc = tsselect .. 'Inside function' },
                         ['ac'] = { query = '@class.outer', desc = tsselect .. 'Around class' },
