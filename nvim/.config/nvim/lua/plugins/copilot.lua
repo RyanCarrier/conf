@@ -38,6 +38,9 @@ return
                         listCount = 5,
                     }
                 }
+            },
+            filetypes = {
+                markdown = true,
             }
         })
         vim.keymap.set('n', '<leader>ct', '<cmd>Copilot toggle<CR>',

@@ -50,7 +50,9 @@ CASE_SENSITIVE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # acs aliases cheat shees (aliases cheat sheet)
-plugins=(git golang adb colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search)
+
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+plugins=(git golang adb colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search autojump fd zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile
@@ -58,3 +60,5 @@ source ~/.rcarrier_profile
 DEFAULT_USER="rcarrier"
 
 unsetopt nomatch
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+eval "$(zoxide init --cmd j zsh)"
