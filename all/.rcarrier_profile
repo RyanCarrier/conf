@@ -34,8 +34,6 @@ if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
     export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
 
-alias gitlab="$HOME/Projects/src/gitlab.com/rcarrier/"
-alias github="$HOME/Projects/src/github.com/RyanCarrier/"
 fpath+=~/.zfunc
 
 #export SHELL=/bin/zsh
@@ -85,7 +83,7 @@ alias cat='bat'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -a'
-
+alias cdfzf='cd $(find . -type d | fzf)'
 alias gb="git branch"
 alias gc="git checkout"
 alias lns="ln -s"
@@ -95,9 +93,19 @@ alias tn="tmux new-session -s"
 alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
-alias tng="jg && tn gym_score"
 alias vimlc="vim leetcode.nvim"
 # unset gl
+
+#lol
+# alias tng="jg && tn gym_score -d -n 'vim' && t neww -d -t 'gym_score' -n 'emulator' && tmux send-keys -t gym_score:emulator 'make emulator' Enter && tmux send-keys -t gym_score:vim 'vim ./' Enter && ta -t gym_score"
+function tng() {
+    jg
+    tn gym_score -d -n 'vim'
+    t neww -d -t 'gym_score' -n 'emulator'
+    tmux send-keys -t gym_score:emulator 'make emulator' Enter
+    tmux send-keys -t gym_score:vim 'vim ./' Enter
+    ta -t gym_score
+}
 
 function touche() {
     if [ -z "$1" ];then
