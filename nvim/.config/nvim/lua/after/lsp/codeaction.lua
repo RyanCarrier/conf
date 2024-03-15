@@ -68,6 +68,6 @@ function filter(filter)
 	return function() filter_apply(filter) end
 end
 
-function filter_or(filter1, filter2)
+function filter2(filter1, filter2)
 	return function() filter_or_apply(filter1, filter2) end
 end

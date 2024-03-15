@@ -5,7 +5,7 @@ nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
 nmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
 nmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
 nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')
-nmap('<leader>fa', filter('required argument'), '[F]ix required [A]rgument')
+nmap('<leader>fa', filter2('required argument', 'missing switch cases'), '[F]ix required [A]rgument')
 
 local qf = filter('Fix All')
 nmap('<leader>fq', qf, '[F]ix... [Q]uick!')
@@ -28,4 +28,4 @@ nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 --assuming we have a comma lol...
 --otherwise we would only do 1x
 --we are also assuming child is the last field lol
-nmap('<leader>wd', 'w%xx<C-o>bv/child<CR>wd', '[W]rap [D]elete')
+nmap('<leader>wd', 'f(%xx<C-o>bv/child<CR>wd', '[W]rap [D]elete')
