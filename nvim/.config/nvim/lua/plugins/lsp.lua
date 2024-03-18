@@ -83,8 +83,8 @@ return {
             -- end
 
             vim.lsp.buf.format({
-              async = true,
-              -- async = false,
+              -- async = true,
+              async = false,
               filter = function(c)
                 return c.id == client.id
               end,

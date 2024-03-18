@@ -144,3 +144,11 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+
+-- AI
+local nmapai = function(keys, func, desc)
+    if desc then desc = 'AI: ' .. desc end
+    vim.keymap.set('n', keys, func, { desc = desc })
+end
+nmapai('<leader>ait', require("modules.ai.fim").toggle, "[AI] FIM [T]oggle")

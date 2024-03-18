@@ -2,26 +2,34 @@ return
 {
     -- zbirenbaum copilot-cmp is very cool
     "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
     event = "InsertEnter",
     config = function()
         require('copilot').setup({
             suggestion = {
+                -- enabled = false,
                 auto_trigger = true,
                 keymap = {
-                    accept = "<M-j>",
-                    accept_line = "<M-l>",
-                    --  accept_word = "<M-k>",
-                    next = "<M-]>",
-                    prev = "<M-[>",
-                    dismiss = "<M-h>",
+                    accept = false,
+                    accept_line = false,
+                    accept_word = false,
+                    next = false,
+                    prev = false,
+                    dismiss = false,
+                    -- accept = "<M-j>",
+                    -- accept_line = "<M-l>",
+                    -- --  accept_word = "<M-k>",
+                    -- next = "<M-'>",
+                    -- prev = "<M-;>",
+                    -- dismiss = "<M-h>",
                 },
             },
             panel = {
                 enabled = true,
                 auto_refresh = false,
                 keymap = {
-                    jump_prev = "M-[",
-                    jump_next = "M-]",
+                    jump_prev = "M-'",
+                    jump_next = "M-;",
                     accept = "<CR>",
                     refresh = "gr",
                     open = "<M-CR>"
@@ -43,7 +51,8 @@ return
                 markdown = true,
             }
         })
-        vim.keymap.set('n', '<leader>ct', '<cmd>Copilot toggle<CR>',
-            { desc = "[C]opilot [T]oggle", noremap = true, silent = true })
+        -- lol
+        -- do this so ai module can set keymaps
+        require("copilot.command").disable()
     end
 }
