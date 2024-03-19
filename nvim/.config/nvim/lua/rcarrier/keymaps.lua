@@ -89,26 +89,21 @@ vim.keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true, desc 
 -- resizing splits
 -- these keymaps will also accept a range,
 -- for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)`
-vim.keymap.set('n', '<A-h>', require('smart-splits').resize_left)
-vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down)
-vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up)
-vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right)
+vim.keymap.set('n', '<A-h>', require('smart-splits').resize_left, { desc = "Resize Left" })
+vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down, { desc = "Resize Down" })
+vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up, { desc = "Resize Up" })
+vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right, { desc = "Resize Right" })
 -- moving between splits
-vim.keymap.set('n', '<leader>h', require('smart-splits').move_cursor_left)
-vim.keymap.set('n', '<leader>j', require('smart-splits').move_cursor_down)
-vim.keymap.set('n', '<leader>k', require('smart-splits').move_cursor_up)
-vim.keymap.set('n', '<leader>l', require('smart-splits').move_cursor_right)
+vim.keymap.set('n', '<leader>h', require('smart-splits').move_cursor_left, { desc = "Move to" })
+vim.keymap.set('n', '<leader>j', require('smart-splits').move_cursor_down, { desc = "Move to" })
+vim.keymap.set('n', '<leader>k', require('smart-splits').move_cursor_up, { desc = "Move to" })
+vim.keymap.set('n', '<leader>l', require('smart-splits').move_cursor_right, { desc = "Move to" })
 -- swapping buffers between windows
-vim.keymap.set('n', '<leader><A-h>', require('smart-splits').swap_buf_left)
-vim.keymap.set('n', '<leader><A-j>', require('smart-splits').swap_buf_down)
-vim.keymap.set('n', '<leader><A-k>', require('smart-splits').swap_buf_up)
-vim.keymap.set('n', '<leader><A-l>', require('smart-splits').swap_buf_right)
+vim.keymap.set('n', '<leader><A-h>', require('smart-splits').swap_buf_left, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-j>', require('smart-splits').swap_buf_down, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-k>', require('smart-splits').swap_buf_up, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-l>', require('smart-splits').swap_buf_right, { desc = "Swap with" })
 
--- this might be cool
-vim.keymap.set("n", "<left>", "<C-w>h")
-vim.keymap.set("n", "<down>", "<C-w>j")
-vim.keymap.set("n", "<up>", "<C-w>k")
-vim.keymap.set("n", "<right>", "<C-w>l")
 -- remap increment/decrement (just inc)
 -- (note that C-x dec)
 vim.keymap.set("n", "<M-x>", "<C-a>")
@@ -145,6 +140,18 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Test
+local nmapt = function(keys, func, desc)
+    if desc then desc = 'NeoTest: ' .. desc end
+    vim.keymap.set('n', keys, func, { desc = desc })
+end
+nmapt("<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, "Run File")
+nmapt("<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, "Run All Test Files")
+nmapt("<leader>tr", require("neotest").run.run, "Run Nearest")
+nmapt("<leader>ts", require("neotest").summary.toggle, "Toggle Summary")
+nmapt("<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, "Show Output")
+nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel")
+nmapt("<leader>tS", require("neotest").run.stop, "Stop")
 
 -- AI
 local nmapai = function(keys, func, desc)
