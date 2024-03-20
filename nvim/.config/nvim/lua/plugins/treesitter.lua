@@ -82,10 +82,13 @@ return {
                             [']C'] = { query = '@class.outer', desc = tsmove .. 'Next Class End' },
                         },
                         goto_previous_start = {
+                            -- ['[]'] = { query = '@list.outer', desc = tsmove .. 'Previous List Start' },
                             ['[f'] = { query = '@function.outer', desc = tsmove .. 'Previous Function Start' },
                             ['[c'] = { query = '@class.outer', desc = tsmove .. 'Previous Class Start' },
                         },
                         goto_previous_end = {
+                            --jump to end of list litera
+                            -- ['[]'] = { query = '@list.outer', desc = tsmove .. 'Previous List End' },
                             ['[F'] = { query = '@function.outer', desc = tsmove .. 'Previous Function End' },
                             ['[C'] = { query = '@class.outer', desc = tsmove .. 'Previous Class End' },
                         },
@@ -102,6 +105,13 @@ return {
                     },
                 },
             })
+            local move_parent = require('modules.treesitter').move_parent
+            vim.keymap.set("n", "[[", function()
+                move_parent('list_literal', true)
+            end, { desc = tsmove .. "Previous List Start" })
+            vim.keymap.set("n", "]]", function()
+                move_parent('list_literal', false)
+            end, { desc = tsmove .. "Next List End" })
         end,
     }
 }

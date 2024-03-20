@@ -212,12 +212,14 @@ return {
         { desc = "[T]reesitter [P]layground", noremap = true, silent = true })
     end
   },
-  {
-    "windwp/nvim-autopairs",
-    config = function()
-      require("nvim-autopairs").setup({})
-    end
-  },
+  -- {
+  -- disabling this for now, not sure i use it or use it properly anyway, and don't really
+  -- care for the ) binding and i wanna steal it
+  --   "windwp/nvim-autopairs",
+  --   config = function()
+  --     require("nvim-autopairs").setup({})
+  --   end
+  -- },
   {
     --show diag in top right
     'dgagn/diagflow.nvim',
