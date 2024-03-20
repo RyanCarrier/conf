@@ -105,12 +105,12 @@ return {
                     },
                 },
             })
-            local move_parent = require('modules.treesitter').move_parent
+            local mts = require('modules.treesitter')
             vim.keymap.set("n", "[[", function()
-                move_parent('list_literal', true)
+                mts:move_parent('list_literal', true)
             end, { desc = tsmove .. "Previous List Start" })
             vim.keymap.set("n", "]]", function()
-                move_parent('list_literal', false)
+                mts:move_parent('list_literal', false)
             end, { desc = tsmove .. "Next List End" })
         end,
     }
