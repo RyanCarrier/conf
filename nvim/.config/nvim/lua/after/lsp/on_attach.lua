@@ -19,6 +19,10 @@ M.on_attach = function(client, bufnr)
 		require('after.lsp.eslint')
 	end
 
+	-- open lsp log lol
+	nmap('<leader>cl', function()
+		vim.cmd('edit ' .. vim.lsp.get_log_path())
+	end, '[C]hange [L]sp log, idk don\'t actually change it but like open it and leaderL is taken')
 	nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 	nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 

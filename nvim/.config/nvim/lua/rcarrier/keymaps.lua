@@ -144,15 +144,15 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 -- Test
 local nmapt = function(keys, func, desc)
-    if desc then desc = 'NeoTest: ' .. desc end
+    if desc then desc = 'NeoTest: [T]est' .. desc end
     vim.keymap.set('n', keys, func, { desc = desc })
 end
-nmapt("<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, "Run File")
-nmapt("<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, "Run All Test Files")
+nmapt("<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, "[t]his File")
+nmapt("<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, "[T]hese Files lol")
 nmapt("<leader>tr", require("neotest").run.run, "Run Nearest")
 nmapt("<leader>ts", require("neotest").summary.toggle, "Toggle Summary")
 nmapt("<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, "Show Output")
-nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel")
+nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")
 nmapt("<leader>tS", require("neotest").run.stop, "Stop")
 
 -- AI

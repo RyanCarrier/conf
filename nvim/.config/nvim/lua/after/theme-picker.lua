@@ -1,1 +1,1 @@
-vim.keymap.set("n", "<leader>ts", '<CMD>:Telescope colorscheme<CR>', { desc = "[T]heme [S]elector" })
+vim.keymap.set("n", "<leader>tcs", '<CMD>:Telescope colorscheme<CR>', { desc = "[T]heme [COLOR idk] [S]elector" })

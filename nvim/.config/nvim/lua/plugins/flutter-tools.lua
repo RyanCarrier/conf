@@ -14,6 +14,10 @@ return {
                 enabled = false,
             },
             widget_guides = {
+                -- enabled = false,
+                enabled = true,
+            },
+            closing_tags = {
                 enabled = true,
             },
             lsp = {
@@ -27,7 +31,8 @@ return {
                         vim.fn.expand("/opt/flutter/packages"),
                         vim.fn.expand("/opt/flutter/bin/cache"),
                         vim.fn.expand("$HOME/.pub-cache"),
-                    }
+                    },
+                    updateImportsOnRename = true,
                 },
                 -- capabilities = function(config)
                 --     config.enableSdkFormatter = false
@@ -54,7 +59,7 @@ return {
                 end
             },
             dev_tools = {
-                autostart = true,
+                autostart = false,
                 auto_open_browser = false,
             },
         })
