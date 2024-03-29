@@ -11,7 +11,7 @@ return {
         require("telescope").load_extension("flutter")
         require("flutter-tools").setup({
             dev_log = {
-                enabled = false,
+                enabled = true,
             },
             widget_guides = {
                 -- enabled = false,

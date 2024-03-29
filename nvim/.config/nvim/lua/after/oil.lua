@@ -9,3 +9,6 @@ oil.setup({
 	}
 })
 vim.keymap.set("n", "-", oil.open, { desc = "Open parent directory" })
+vim.keymap.set("n", "<leader>-",
+	function() oil.set_columns({ "icon", "mtime" }) end,
+	{ desc = "Show mtime" })
