@@ -11,7 +11,7 @@ return {
         require("telescope").load_extension("flutter")
         require("flutter-tools").setup({
             dev_log = {
-                enabled = true,
+                enabled = false,
             },
             widget_guides = {
                 -- enabled = false,
@@ -59,7 +59,7 @@ return {
                 end
             },
             dev_tools = {
-                autostart = false,
+                autostart = true,
                 auto_open_browser = false,
             },
         })
