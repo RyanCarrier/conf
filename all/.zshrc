@@ -61,5 +61,6 @@ DEFAULT_USER="rcarrier"
 
 unsetopt nomatch
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-eval "$(zoxide init --cmd j zsh)"
-eval "$(gh copilot alias -- zsh)"
+eval "$(zoxide init zsh --cmd j)"
+# eval "$(gh copilot alias -- zsh)"
+source ~/.copilot.zsh
