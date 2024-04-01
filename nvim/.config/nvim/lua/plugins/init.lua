@@ -16,7 +16,7 @@ return {
   'tpope/vim-rhubarb',
 
   -- multi line ctrl-n
-  'mg979/vim-visual-multi',
+  -- 'mg979/vim-visual-multi',
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',

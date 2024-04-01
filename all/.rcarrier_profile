@@ -15,7 +15,7 @@ export PATH=$PATH:"$HOME/.local/bin"
 export PATH=$PATH:"/snap/bin"
 export EDITOR=vim
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-#ANDROID_SDK_ROOT="/opt/android-sdk"
+# export ANDROID_SDK_ROOT="/opt/android-sdk"
 export PATH=$PATH:"$ANDROID_SDK_ROOT"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/platform-tools"
 #export PATH=$PATH:"$ANDROID_SDK_ROOT/tools"
@@ -95,6 +95,7 @@ alias tl="tmux ls"
 alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
 # unset gl
+alias task="go-task"
 
 #lol
 # alias tng="jg && tn gym_score -d -n 'vim' && t neww -d -t 'gym_score' -n 'emulator' && tmux send-keys -t gym_score:emulator 'make emulator' Enter && tmux send-keys -t gym_score:vim 'vim ./' Enter && ta -t gym_score"
@@ -102,7 +103,7 @@ function tng() {
     jg
     tn gym_score -d -n 'vim'
     t neww -d -t 'gym_score' -n 'emulator'
-    tmux send-keys -t gym_score:emulator 'make emulator' Enter
+    tmux send-keys -t gym_score:emulator 'task emulator' Enter
     tmux send-keys -t gym_score:vim 'vim ./' Enter
     ta -t gym_score
 }

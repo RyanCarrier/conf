@@ -1,5 +1,5 @@
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'What did I last have open[?]' })
+vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
     -- You can pass additional configuration to telescope to change theme, layout, etc.
     require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -8,6 +8,15 @@ vim.keymap.set('n', '<leader>/', function()
     })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
+vim.keymap.set('n', '<leader>t?', require('telescope.builtin').commands, { desc = '[T]elescope commands[?]' })
+vim.keymap.set('n', '<leader>tc', require('telescope.builtin').command_history, { desc = '[T]elescope [H]istory' })
+vim.keymap.set('n', '<leader>tr', require('telescope.builtin').resume, { desc = '[T]elescope [R]esume' })
+vim.keymap.set('n', '<leader>tq', function()
+    local ta = require('telescope.actions');
+    -- test this, I want it to work while closed, but might need to go resume, send, close or something
+    -- there is also a ta.open_qflist or smth
+    ta.send_to_qflist()
+end, { desc = '[T]elescope [R]esume' })
 
 vim.keymap.set('n', '<leader>pg', require('telescope.builtin').git_files, { desc = '[P]roject [G]it files' })
 vim.keymap.set('n', '<leader>pf', require('telescope.builtin').find_files, { desc = '[P]rojcet [F]iles' })
@@ -134,6 +143,9 @@ vim.keymap.set('n', '<leader>gl', "<cmd>:Git log<CR>", { desc = "[G]it [L]og" })
 
 vim.keymap.set('n', '<leader>mp', "<cmd>:MarkdownPreviewToggle<CR>", { desc = "[M]arkdown [P]review" })
 -- [[ Basic Keymaps ]]
+-- cnext, cprev
+vim.keymap.set('n', '<leader>n', "<cmd>cnext<CR>", { desc = "Next quickfix" })
+vim.keymap.set('n', '<leader>N', "<cmd>cprev<CR>", { desc = "Prev quickfix" })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -145,12 +157,12 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 -- Test
 local nmapt = function(keys, func, desc)
-    if desc then desc = 'NeoTest: [T]est' .. desc end
+    if desc then desc = '[T]est ' .. desc end
     vim.keymap.set('n', keys, func, { desc = desc })
 end
 nmapt("<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, "[t]his File")
 nmapt("<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, "[T]hese Files lol")
-nmapt("<leader>tr", require("neotest").run.run, "Run Nearest")
+nmapt("<leader>tn", require("neotest").run.run, "[N]earest")
 nmapt("<leader>ts", require("neotest").summary.toggle, "Toggle Summary")
 nmapt("<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, "Show Output")
 nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")

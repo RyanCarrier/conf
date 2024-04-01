@@ -23,6 +23,8 @@ return {
                         "graphql",
                         "md",
                         "txt",
+                        "yml",
+                        "yaml"
                     },
                 })
             },

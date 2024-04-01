@@ -63,6 +63,6 @@ return {
         nmap("gR", "lsp_references", "LSP references")
 
         vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
-        vim.keymap.set('n', '<leader>tn', trouble_next, { silent = true, noremap = true, desc = "[T]rouble [N]ext" })
+        vim.keymap.set('n', '<leader>xn', trouble_next, { silent = true, noremap = true, desc = "Trouble [N]ext" })
     end
 }

@@ -8,7 +8,6 @@ nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')
 nmap('<leader>fa', filter2('required argument', 'missing switch cases'), '[F]ix required [A]rgument')
 
 local qf = filter('Fix All')
-nmap('<leader>fq', qf, '[F]ix... [Q]uick!')
 nmap('<leader>q', qf, '[Q]uicky fixy')
 
 local fix_import = function()

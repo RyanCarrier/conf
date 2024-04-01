@@ -14,8 +14,7 @@ return {
                 enabled = false,
             },
             widget_guides = {
-                -- enabled = false,
-                enabled = true,
+                enabled = false,
             },
             closing_tags = {
                 enabled = true,
@@ -68,6 +67,8 @@ return {
         end, { desc = "[Fl]utter" })
         vim.keymap.set("n", "<leader>fr", "<cmd>FlutterRestart<cr>",
             { desc = "[F]lutter [R]estart (not reload, just save a file bro)" })
+        vim.keymap.set("n", "<leader>fq", "<cmd>FlutterQuit<cr>",
+            { desc = "[F]lutter [Q]uit" })
         require("dap").adapters.dart = {
             type = "executable",
             command = "flutter",
