@@ -144,7 +144,7 @@ ls.add_snippets("dart", {
 
 	-- TODO: make one for to string, make one for equality, maybe one for compareto idk
 	s({ trig = "theme", name = "Theme of context" },
-		fmt("Theme.of(context).{}", i(1, "textTheme"))
+		fmt("ThemeData theme = Theme.of(context){};", i(1, ""))
 	),
 	s({ trig = "nav", name = "Navigator of context" },
 		fmt("Navigator.of(context).{};", i(1, "pop()"))

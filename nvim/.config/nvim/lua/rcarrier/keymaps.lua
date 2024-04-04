@@ -162,7 +162,7 @@ local nmapt = function(keys, func, desc)
 end
 nmapt("<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, "[t]his File")
 nmapt("<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, "[T]hese Files lol")
-nmapt("<leader>tn", require("neotest").run.run, "[N]earest")
+nmapt("<leader>tn", function() require("neotest").run.run({ strategy = "dap" }) end, "[N]earest")
 nmapt("<leader>ts", require("neotest").summary.toggle, "Toggle Summary")
 nmapt("<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, "Show Output")
 nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")
