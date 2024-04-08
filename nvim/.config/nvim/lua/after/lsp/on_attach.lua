@@ -14,6 +14,8 @@ M.on_attach = function(client, bufnr)
 	end
 	if client.name == "gopls" then
 		nmap("<leader>ee", "oif err != nil {<CR>}<ESC>Oreturn err")
+		local fix_import = function() filter_or_apply("Add import:") end
+		nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 	end
 	if client.name == "eslint" or client.name == "tsserver" then
 		require('after.lsp.eslint')

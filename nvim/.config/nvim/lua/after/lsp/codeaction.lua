@@ -20,7 +20,8 @@ local function make_position_param()
 	return { line = row, character = col_encoded }
 end
 
-function count(results, filter)
+local function count(results, filter)
+	if filter == nil then return 0 end
 	local found = 0
 	for _, result in pairs(results) do
 		for _, action in pairs(result.result or {}) do
@@ -50,11 +51,9 @@ function filter_or_apply(filter1, filter2, filter3, filter4)
 	vim.lsp.buf_request_all(bufnr, method, params, function(results)
 		if count(results, filter1) == 1 then
 			filter_apply(filter1)
-		end
-		if count(results, filter2) == 1 then
+		elseif count(results, filter2) == 1 then
 			filter_apply(filter2)
-		end
-		if count(results, filter3) == 1 then
+		elseif count(results, filter3) == 1 then
 			filter_apply(filter3)
 		else
 			filter_apply(filter4)
