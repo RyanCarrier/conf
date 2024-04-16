@@ -141,3 +141,4 @@ if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
     git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
 fi
 
+source ~/.flutter
