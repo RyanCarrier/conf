@@ -55,8 +55,10 @@ function filter_or_apply(filter1, filter2, filter3, filter4)
 			filter_apply(filter2)
 		elseif count(results, filter3) == 1 then
 			filter_apply(filter3)
-		else
+		elseif count(results, filter3) == 1 then
 			filter_apply(filter4)
+		else
+			vim.notify("No action found")
 		end
 	end)
 end
