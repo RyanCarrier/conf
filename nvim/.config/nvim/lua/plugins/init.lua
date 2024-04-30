@@ -274,5 +274,6 @@ return {
       vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
         { desc = "[C]ode actions [P]review" })
     end,
-  }
+  },
+  "delphinus/vim-firestore"
 }

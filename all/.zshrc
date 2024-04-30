@@ -52,7 +52,7 @@ CASE_SENSITIVE="true"
 # acs aliases cheat shees (aliases cheat sheet)
 
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-plugins=(git golang adb colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search autojump fd zsh-autosuggestions)
+plugins=(git golang adb colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search fd zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile

@@ -141,4 +141,7 @@ if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
     git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
 fi
 
+complete -W "$(emulator -list-avds|sed '1d'|sed 's/^/@/g')" emulator
+
+
 source "$HOME/.flutter_completion"
