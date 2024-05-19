@@ -142,7 +142,11 @@ include "$HOME/.flutter_completion"
 include "$HOME/.copilot.zsh"
 
 if command -v fzf &>/dev/null; then
-    eval "$(fzf --zsh)"
+    fzfversion=$(fzf --version | awk '{print $1}')
+    # if fzfversion >= 0.48
+    if [ "$fzfversion" = "$(echo -e "$fzfversion\n0.48" | sort -V | tail -n1)" ]; then
+        eval "$(fzf --zsh)"
+    fi
 fi
 if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh --cmd j)"
