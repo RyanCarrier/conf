@@ -39,10 +39,11 @@ wk.register({
 		name = "[A]rtificial Intelligence",
 		i = {
 			name = "[AI]",
-			c = {
-				chatgpt.openChat,
-				"[AI] [C]hat",
-			},
+			-- set c in chatgpt so it's not bound if not initialized
+			-- c = {
+			-- 	chatgpt.openChat,
+			-- 	"[AI] [C]hat",
+			-- },
 			p = {
 				chatgpt.selectAwesomePrompt,
 				"[AI] [P]rompt",

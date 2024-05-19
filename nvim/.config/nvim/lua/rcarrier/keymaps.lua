@@ -9,7 +9,7 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>t?', require('telescope.builtin').commands, { desc = '[T]elescope commands[?]' })
-vim.keymap.set('n', '<leader>tc', require('telescope.builtin').command_history, { desc = '[T]elescope [H]istory' })
+vim.keymap.set('n', '<leader>th', require('telescope.builtin').command_history, { desc = '[T]elescope [H]istory' })
 vim.keymap.set('n', '<leader>tr', require('telescope.builtin').resume, { desc = '[T]elescope [R]esume' })
 vim.keymap.set('n', '<leader>tq', function()
     local ta = require('telescope.actions');

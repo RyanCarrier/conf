@@ -1,7 +1,12 @@
 #!/bin/bash
 sudo echo ""
 
-echo "installing vscode, chrome, kdenlive, flameshot, qb"
+echo "Installing vscode, chrome, kdenlive, flameshot, qb"
+echo "Cancel if you want, waiting for 10 seconds"
+for _ in {10..1}; do
+	echo "."
+	sleep 1
+done
 
 if [ -f "/etc/arch-release" ]; then
     yay -Sy --noconfirm visual-studio-code-bin google-chrome kdenlive flameshot qbittorrent

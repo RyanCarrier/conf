@@ -275,5 +275,11 @@ return {
         { desc = "[C]ode actions [P]review" })
     end,
   },
-  "delphinus/vim-firestore"
+  "delphinus/vim-firestore",
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = {
+      "gbprod/none-ls-shellcheck.nvim",
+    },
+  },
 }

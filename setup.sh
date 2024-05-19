@@ -3,6 +3,11 @@ sudo echo ""
 
 PACKAGES="which zsh wget curl tar tmux vim rsync traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs iperf ripgrep"
 echo "installing $PACKAGES"
+echo "Cancel if you want, waiting for 10 seconds"
+for _ in {10..1}; do
+	echo "."
+	sleep 1
+done
 
 if [ -f "/etc/arch-release" ]; then
     sudo pacman -Syyu --noconfirm
@@ -27,7 +32,8 @@ sh -c "$(curl -fsSl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 chsh -s "$(which zsh)"
 sudo chsh -s "$(which zsh)" root
 #rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+echo "Install rust yourself lol"
+echo "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
 if [ -f "/etc/arch-release" ]; then
     sudo pacman --noconfirm -Sy go
 else
