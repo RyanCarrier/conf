@@ -7,7 +7,7 @@ return {
         local f = io.open(apifile, "r")
         local file_exists = f ~= nil and io.close(f)
         if not file_exists then
-            print("No ChatGPT API key found")
+            vim.notify("No ChatGPT API key found")
             return
         end
         local chatgpt = require("chatgpt")
@@ -30,6 +30,7 @@ return {
                 max_tokens = 1000,
             }
         })
+        vim.keymap.set("n", "<leader>ai", chatgpt.openChat, { noremap = true, silent = true, desc = "[AI] [C]hat" })
     end,
     dependencies = {
         "MunifTanjim/nui.nvim",

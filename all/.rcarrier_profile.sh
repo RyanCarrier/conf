@@ -1,10 +1,14 @@
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
+#!/bin/bash
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/Projects
+export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+# export ANDROID_SDK_ROOT="/opt/android-sdk"
+export JAVA_HOME='/usr/lib/jvm/default'
+export ANDROID_HOME="$ANDROID_SDK_ROOT"
+CHROME_EXECUTABLE=$(which google-chrome-stable)
+export CHROME_EXECUTABLE
+export EDITOR=vim
+
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:/opt/flutter/bin
@@ -13,32 +17,26 @@ export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.local/bin"
 export PATH=$PATH:"/snap/bin"
-export EDITOR=vim
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-# export ANDROID_SDK_ROOT="/opt/android-sdk"
 export PATH=$PATH:"$ANDROID_SDK_ROOT"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/platform-tools"
-#export PATH=$PATH:"$ANDROID_SDK_ROOT/tools"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/emulator"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/tools/bin"
 export PATH=$PATH:"$HOME/.pub-cache/bin"
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH=$PATH:"$HOME/.cargo/bin"
+export PATH=$PATH:"$JAVA_HOME/bin"
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ]; then
+    PATH=$PATH:"$HOME/bin"
+fi
 
-export JAVA_HOME='/usr/lib/jvm/default'
-export PATH="$JAVA_HOME/bin:$PATH"
-
-export ANDROID_HOME="$ANDROID_SDK_ROOT"
-export CHROME_EXECUTABLE=$(which google-chrome-stable)
-
-if [ -x "$(command -v rustc >/dev/null 2>&1)" ];then
-    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+if [ -x "$(command -v rustc >/dev/null 2>&1)" ]; then
+    RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+    export RUST_SRC_PATH
 fi
 
 fpath+=~/.zfunc
 
-#export SHELL=/bin/zsh
-
-if [ -z "$ZSH_NAME" ];then
+if [ -z "$ZSH_NAME" ]; then
     alias omg='sudo "$BASH" -c "$(history -p !!)"'
     SHELL="$(which bash)"
     noglob
@@ -48,10 +46,12 @@ else
 fi
 
 unset fd
-unset rm
+unset rm #overwrite oh my zsh rm -i
 unset t
 #lol
-alias vimm=$(which vim)
+alias vimm="\$(which vim)"
+#lolol
+alias vii="\$(which vi)"
 
 alias qq="exit"
 alias server="192.168.0.10"
@@ -65,7 +65,7 @@ alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
-alias rm="rm"	#overwrite oh my zsh rm -i
+alias rm="rm" #overwrite oh my zsh rm -i
 alias xo="xdg-open"
 alias p1="ping 1.1.1.1"
 alias ip='ip -color=auto'
@@ -96,9 +96,9 @@ alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
 # unset gl
 alias task="go-task"
+alias feh="feh --scale-down"
 
 #lol
-# alias tng="jg && tn gym_score -d -n 'vim' && t neww -d -t 'gym_score' -n 'emulator' && tmux send-keys -t gym_score:emulator 'make emulator' Enter && tmux send-keys -t gym_score:vim 'vim ./' Enter && ta -t gym_score"
 function tng() {
     jg
     tn gym_score -d -n 'vim'
@@ -109,12 +109,12 @@ function tng() {
 }
 
 function touche() {
-    if [ -z "$1" ];then
+    if [ -z "$1" ]; then
         echo "gib filename"
     else
         touch "$1"
         chmod a+x "$1"
-        echo "#!/bin/bash" >> "$1"
+        echo "#!/bin/bash" >>"$1"
     fi
 }
 
@@ -124,21 +124,40 @@ function vime() {
 }
 
 function gobench() {
-    if [ "$1" ];then
+    if [ "$1" ]; then
         go test -bench=. -benchtime="$1s"
     else
         go test -bench=.
     fi
 }
 
-if [ -f "$HOME/.host_profile" ] ; then
-    source "$HOME/.host_profile"
-fi
+function include() {
+    [[ -f "$1" ]] && source "$1"
+}
 
-[[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
+include /etc/profile.d/autojump.zsh
+include /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+include "$HOME/.host_profile"
+include "$HOME/.flutter_completion"
+include "$HOME/.copilot.zsh"
+
+if command -v fzf &>/dev/null; then
+    fzfversion=$(fzf --version | awk '{print $1}')
+    # if fzfversion >= 0.48
+    if [ "$fzfversion" = "$(echo -e "$fzfversion\n0.48" | sort -V | tail -n1)" ]; then
+        eval "$(fzf --zsh)"
+    fi
+fi
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init zsh --cmd j)"
+fi
+if command -v emulator &>/dev/null; then
+    complete -W "$(emulator -list-avds | sed '1d' | sed 's/^/@/g')" emulator
+fi
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
-    git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack
+    echo -e "no tmux theme;\ngit clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack"
 fi
 
-source "$HOME/.flutter_completion"
+export DEFAULT_USER="rcarrier"
+unsetopt nomatch

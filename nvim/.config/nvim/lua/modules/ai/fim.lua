@@ -9,6 +9,7 @@ local fim_keymaps = {
 	dismiss = "<M-h>",
 	request = "<M-Space>",
 }
+M.local_copilot = false
 
 local function active()
 	if copilot.enabled() then
@@ -43,6 +44,23 @@ local function set_keymaps()
 	imapai(fim_keymaps.prev, active().prev, "Prev suggestion")
 	imapai(fim_keymaps.dismiss, active().dismiss, "Dismiss suggestion")
 	imapai(fim_keymaps.request, active().request, "Request completion suggestions")
+end
+function M.toggle_local_copilot()
+	unset_keymaps()
+	if codeium.enabled() then
+		codeium.disable()
+		copilot.enable()
+	end
+	if M.local_copilot then
+		M.local_copilot = false
+		vim.g.copilot_proxy = nil
+		vim.g.copilot_proxy_strict_ssl = true
+	else
+		M.local_copilot = true
+		vim.g.copilot_proxy = "http://localhost:61107"
+		vim.g.copilot_proxy_strict_ssl = false
+	end
+	set_keymaps()
 end
 
 function M.toggle()

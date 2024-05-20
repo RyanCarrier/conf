@@ -88,13 +88,13 @@ return {
     'stevearc/oil.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
-  {
-    -- floating status lines, this should be riced slightly but whatever
-    'b0o/incline.nvim',
-    config = function()
-      require('incline').setup()
-    end
-  },
+  -- {
+  --   -- floating status lines, this should be riced slightly but whatever
+  --   'b0o/incline.nvim',
+  --   config = function()
+  --     require('incline').setup()
+  --   end
+  -- },
   -- move language support
   "rvmelkonian/move.vim",
 
@@ -220,14 +220,14 @@ return {
   --     require("nvim-autopairs").setup({})
   --   end
   -- },
-  {
-    --show diag in top right
-    'dgagn/diagflow.nvim',
-    opts = {
-      toggle_event = { "InsertEnter" },
-      update_event = { "DiagnosticChanged" },
-    }
-  },
+  -- {
+  --   --show diag in top right
+  --   'dgagn/diagflow.nvim',
+  --   opts = {
+  --     toggle_event = { "InsertEnter" },
+  --     update_event = { "DiagnosticChanged" },
+  --   }
+  -- },
   {
     "HampusHauffman/block.nvim",
     config = function()
@@ -274,5 +274,12 @@ return {
       vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
         { desc = "[C]ode actions [P]review" })
     end,
-  }
+  },
+  "delphinus/vim-firestore",
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = {
+      "gbprod/none-ls-shellcheck.nvim",
+    },
+  },
 }

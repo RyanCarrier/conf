@@ -9,7 +9,7 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>t?', require('telescope.builtin').commands, { desc = '[T]elescope commands[?]' })
-vim.keymap.set('n', '<leader>tc', require('telescope.builtin').command_history, { desc = '[T]elescope [H]istory' })
+vim.keymap.set('n', '<leader>th', require('telescope.builtin').command_history, { desc = '[T]elescope [H]istory' })
 vim.keymap.set('n', '<leader>tr', require('telescope.builtin').resume, { desc = '[T]elescope [R]esume' })
 vim.keymap.set('n', '<leader>tq', function()
     local ta = require('telescope.actions');
@@ -155,6 +155,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'g<leader>y', 'ggVG"+y', { desc = "Yank to clipboard" })
 
 -- Test
 local nmapt = function(keys, func, desc)

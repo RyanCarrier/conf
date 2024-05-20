@@ -9,6 +9,7 @@ require('after.lsp')
 
 require('tint').setup({
 	saturation = 0.8,
-	tint = -5,
+	-- tint = -5,
+	tint = -10,
 })
 require('modules.ai.fim').toggle()

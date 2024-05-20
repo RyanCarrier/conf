@@ -1,5 +1,6 @@
 function filter_apply(filter)
 	vim.print("Applying ca filter: " .. filter)
+	-- vim.notify(vim.inspect(vim.lsp.client().name))
 	vim.lsp.buf.code_action({
 		apply = true,
 		filter = function(action)
@@ -49,9 +50,12 @@ function filter_or_apply(filter1, filter2, filter3, filter4)
 	}
 
 	vim.lsp.buf_request_all(bufnr, method, params, function(results)
+		-- vim.notify(vim.inspect(results))
 		if count(results, filter1) == 1 then
+			vim.notify("Applying filter1 " .. filter1)
 			filter_apply(filter1)
 		elseif count(results, filter2) == 1 then
+			vim.notify("Applying filter2 " .. filter2)
 			filter_apply(filter2)
 		elseif count(results, filter3) == 1 then
 			filter_apply(filter3)

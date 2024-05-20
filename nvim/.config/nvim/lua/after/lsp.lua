@@ -6,6 +6,7 @@ local on_attach = require('after.lsp.on_attach').on_attach
 local servers = {
 	-- clangd = {},
 	-- gopls = {},
+	bashls = {},
 	rust_analyzer = {
 		format = { enable = true },
 	},
