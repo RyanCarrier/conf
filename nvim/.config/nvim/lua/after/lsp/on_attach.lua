@@ -1,3 +1,6 @@
+local lsp = require('after.lsp.generic');
+local nmap = lsp.nmap;
+local nnomap = lsp.nnomap;
 local M = {}
 M.on_attach = function(client, bufnr)
 	-- vim.notify('on_attach:' .. vim.inspect(client.name));

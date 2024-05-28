@@ -1,5 +1,8 @@
-require('after.lsp.generic')
-require('after.lsp.codeaction')
+local filter = require('after.lsp.codeaction').filter_apply_fn;
+local lsp = require('after.lsp.generic');
+local nmap = lsp.nmap;
+local vmap = lsp.vmap;
+local nmape = lsp.nmape;
 local rt = require("rust-tools")
 vim.keymap.set("n", "<M-space>", rt.hover_actions.hover_actions,
 	{ desc = "[H]over [A]ctions" })
@@ -12,9 +15,7 @@ vim.keymap.set("n", "<Leader>cg", rt.code_action_group.code_action_group,
 local qf = filter('Fix All')
 nmap('<leader>q', qf, '[Q]uicky fixy')
 
-local fix_import = function()
-	filter_apply("Import `")
-end
+local fix_import = filter("Import `")
 nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 nmap('<leader>fdi', function()
 	vim.diagnostic.goto_next()

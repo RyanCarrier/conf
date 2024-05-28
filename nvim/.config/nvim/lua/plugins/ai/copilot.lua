@@ -5,6 +5,7 @@ return
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
+        vim.notify("COPILOT SETUP")
         require('copilot').setup({
             suggestion = {
                 -- enabled = false,

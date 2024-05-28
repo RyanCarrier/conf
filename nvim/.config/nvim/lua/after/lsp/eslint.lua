@@ -1,5 +1,5 @@
-require('after.lsp.generic')
-require('after.lsp.codeaction')
+local nmap = require('after.lsp.generic').nmap;
+local filter = require('after.lsp.codeaction').filter_apply_fn
 
 local qf = filter('Fix all')
 nmap('<leader>q', qf, '[Q]uicky fixy')

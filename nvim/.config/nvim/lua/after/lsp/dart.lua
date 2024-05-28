@@ -1,19 +1,17 @@
-require('after.lsp.generic')
-require('after.lsp.codeaction')
+local nmap = require('after.lsp.generic').nmap
+local filter = require('after.lsp.codeaction').filter_apply_fn;
 
 nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
 nmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
 nmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
 nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')
-nmap('<leader>fa', filter2('required argument', 'missing switch cases'), '[F]ix required [A]rgument')
+nmap('<leader>fa', filter({ 'required argument', 'missing switch cases' }), '[F]ix required [A]rgument')
 
-local qf = filter2('Fix All', 'Fix all')
+local qf = filter({ 'Fix All', 'Fix all' })
 nmap('<leader>q', qf, '[Q]uicky fixy')
 
-local fix_import = function()
-	filter_or_apply("Import library 'dart:developer'", "Import library '%.", "Import library 'package",
-		"Import library 'dart")
-end
+local fix_import = filter({ "Import library 'dart:developer'", "Import library '%.", "Import library 'package",
+	"Import library 'dart" })
 nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 nmap('<leader>fdi', function()
 	vim.diagnostic.goto_next()
