@@ -123,7 +123,9 @@ vim.keymap.set('n', "vp", [[viw"_dP]], { desc = "paste in word" })
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = "[G]it [S]tatus" })
 vim.keymap.set('n', '<leader>gb', "<cmd>:Git blame<CR>", { desc = "[G]it [B]lame" })
 vim.keymap.set('n', '<leader>gl', "<cmd>:Git log<CR>", { desc = "[G]it [L]og" })
-vim.keymap.set('n', '<leader>gpp', "<cmd>:Git push<CR>", { desc = "[G]it [P]ush" })
+vim.keymap.set('n', '<leader>gpp', "<cmd>:Git push<CR>", { desc = "[G]it [P]ush... ([P]lease)" })
+vim.keymap.set('n', '<leader>gpl', "<cmd>:Git pull<CR>", { desc = "[G]it [P]ul[L]" })
+vim.keymap.set('n', '<leader>gc', "<cmd>:Git checkout ", { desc = "[G]it [C]heckout" })
 -- maybe do this stuff for git later
 -- " fugitive git bindings
 -- nnoremap <space>ga :Git add %:p<CR><CR>
