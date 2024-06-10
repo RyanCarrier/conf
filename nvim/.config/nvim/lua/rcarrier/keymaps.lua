@@ -75,7 +75,7 @@ vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting
 -- TODO: we should make it so we can go <leader>p in 'n' and do select after (<leader>piw, to paste in word (or pib etc))
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = "delete to void" })
-vim.keymap.set('v', '<leader>n', [[:norm!]], { desc = "Normal mode" })
+vim.keymap.set({ 'n', 'v' }, '<leader>n', [[:norm!]], { desc = "Normal mode" })
 vim.keymap.set('v', '<leader>s', [[:s/]], { desc = "Substitituter" })
 vim.keymap.set('n', '<leader>s', [[:%s/]], { desc = "Substitituter" })
 vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
@@ -147,8 +147,9 @@ vim.keymap.set('n', '<leader>gc', "<cmd>:Git checkout ", { desc = "[G]it [C]heck
 vim.keymap.set('n', '<leader>mp', "<cmd>:MarkdownPreviewToggle<CR>", { desc = "[M]arkdown [P]review" })
 -- [[ Basic Keymaps ]]
 -- cnext, cprev
-vim.keymap.set('n', '<leader>n', "<cmd>cnext<CR>", { desc = "Next quickfix" })
-vim.keymap.set('n', '<leader>N', "<cmd>cprev<CR>", { desc = "Prev quickfix" })
+-- revisit this
+-- vim.keymap.set('n', '<leader>n', "<cmd>cnext<CR>", { desc = "Next quickfix" })
+-- vim.keymap.set('n', '<leader>N', "<cmd>cprev<CR>", { desc = "Prev quickfix" })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
