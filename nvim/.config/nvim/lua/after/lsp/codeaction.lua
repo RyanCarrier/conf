@@ -4,7 +4,7 @@ local M = {}
 -- @param filter string
 -- @return nil
 local function filter_apply(filter)
-	vim.print("Applying ca filter: " .. filter)
+	if require('modules.debug').enabled then vim.notify("Applying ca filter: " .. filter) end
 	-- vim.notify(vim.inspect(vim.lsp.client().name))
 	vim.lsp.buf.code_action({
 		apply = true,
@@ -66,6 +66,7 @@ function M.filter_apply(filters)
 	-- at this point it should just be a table but idc
 	-- local bufnr = vim.api.nvim_get_current_buf()
 	-- vim.notify("Filtering code actions")
+	if require('modules.debug').enabled then vim.notify("requesting filters;" .. vim.inspect(filters)) end
 	local bufnr = 0
 	local method = 'textDocument/codeAction'
 	local position = make_position_param()
@@ -96,12 +97,14 @@ function M.filter_apply(filters)
 			end
 		end
 		-- vim.notify("All actions:\n" .. all_actions)
-		for i, filter in ipairs(filters) do
+		for _, filter in ipairs(filters) do
 			local countResult = count(results, filter)
 			-- vim.notify("Trying filter[" .. i .. "] " .. filter .. " matched " .. countResult)
 			if countResult == 1 then
 				-- vim.notify("Applying filter " .. filter)
-				vim.notify("Applying exact Filter:\n" .. get_matched_ca(results, filter))
+				if require('modules.debug').enabled then
+					vim.notify("Applying exact Filter:\n" .. get_matched_ca(results, filter))
+				end
 				filter_apply(filter)
 				return
 			end

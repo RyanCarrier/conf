@@ -26,23 +26,23 @@ export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
-    PATH=$PATH:"$HOME/bin"
+	PATH=$PATH:"$HOME/bin"
 fi
 
 if [ -x "$(command -v rustc >/dev/null 2>&1)" ]; then
-    RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-    export RUST_SRC_PATH
+	RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+	export RUST_SRC_PATH
 fi
 
 fpath+=~/.zfunc
 
 if [ -z "$ZSH_NAME" ]; then
-    alias omg='sudo "$BASH" -c "$(history -p !!)"'
-    SHELL="$(which bash)"
-    noglob
+	alias omg='sudo "$BASH" -c "$(history -p !!)"'
+	SHELL="$(which bash)"
+	noglob
 else
-    alias omg='sudo $(fc -ln -1)'
-    SHELL="$(which zsh)"
+	alias omg='sudo $(fc -ln -1)'
+	SHELL="$(which zsh)"
 fi
 
 unset fd
@@ -100,39 +100,53 @@ alias feh="feh --scale-down"
 
 #lol
 function tng() {
-    jg
-    tn gym_score -d -n 'vim'
-    t neww -d -t 'gym_score' -n 'emulator'
-    tmux send-keys -t gym_score:emulator 'task emulator' Enter
-    tmux send-keys -t gym_score:vim 'vim ./' Enter
-    ta -t gym_score
+	jg
+	tn gym_score -d -n 'vim'
+	t neww -d -t 'gym_score' -n 'emulator'
+	tmux send-keys -t gym_score:emulator 'task emulator' Enter
+	tmux send-keys -t gym_score:vim 'vim ./' Enter
+	ta -t gym_score
 }
 
 function touche() {
-    if [ -z "$1" ]; then
-        echo "gib filename"
-    else
-        touch "$1"
-        chmod a+x "$1"
-        echo "#!/bin/bash" >>"$1"
-    fi
+	if [ -z "$1" ]; then
+		echo "gib filename"
+	else
+		touch "$1"
+		chmod a+x "$1"
+		echo "#!/bin/bash" >>"$1"
+	fi
 }
 
 function vime() {
-    touche "$1"
-    vim "$1"
+	touche "$1"
+	vim "$1"
+}
+
+function setdate() {
+	if [ -z "$1" ]; then
+		echo "gib date"
+		return
+	fi
+	NEWDATE="$1 12:00:00"
+	echo "timedatectl set-ntp 0 && timedatectl set-time $NEWDATE"
+	sudo timedatectl set-ntp 0 && sudo timedatectl set-time "$NEWDATE"
+}
+function unsetdate() {
+	echo "timedatectl set-ntp 1"
+	sudo timedatectl set-ntp 1
 }
 
 function gobench() {
-    if [ "$1" ]; then
-        go test -bench=. -benchtime="$1s"
-    else
-        go test -bench=.
-    fi
+	if [ "$1" ]; then
+		go test -bench=. -benchtime="$1s"
+	else
+		go test -bench=.
+	fi
 }
 
 function include() {
-    [[ -f "$1" ]] && source "$1"
+	[[ -f "$1" ]] && source "$1"
 }
 
 include /etc/profile.d/autojump.zsh
@@ -142,21 +156,21 @@ include "$HOME/.flutter_completion"
 include "$HOME/.copilot.zsh"
 
 if command -v fzf &>/dev/null; then
-    fzfversion=$(fzf --version | awk '{print $1}')
-    # if fzfversion >= 0.48
-    if [ "$fzfversion" = "$(echo -e "$fzfversion\n0.48" | sort -V | tail -n1)" ]; then
-        eval "$(fzf --zsh)"
-    fi
+	fzfversion=$(fzf --version | awk '{print $1}')
+	# if fzfversion >= 0.48
+	if [ "$fzfversion" = "$(echo -e "$fzfversion\n0.48" | sort -V | tail -n1)" ]; then
+		eval "$(fzf --zsh)"
+	fi
 fi
 if command -v zoxide &>/dev/null; then
-    eval "$(zoxide init zsh --cmd j)"
+	eval "$(zoxide init zsh --cmd j)"
 fi
 if command -v emulator &>/dev/null; then
-    complete -W "$(emulator -list-avds | sed '1d' | sed 's/^/@/g')" emulator
+	complete -W "$(emulator -list-avds | sed '1d' | sed 's/^/@/g')" emulator
 fi
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
-    echo -e "no tmux theme;\ngit clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack"
+	echo -e "no tmux theme;\ngit clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack"
 fi
 
 export DEFAULT_USER="rcarrier"

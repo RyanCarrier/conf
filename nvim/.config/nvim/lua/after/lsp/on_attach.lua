@@ -1,11 +1,12 @@
 local lsp = require('after.lsp.generic');
 local nmap = lsp.nmap;
 local nnomap = lsp.nnomap;
+local filter = require('after.lsp.codeaction').filter_apply_fn;
 local M = {}
 M.on_attach = function(client, bufnr)
 	-- vim.notify('on_attach:' .. vim.inspect(client.name));
-	vim.notify(vim.inspect(client.name));
-
+	local isDebug = require('modules.debug').enabled
+	if isDebug then vim.notify(vim.inspect(client.name)) end
 	require('after.lsp.codeaction')
 	require('after.lsp.generic')
 
@@ -17,7 +18,8 @@ M.on_attach = function(client, bufnr)
 	end
 	if client.name == "gopls" then
 		nmap("<leader>ee", "oif err != nil {<CR>}<ESC>Oreturn err")
-		local fix_import = function() filter_or_apply("Add import:") end
+
+		local fix_import = function() filter("Add import:") end
 		nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 	end
 	if client.name == "eslint" or client.name == "tsserver" then
@@ -57,7 +59,12 @@ M.on_attach = function(client, bufnr)
 	nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 	nmap('<leader>wOs', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[WO]rkspace [S]ymbols')
 
-	nmap('<leader>ff', vim.lsp.buf.format, '[FF]ormat')
+	nmap('<leader>ff', function()
+		if isDebug then
+			vim.notify('Formatting with ' .. vim.inspect(vim.lsp.client.name))
+		end
+		vim.lsp.buf.format()
+	end, '[FF]ormat')
 	-- See `:help K` for why this keymap
 	nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
 	-- REMOVED to allow for j and k

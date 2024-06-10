@@ -144,6 +144,8 @@ vim.keymap.set('n', '<leader>gc', "<cmd>:Git checkout ", { desc = "[G]it [C]heck
 -- nnoremap <space>gps :Dispatch! git push<CR>
 -- nnoremap <space>gpl :Dispatch! git pull<CR>
 
+
+vim.keymap.set('n', '<leader>dt', require('modules.debug').toggle, { desc = "[M]arkdown [P]review" })
 vim.keymap.set('n', '<leader>mp', "<cmd>:MarkdownPreviewToggle<CR>", { desc = "[M]arkdown [P]review" })
 -- [[ Basic Keymaps ]]
 -- cnext, cprev
