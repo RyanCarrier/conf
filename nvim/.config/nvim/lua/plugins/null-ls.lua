@@ -22,15 +22,17 @@ return {
                         "html",
                         "json",
                         "jsonc",
-                        "yaml",
                         "markdown",
                         "graphql",
                         "md",
                         "txt",
                         "yml",
-                        "yaml"
+                        "yaml",
                     },
-                })
+                    -- why won't you work
+                    -- extra_filetypes = { "toml" },
+                }),
+                null_ls.builtins.formatting.taplo,
             },
             on_attach = require("after.lsp.on_attach").on_attach,
             -- on_attach = function(client, bufnr)
