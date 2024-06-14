@@ -282,4 +282,5 @@ return {
       "gbprod/none-ls-shellcheck.nvim",
     },
   },
+
 }

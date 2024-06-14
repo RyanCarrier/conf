@@ -34,7 +34,7 @@ return {
                 ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim',
                     'bash',
                     'dart',
-                    'zig', 'toml', 'yaml', 'gomod', 'json' },
+                    'zig', 'toml', 'yaml', 'gomod', 'json', 'jsonc' },
 
                 -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself! )
                 auto_install = true,

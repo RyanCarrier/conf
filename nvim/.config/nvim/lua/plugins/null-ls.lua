@@ -21,6 +21,7 @@ return {
                         "scss",
                         "html",
                         "json",
+                        "jsonc",
                         "yaml",
                         "markdown",
                         "graphql",

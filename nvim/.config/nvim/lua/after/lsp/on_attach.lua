@@ -19,7 +19,7 @@ M.on_attach = function(client, bufnr)
 	if client.name == "gopls" then
 		nmap("<leader>ee", "oif err != nil {<CR>}<ESC>Oreturn err")
 
-		local fix_import = function() filter("Add import:") end
+		local fix_import = filter("Add import:")
 		nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 	end
 	if client.name == "eslint" or client.name == "tsserver" then

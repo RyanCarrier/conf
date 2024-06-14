@@ -181,3 +181,25 @@ local nmapai = function(keys, func, desc)
     vim.keymap.set('n', keys, func, { desc = desc })
 end
 nmapai('<leader>ait', require("modules.ai.fim").toggle, "[AI] FIM [T]oggle")
+
+
+local t = require('trouble')
+local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
+-- Lua
+nmapt = function(input, cmd, desc)
+    vim.keymap.set("n", input,
+        "<cmd>Trouble diagnostics " .. cmd .. "<cr>"
+        , { desc = "[Trouble] " .. desc })
+end
+nmapt("<leader>xx", "toggle", "Toggle")
+nmapt("<leader>xw", "open", "Workspace diagnostics")
+-- vim.keymap.set('n', "<leader>xw",
+--     function()
+--         vim.cmd [[ Trouble diagnostics focus=true]]
+--     end,
+--     { desc = "Workspace diagnostics" })
+nmapt("<leader>xd", "open filter.buf=0", "Document diagnostics")
+-- nmap("gR", "lsp_references", "LSP references")
+
+vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
+vim.keymap.set('n', '<leader>xn', trouble_next, { silent = true, noremap = true, desc = "Trouble [N]ext" })

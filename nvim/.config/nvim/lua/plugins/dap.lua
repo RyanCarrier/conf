@@ -23,6 +23,7 @@ return {
   config = function()
     local dap = require('dap')
     local dapui = require('dapui')
+    local dapm = require('modules.dap')
     require('mason-nvim-dap').setup({
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
@@ -71,75 +72,9 @@ return {
           disconnect = "⏏",
         },
       },
-      layouts = {
-        {
-          -- You can change the order of elements in the sidebar
-          elements = {
-            -- Provide IDs as strings or tables with "id" and "size" keys
-            {
-              id = "scopes",
-              size = 0.50, -- Can be float or integer > 1
-            },
-            { id = "breakpoints", size = 0.15 },
-            { id = "stacks",      size = 0.15 },
-            { id = "watches",     size = 0.10 },
-          },
-          size = 40,
-          position = "left", -- Can be "left" or "right"
-        },
-        {
-          elements = {
-            "repl",
-            "console",
-          },
-          size = 10,
-          position = "bottom", -- Can be "bottom" or "top"
-        },
-        {
-          elements = { "repl" },
-          size = 20,
-          position = "bottom",
-        },
-        {
-          elements = { "repl" },
-          size = 1,
-          position = "bottom",
-        },
-        {
-          elements = { "repl" },
-          size = 40,
-          position = "left",
-        }
-      },
+      layouts = dapm.dapui_layouts,
     })
-    -- trougg = trouble+toggle+debug
-    local function trouggle()
-      local t = require('trouble')
-      dap.repl.close()
-      t.close()
-      t.open({ mode = 'document_diagnostics' })
-      --have a secret small layout for a mini repl (size 1), to enable the controlls
-      -- controlls will then be passed to any other repl window too
-      -- there was some issue doing this before trouble, I don't remember what,
-      -- no harm but it works here... just weird
-      dapui.open({ layout = 4 })
-      dapui.close({ layout = 4 })
-      dap.repl.open({}, 'vsplit')
-    end
 
-    local function trouggle_but_bigger()
-      local t = require('trouble')
-      dap.repl.close()
-      t.close()
-      t.open({ mode = 'document_diagnostics' })
-      --have a secret small layout for a mini repl (size 1), to enable the controlls
-      -- controlls will then be passed to any other repl window too
-      -- there was some issue doing this before trouble, I don't remember what,
-      -- no harm but it works here... just weird
-      dapui.open({ layout = 4 })
-      dapui.close({ layout = 4 })
-      dapui.open({ layout = 5 })
-    end
     local function set_dap_ex_bp(filter)
       return function()
         if not filter then
@@ -152,11 +87,9 @@ return {
     end
 
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
-    nmap("<F6>", trouggle, "Trouggle")
-    nmap("<F7>", function()
-      dapui.toggle({ layout = 1 })
-    end, "Open default small")
-    nmap("<F8>", trouggle_but_bigger, "Trouggle but bigger (repl on full left, diag full bottom)")
+    nmap("<F6>", dapm.toggle_fn(dapm.REPL_TROUBLE), "Trouggle")
+    nmap("<F7>", dapm.toggle_fn(dapm.FULL), "FAT")
+    nmap("<F8>", dapm.toggle_fn(dapm.REPL_LEFT_LOL), "BIG REPL LEFT")
     -- nmap("<leader>de", dap.set_exception_breakpoints(""), "[D]ebug [E]xception catch all")
     nmap("<leader>dd", set_dap_ex_bp('default'), "[D]ebug [D]efault exception")
     nmap("<leader>dr", set_dap_ex_bp('raised'), "[D]ebug [R]aised exceptions")
@@ -166,9 +99,9 @@ return {
     nmap("<leader>dU", set_dap_ex_bp('Unhandled'),
       "[D]ebug [U]handled (only) exception catching")
 
-    dap.listeners.after.event_initialized['dapui_config'] = trouggle
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
+    dap.listeners.after.event_initialized['dapui_config'] = dapm.trouggle
+    -- dap.listeners.before.event_terminated['dapui_config'] = dapui.close
+    -- dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- Install golang specific config
     -- wot
