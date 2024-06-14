@@ -1,12 +1,12 @@
 local M = {}
 
 function M.enable()
-	vim.notify("Codeium enabled")
+	vim.notify("Codeium enabled", vim.log.levels.INFO, { timeout = 500, animate = false })
 	vim.g.codeium_enabled = true
 end
 
 function M.disable()
-	vim.notify("Codeium disable")
+	vim.notify("Codeium disabled", vim.log.levels.INFO, { timeout = 500, animate = false })
 	vim.g.codeium_enabled = false
 end
 
