@@ -5,10 +5,10 @@ return {
         'onsails/lspkind-nvim',
         --     'hrsh7th/cmp-nvim-lua',
         'hrsh7th/cmp-nvim-lsp-signature-help',
-        'hrsh7th/cmp-vsnip',
+        -- 'hrsh7th/cmp-vsnip',
         'hrsh7th/cmp-path',
         --     'hrsh7th/cmp-buffer',
-        'hrsh7th/vim-vsnip',
+        -- 'hrsh7th/vim-vsnip',
 
         -- Snippet Engine & its associated nvim-cmp source
         'L3MON4D3/LuaSnip',
@@ -18,19 +18,39 @@ return {
         'hrsh7th/cmp-nvim-lsp',
 
         -- Adds a number of user-friendly snippets
-        'rafamadriz/friendly-snippets',
+        -- 'rafamadriz/friendly-snippets',
     },
     config = function()
         local cmp = require('cmp')
         local luasnip = require('luasnip')
         local lspkind = require('lspkind')
         cmp.setup({
+
             formatting = {
-                format = lspkind.cmp_format({
-                    mode = 'symbol_text',
-                    -- maxwidth = 50,
-                    -- ellipsis_char = '...',
-                })
+                -- fields = {},
+                -- expandable_indicator = false,
+                format = function(entry, vim_item)
+                    vim_item = lspkind.cmp_format({
+                        mode = 'symbol_text',
+                        -- maxwidth = 50,
+                        -- ellipsis_char = '...',
+                    })(entry, vim_item)
+                    
+                    -- vim_item.kind = lspkind.presets.default[vim_item.kind] .. ' ' .. vim_item.kind
+                    vim_item.menu = ({
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[LuaSnip]",
+                        buffer = "[Buffer]",
+                        path = "[Path]",
+                        gh_issues = "[GitHub]",
+                        copilot = "[GitHub]",
+                    })[entry.source.name]
+                    if vim_item.menu == nil then
+                        vim_item.menu = "[Unknown](" .. entry.source.name .. ")"
+                    end
+                    -- vim_item.dup = ({ luasnip = 0, })[entry.source.name] or nil
+                    return vim_item
+                end,
             },
 
             snippet = {
@@ -39,6 +59,7 @@ return {
                 end,
             },
             sorting = {
+                priority_weight = 2,
                 comparators = {
                     cmp.config.compare.offset,
                     cmp.config.compare.exact,
@@ -46,18 +67,18 @@ return {
 
                     -- copied from cmp-under, but I don't think I need the plugin for this.
                     -- I might add some more of my own.
-                    function(entry1, entry2)
-                        local _, entry1_under = entry1.completion_item.label:find "^_+"
-                        local _, entry2_under = entry2.completion_item.label:find "^_+"
-                        entry1_under = entry1_under or 0
-                        entry2_under = entry2_under or 0
-                        if entry1_under > entry2_under then
-                            return false
-                        elseif entry1_under < entry2_under then
-                            return true
-                        end
-                    end,
-
+                    -- function(entry1, entry2)
+                    --     local _, entry1_under = entry1.completion_item.label:find "^_+"
+                    --     local _, entry2_under = entry2.completion_item.label:find "^_+"
+                    --     entry1_under = entry1_under or 0
+                    --     entry2_under = entry2_under or 0
+                    --     if entry1_under > entry2_under then
+                    --         return false
+                    --     elseif entry1_under < entry2_under then
+                    --         return true
+                    --     end
+                    -- end,
+                    cmp.config.compare.recently_used,
                     cmp.config.compare.kind,
                     cmp.config.compare.sort_text,
                     cmp.config.compare.length,
@@ -102,8 +123,8 @@ return {
                 end, { 'i', 's' }),
             },
             sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'luasnip' },
+                { name = 'nvim_lsp', dup = 0 },
+                { name = 'luasnip',  dup = 0 },
                 { name = 'copilot' },
             }, {
                 { name = "path" },

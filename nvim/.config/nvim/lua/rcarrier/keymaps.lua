@@ -187,18 +187,29 @@ local t = require('trouble')
 local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
 -- Lua
 nmapt = function(input, cmd, desc)
-    vim.keymap.set("n", input,
-        "<cmd>Trouble diagnostics " .. cmd .. "<cr>"
-        , { desc = "[Trouble] " .. desc })
+    vim.keymap.set("n", input, cmd, { desc = "[Trouble] " .. desc })
 end
-nmapt("<leader>xx", "toggle", "Toggle")
-nmapt("<leader>xw", "open", "Workspace diagnostics")
+
+nmapt("<leader>xx", t.close, "toggle")
+nmapt("<leader>xw",
+    function()
+        t.close()
+        t.open({ mode = "diagnostics_workspace" })
+    end
+    , "Workspace diagnostics")
 -- vim.keymap.set('n', "<leader>xw",
 --     function()
 --         vim.cmd [[ Trouble diagnostics focus=true]]
 --     end,
 --     { desc = "Workspace diagnostics" })
-nmapt("<leader>xd", "open filter.buf=0", "Document diagnostics")
+nmapt("<leader>xd",
+    function()
+        t.close()
+        t.open({
+            mode = "diagnostics_buffer",
+        })
+    end,
+    "Document diagnostics")
 -- nmap("gR", "lsp_references", "LSP references")
 
 vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })

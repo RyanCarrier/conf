@@ -7,9 +7,9 @@ local servers = {
 	-- clangd = {},
 	-- gopls = {},
 	bashls = {},
-	rust_analyzer = {
-		format = { enable = true },
-	},
+	-- rust_analyzer = {
+	-- 	format = { enable = true },
+	-- },
 	pyright = {},
 	-- move_analyzer = {},
 	tsserver = {
@@ -47,6 +47,7 @@ mason_lspconfig.setup({
 
 mason_lspconfig.setup_handlers({
 	function(server_name)
+		if server_name == 'rust_analyzer' then return end
 		require('lspconfig')[server_name].setup {
 			capabilities = capabilities,
 			on_attach = on_attach,
@@ -54,13 +55,28 @@ mason_lspconfig.setup_handlers({
 		}
 	end,
 })
+vim.g.rustaceanvim = {
+	-- Plugin configuration
+	tools = {
+	},
+	-- LSP configuration
+	server = {
+		on_attach = on_attach,
+		default_settings = {
+			-- rust-analyzer language server configuration
+			['rust-analyzer'] = {},
+		},
+	},
+	-- DAP configuration
+	dap = {},
+}
 -- require('flutter-tools').setup({
 -- 	lsp = {
 -- 		on_attach = on_attach,
 -- 	}
 -- })
-require('rust-tools').setup({
-	server = {
-		on_attach = on_attach,
-	},
-})
+-- require('rustaceanvim').setup({
+-- 	server = {
+-- 		on_attach = on_attach,
+-- 	},
+-- })

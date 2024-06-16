@@ -150,13 +150,7 @@ return {
       })
     end
   },
-  {
-    'simrat39/rust-tools.nvim',
-    -- we have this in lsp attach area in init.lua
-    -- config = function()
-    --   require("rust-tools").setup({})
-    -- end
-  },
+  'mrcjkb/rustaceanvim',
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',

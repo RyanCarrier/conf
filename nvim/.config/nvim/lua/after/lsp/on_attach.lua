@@ -10,8 +10,8 @@ M.on_attach = function(client, bufnr)
 	require('after.lsp.codeaction')
 	require('after.lsp.generic')
 
-	if client.name == "rust_analyzer" then
-		require('after.lsp.rust')
+	if client.name == "rust_analyzer" or client.name == "rust-analyzer" then
+		require('after.lsp.rust').init(bufnr)
 	end
 	if client.name == "dartls" then
 		require('after.lsp.dart')
@@ -78,5 +78,24 @@ M.on_attach = function(client, bufnr)
 	nmap('<leader>wOl', function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, '[W]orkspace [L]ist Folders')
+	nmap('<leader>wli', "<CMD>LspInfo<CR>", '[W]orkspace [L]sp[I]nfo')
+	nmap('<leader>wll', function()
+		vim.diagnostic.setloclist()
+	end, '[W]orkspace [L]oc[L]ist')
+	nmap('<leader>wql', function()
+		vim.diagnostic.setqflist()
+	end, '[W]orkspace [Q]uickfix[L]ist')
+	nmap('<leader>dve', function()
+		vim.diagnostic.config({
+			virtual_text = true,
+		})
+	end
+	, '[D]iagnostic [V]irtual Text [E]nable')
+	nmap('<leader>dvd', function()
+		vim.diagnostic.config({
+			virtual_text = false,
+		})
+	end
+	, '[D]iagnostic [V]irtual Text [D]isable ahhahahaah toggle')
 end
 return M
