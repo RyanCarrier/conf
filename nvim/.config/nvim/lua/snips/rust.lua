@@ -19,7 +19,7 @@ local types = require("luasnip.util.types")
 local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 
-require('luasnip.session.snippet_collection').clear_snippets("dart")
+require('luasnip.session.snippet_collection').clear_snippets("rust")
 
 local ts_utils = require("nvim-treesitter.ts_utils")
 local get_node_text = vim.treesitter.get_node_text
@@ -29,4 +29,6 @@ ls.add_snippets("rust", {
 		fmt("#[derive({})]", i(1, ""))
 	),
 })
-print("Rust snippets loaded")
+if require('modules.debug').enabled then
+	vim.notify("Rust snippets loaded", vim.log.levels.INFO, { title = "LuaSnip", timeout = 500 })
+end

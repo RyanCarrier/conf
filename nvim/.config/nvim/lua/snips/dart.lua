@@ -277,4 +277,6 @@ class <>State extends ConsumerState<<<>>> {
 	),
 
 })
-print("dart snippets loaded")
+if require('modules.debug').enabled then
+	vim.notify("dart snippets loaded", vim.log.levels.INFO, { title = "LuaSnip", timeout = 500 })
+end
