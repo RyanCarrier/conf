@@ -44,6 +44,12 @@ function M.init(bufnr)
 		-- u will need to tresitter this
 		return "F a" .. with .. "(<Esc>lf(%a)<Esc>h%"
 	end
+	nmap('<leader>E', function()
+		vim.cmd.RustLsp('renderDiagnostic')
+	end, 'render diagnostics')
+	nmap('<leader>gd', function()
+		vim.cmd.RustLsp('openDocs')
+	end, '[G]o [D]ocs')
 	nmap('<leader>wo', wrap("Ok"), '[W]rap [O]k')
 	nmap('<leader>we', wrap("Err"), '[W]rap [E]rr')
 	nmap('<leader>ws', wrap("Some"), '[W]rap [S]ome')

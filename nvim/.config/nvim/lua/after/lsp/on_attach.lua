@@ -1,5 +1,6 @@
 local lsp = require('after.lsp.generic');
 local nmap = lsp.nmap;
+local nvmap = lsp.nvmap;
 local nnomap = lsp.nnomap;
 local filter = require('after.lsp.codeaction').filter_apply_fn;
 local M = {}
@@ -31,7 +32,7 @@ M.on_attach = function(client, bufnr)
 		vim.cmd('edit ' .. vim.lsp.get_log_path())
 	end, '[C]hange [L]sp log, idk don\'t actually change it but like open it and leaderL is taken')
 	nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-	nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+	nvmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
 	nmap('gd', function() vim.lsp.buf.definition() end, '[G]oto [D]efinition')
 	nmap('gsd', function()

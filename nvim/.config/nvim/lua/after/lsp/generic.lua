@@ -1,8 +1,12 @@
 local M = {}
-function M.nmap(keys, func, desc)
+
+local function map(mode, keys, func, desc)
 	if desc then desc = 'LSP: ' .. desc end
-	vim.keymap.set('n', keys, func, { desc = desc })
-	-- vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+	vim.keymap.set(mode, keys, func, { desc = desc })
+end
+
+function M.nmap(keys, func, desc)
+	map('n', keys, func, desc)
 end
 
 function M.nmape(keys, func, desc)
@@ -16,8 +20,11 @@ function M.nnomap(keys, func, desc)
 end
 
 function M.vmap(keys, func, desc)
-	if desc then desc = 'LSP: ' .. desc end
-	vim.keymap.set('v', keys, func, { desc = desc })
+	map('v', keys, func, desc)
+end
+
+function M.nvmap(keys, func, desc)
+	return map({ 'n', 'v' }, keys, func, desc)
 end
 
 return M

@@ -64,7 +64,11 @@ vim.g.rustaceanvim = {
 		on_attach = on_attach,
 		default_settings = {
 			-- rust-analyzer language server configuration
-			['rust-analyzer'] = {},
+			['rust-analyzer'] = {
+				-- diagnostics = {
+				-- 	experimental = true,
+				-- },
+			},
 		},
 	},
 	-- DAP configuration
