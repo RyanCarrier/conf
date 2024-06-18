@@ -99,7 +99,7 @@ return {
     nmap("<leader>dU", set_dap_ex_bp('Unhandled'),
       "[D]ebug [U]handled (only) exception catching")
 
-    dap.listeners.after.event_initialized['dapui_config'] = dapm.trouggle
+    dap.listeners.after.event_initialized['dapui_config'] = dapm.toggle_fn(dapm.REPL_TROUBLE)
     -- dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     -- dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
