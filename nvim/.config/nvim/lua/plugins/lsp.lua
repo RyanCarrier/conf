@@ -63,11 +63,14 @@ return {
           vim.notify('client is nil')
           return
         end
-        if client.name == "eslint" then
+        if client.name == "eslint" or client.name == "dartls" then
           client.server_capabilities.documentFormattingProvider = true
         end
         -- Only attach to clients that support document formatting
-        if not client.server_capabilities.documentFormattingProvider then return end
+        if not client.server_capabilities.documentFormattingProvider then
+          if require('modules.debug').enabled then vim.notify(client.name .. ' can not format') end
+          return
+        end
         --eslint instead yo
         if client.name == 'tsserver' then return end
         -- Create an autocmd that will run *before* we save the buffer.
@@ -77,7 +80,7 @@ return {
           buffer = bufnr,
           callback = function()
             if not format_is_enabled then
-              vim.notify(client.id .. 'FORMAT NOT ENABLED ')
+              if require('modules.debug').enabled then vim.notify(client.id .. ' format not enabled') end
               return
             end
             -- this does not work so it must be when saving is the issue
@@ -86,6 +89,7 @@ return {
             --   return
             -- end
 
+            if require('modules.debug').enabled then vim.notify(client.name .. ' FORMATTING') end
             vim.lsp.buf.format({
               -- async = true,
               async = false,
