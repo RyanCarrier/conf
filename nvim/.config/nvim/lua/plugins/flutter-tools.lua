@@ -63,13 +63,6 @@ return {
                 auto_open_browser = false,
             },
         })
-        vim.keymap.set("n", "<leader>fl", function()
-            require("telescope").extensions.flutter.commands()
-        end, { desc = "[Fl]utter" })
-        vim.keymap.set("n", "<leader>fr", "<cmd>FlutterRestart<cr>",
-            { desc = "[F]lutter [R]estart (not reload, just save a file bro)" })
-        vim.keymap.set("n", "<leader>fq", "<cmd>FlutterQuit<cr>",
-            { desc = "[F]lutter [Q]uit" })
         require("dap").adapters.dart = {
             type = "executable",
             command = "flutter",

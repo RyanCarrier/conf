@@ -26,3 +26,10 @@ nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 --otherwise we would only do 1x
 --we are also assuming child is the last field lol
 nmap('<leader>wd', 'f(%xx<C-o>bv/child<CR>wd', '[W]rap [D]elete')
+vim.keymap.set("n", "<leader>fl", function()
+	require("telescope").extensions.flutter.commands()
+end, { desc = "[Fl]utter" })
+vim.keymap.set("n", "<leader>fr", "<cmd>FlutterRestart<cr>",
+	{ desc = "[F]lutter [R]estart (not reload, just save a file bro)" })
+vim.keymap.set("n", "<leader>fq", "<cmd>FlutterQuit<cr>",
+	{ desc = "[F]lutter [Q]uit" })

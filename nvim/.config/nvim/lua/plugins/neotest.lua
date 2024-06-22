@@ -2,7 +2,6 @@ return {
     'sidlatau/neotest-dart',
     'nvim-neotest/neotest-go',
     'rouge8/neotest-rust',
-
     {
         "nvim-neotest/neotest",
         dependencies = {
@@ -14,7 +13,6 @@ return {
             'sidlatau/neotest-dart',
             'nvim-neotest/neotest-go',
             'rouge8/neotest-rust',
-
         },
         config = function()
             require('neotest').setup({
@@ -25,7 +23,6 @@ return {
                         command = 'flutter',
                         use_lsp = true,
                     },
-
                 },
                 summary = {
                     -- default values but lets me see the default keymaps/change then

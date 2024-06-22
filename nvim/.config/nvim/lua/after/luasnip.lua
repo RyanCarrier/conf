@@ -16,6 +16,6 @@ ls.config.set_config({
 	},
 })
 
-for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snips/*.lua", true)) do
-	loadfile(ft_path)()
-end
+-- for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snips/*.lua", true)) do
+-- 	loadfile(ft_path)()
+-- end

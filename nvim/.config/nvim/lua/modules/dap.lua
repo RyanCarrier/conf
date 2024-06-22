@@ -23,7 +23,7 @@ local function trouggle(open)
 	-- fucking v3 trouble uses async for everything so you can't do any sequential shit
 	if not open then
 		dapui.close({ layout = M.REPL_TROUBLE })
-		t.close("diagnostics")
+		t.close()
 		return
 	end
 	-- i don't even know if this works anymore, but it  might so we will keep it???/
@@ -39,7 +39,7 @@ local function trouggle(open)
 	vim.cmd("wincmd j")
 	local winwidth = vim.fn.winwidth(0)
 	t.open({
-		mode = "diagnostics",
+		mode = "diagnostics_workspace",
 		win = {
 			type = "split",
 			relative = "win",

@@ -59,57 +59,57 @@ return {
       vim.cmd.colorscheme('tokyonight-night')
     end
   },
-  {
-    'rafamadriz/neon',
-    name = 'neon',
-    config = function()
-      vim.g.neon_style = "darker"
-      -- vim.cmd.colorscheme('neon')
-    end,
-  },
-  {
-    "bluz71/vim-moonfly-colors",
-    name = "moonfly",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- vim.cmd.colorscheme('moonfly')
-    end
-  },
-
-  {
-    'navarasu/onedark.nvim',
-    config = function()
-      require('onedark').setup({
-        style = 'darker',
-        -- toggle_style_key = '<leader>tt',
-      })
-      -- require('onedark').load()
-      -- vim.cmd.colorscheme('onedark')
-    end
-  },
-  {
-    'olimorris/onedarkpro.nvim',
-    -- vim.cmd("colorscheme onedark")
-    -- onedark, onelight, onedark_vivid, onedark_dark
-    config = function()
-      require('onedarkpro').setup({
-        highlights = {},
-      })
-      local options = { "onedark", "onelight", "onedark_vivid", "onedark_dark" }
-      -- vim.cmd.colorscheme(options[4])
-    end
-  },
-  {
-    'marko-cerovac/material.nvim',
-    -- vim.cmd("colorscheme material")
-    -- vim.g.material_style = "deep ocean"
-    -- darker, lighter, oceanic, palenight, deep ocean
-    config = function()
-      local options = { "darker", "lighter", "oceanic", "palenight", "deep ocean" }
-      -- vim.g.material_style = options[1]
-      -- vim.cmd.colorscheme('material')
-    end
-  },
+  -- {
+  --   'rafamadriz/neon',
+  --   name = 'neon',
+  --   config = function()
+  --     vim.g.neon_style = "darker"
+  --     -- vim.cmd.colorscheme('neon')
+  --   end,
+  -- },
+  -- {
+  --   "bluz71/vim-moonfly-colors",
+  --   name = "moonfly",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- vim.cmd.colorscheme('moonfly')
+  --   end
+  -- },
+  --
+  -- {
+  --   'navarasu/onedark.nvim',
+  --   config = function()
+  --     require('onedark').setup({
+  --       style = 'darker',
+  --       -- toggle_style_key = '<leader>tt',
+  --     })
+  --     -- require('onedark').load()
+  --     -- vim.cmd.colorscheme('onedark')
+  --   end
+  -- },
+  -- {
+  --   'olimorris/onedarkpro.nvim',
+  --   -- vim.cmd("colorscheme onedark")
+  --   -- onedark, onelight, onedark_vivid, onedark_dark
+  --   config = function()
+  --     require('onedarkpro').setup({
+  --       highlights = {},
+  --     })
+  --     local options = { "onedark", "onelight", "onedark_vivid", "onedark_dark" }
+  --     -- vim.cmd.colorscheme(options[4])
+  --   end
+  -- },
+  -- {
+  --   'marko-cerovac/material.nvim',
+  --   -- vim.cmd("colorscheme material")
+  --   -- vim.g.material_style = "deep ocean"
+  --   -- darker, lighter, oceanic, palenight, deep ocean
+  --   config = function()
+  --     local options = { "darker", "lighter", "oceanic", "palenight", "deep ocean" }
+  --     -- vim.g.material_style = options[1]
+  --     -- vim.cmd.colorscheme('material')
+  --   end
+  -- },
 
 }

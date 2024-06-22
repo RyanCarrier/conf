@@ -1,16 +1,17 @@
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = 'What did I last have open[?]' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
+local t_builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>?', t_builtin.oldfiles, { desc = 'What did I last have open[?]' })
+vim.keymap.set('n', '<leader><space>', t_builtin.buffers, { desc = 'Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
     -- You can pass additional configuration to telescope to change theme, layout, etc.
-    require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    t_builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
         -- winblend = 10,
         -- previewer = false,
     })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>t?', require('telescope.builtin').commands, { desc = '[T]elescope commands[?]' })
-vim.keymap.set('n', '<leader>th', require('telescope.builtin').command_history, { desc = '[T]elescope [H]istory' })
-vim.keymap.set('n', '<leader>tr', require('telescope.builtin').resume, { desc = '[T]elescope [R]esume' })
+vim.keymap.set('n', '<leader>t?', t_builtin.commands, { desc = '[T]elescope commands[?]' })
+vim.keymap.set('n', '<leader>th', t_builtin.command_history, { desc = '[T]elescope [H]istory' })
+vim.keymap.set('n', '<leader>tr', t_builtin.resume, { desc = '[T]elescope [R]esume' })
 vim.keymap.set('n', '<leader>tq', function()
     local ta = require('telescope.actions');
     -- test this, I want it to work while closed, but might need to go resume, send, close or something
@@ -18,16 +19,17 @@ vim.keymap.set('n', '<leader>tq', function()
     ta.send_to_qflist()
 end, { desc = '[T]elescope [R]esume' })
 
-vim.keymap.set('n', '<leader>pg', require('telescope.builtin').git_files, { desc = '[P]roject [G]it files' })
-vim.keymap.set('n', '<leader>pf', require('telescope.builtin').find_files, { desc = '[P]rojcet [F]iles' })
-vim.keymap.set('n', '<C-p>', require('telescope.builtin').git_files,
+
+vim.keymap.set('n', '<leader>pg', t_builtin.git_files, { desc = '[P]roject [G]it files' })
+vim.keymap.set('n', '<leader>pf', t_builtin.find_files, { desc = '[P]rojcet [F]iles' })
+vim.keymap.set('n', '<C-p>', t_builtin.git_files,
     { desc = "[P]ersonal preference - idk this is from vscode and I'm use to it" })
 
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>tk', require('telescope.builtin').keymaps, { desc = '[T]elescope [K]eymaps' })
+vim.keymap.set('n', '<leader>sh', t_builtin.help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sw', t_builtin.grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>sg', t_builtin.live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sd', t_builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>tk', t_builtin.keymaps, { desc = '[T]elescope [K]eymaps' })
 
 -- Diagnostic keymaps
 -- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -100,20 +102,21 @@ vim.keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true, desc 
 -- resizing splits
 -- these keymaps will also accept a range,
 -- for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)`
-vim.keymap.set('n', '<A-h>', require('smart-splits').resize_left, { desc = "Resize Left" })
-vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down, { desc = "Resize Down" })
-vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up, { desc = "Resize Up" })
-vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right, { desc = "Resize Right" })
+local smart_splits = require('smart-splits')
+vim.keymap.set('n', '<A-h>', smart_splits.resize_left, { desc = "Resize Left" })
+vim.keymap.set('n', '<A-j>', smart_splits.resize_down, { desc = "Resize Down" })
+vim.keymap.set('n', '<A-k>', smart_splits.resize_up, { desc = "Resize Up" })
+vim.keymap.set('n', '<A-l>', smart_splits.resize_right, { desc = "Resize Right" })
 -- moving between splits
-vim.keymap.set('n', '<leader>h', require('smart-splits').move_cursor_left, { desc = "Move to" })
-vim.keymap.set('n', '<leader>j', require('smart-splits').move_cursor_down, { desc = "Move to" })
-vim.keymap.set('n', '<leader>k', require('smart-splits').move_cursor_up, { desc = "Move to" })
-vim.keymap.set('n', '<leader>l', require('smart-splits').move_cursor_right, { desc = "Move to" })
+vim.keymap.set('n', '<leader>h', smart_splits.move_cursor_left, { desc = "Move to" })
+vim.keymap.set('n', '<leader>j', smart_splits.move_cursor_down, { desc = "Move to" })
+vim.keymap.set('n', '<leader>k', smart_splits.move_cursor_up, { desc = "Move to" })
+vim.keymap.set('n', '<leader>l', smart_splits.move_cursor_right, { desc = "Move to" })
 -- swapping buffers between windows
-vim.keymap.set('n', '<leader><A-h>', require('smart-splits').swap_buf_left, { desc = "Swap with" })
-vim.keymap.set('n', '<leader><A-j>', require('smart-splits').swap_buf_down, { desc = "Swap with" })
-vim.keymap.set('n', '<leader><A-k>', require('smart-splits').swap_buf_up, { desc = "Swap with" })
-vim.keymap.set('n', '<leader><A-l>', require('smart-splits').swap_buf_right, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-h>', smart_splits.swap_buf_left, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-j>', smart_splits.swap_buf_down, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-k>', smart_splits.swap_buf_up, { desc = "Swap with" })
+vim.keymap.set('n', '<leader><A-l>', smart_splits.swap_buf_right, { desc = "Swap with" })
 
 -- remap increment/decrement (just inc)
 -- (note that C-x dec)
@@ -214,3 +217,12 @@ nmapt("<leader>xd",
 
 vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
 vim.keymap.set('n', '<leader>xn', trouble_next, { silent = true, noremap = true, desc = "Trouble [N]ext" })
+
+vim.keymap.set('n', '<leader>to', '<cmd>TodoTelescope<cr>',
+    { desc = "[To]do list", silent = true, noremap = true })
+
+local o = require('overseer')
+vim.keymap.set('n', '<leader>taa', o.run_template, { desc = '[Ta]sks' })
+vim.keymap.set('n', '<leader>tao', o.toggle, { desc = '[Ta]sks [O]pen' })
+vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
+    { desc = "[C]ode actions [P]review" })

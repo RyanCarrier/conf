@@ -1,16 +1,11 @@
 return {
   {
     'rcarriga/nvim-notify',
-    config = function()
-      vim.notify = require('notify')
-    end
+    config = function() vim.notify = require('notify') end
   },
-
-
   "luckasRanarison/tree-sitter-hypr",
-
   "ThePrimeagen/vim-be-good",
-  "nvim-tree/nvim-web-devicons", -- optional dependency
+  "nvim-tree/nvim-web-devicons",
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -21,12 +16,13 @@ return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
-  -- 'nvim-tree/nvim-tree.lua',
   -- bottom bar stuff make fancy
-  'gelguy/wilder.nvim',
-  'stevearc/dressing.nvim',
+  -- 'gelguy/wilder.nvim', -- this might be cool but need to set keymaps etc(does cmdline highlithgting and auto complete)
+  'stevearc/dressing.nvim', --nice selector ui
   {
-    'saecki/crates.nvim',
+    'saecki/crates.nvim',   -- it is nice for rust crates stuff, TODO: more here, cause you can  prompt for things like features to select from
+    -- but also can rustaceanvim do it?
+    -- https://github.com/Saecki/crates.nvim/wiki/Documentation-v0.4.0
     tag = 'stable',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
@@ -41,18 +37,17 @@ return {
     end
   },
   {
+    -- tasks
     'stevearc/overseer.nvim',
-    -- This isn't working with my build runner task at the moment, but I don't care too much
-    -- TODO: this
     config = function()
-      local o = require('overseer')
-      o.setup()
-      vim.keymap.set('n', '<leader>taa', o.run_template, { desc = '[Ta]sks' })
-      vim.keymap.set('n', '<leader>tao', o.toggle, { desc = '[Ta]sks [O]pen' })
+      require('overseer').setup()
     end
   },
-  'akinsho/bufferline.nvim',
+
+  -- i dont' think i use this cause i don't use tabs tbh
+  -- 'akinsho/bufferline.nvim',
   {
+    --highlights when you undo, is nice
     'tzachar/highlight-undo.nvim',
     config = function()
       require('highlight-undo').setup({
@@ -65,8 +60,8 @@ return {
       })
     end
   },
-
   {
+    -- this bad boy is slow but also i like it lets me jump out of nvim to tmux too
     'mrjones2014/smart-splits.nvim',
     config = function()
       require('smart-splits').setup({
@@ -75,16 +70,21 @@ return {
     end,
   },
 
-  { 'folke/noice.nvim',    enabled = false },
+  {
+    -- just fancy things
+    'folke/noice.nvim',
+    opts = {},
+    -- enabled = false,
+  },
 
   --undo list
   'mbbill/undotree',
+  -- surround stuff
+  'machakann/vim-sandwich',
+  -- zenmode, never used it tho
+  -- 'folke/zen-mode.nvim',
   {
-    'machakann/vim-sandwich',
-  },
-  -- zenmode
-  'folke/zen-mode.nvim',
-  {
+    -- bless file browser
     'stevearc/oil.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
@@ -95,8 +95,6 @@ return {
   --     require('incline').setup()
   --   end
   -- },
-  -- move language support
-  "rvmelkonian/move.vim",
 
   --highlight hovered
   "RRethy/vim-illuminate",
@@ -121,9 +119,6 @@ return {
     dependencies = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons", -- optional dependency
-    },
-    opts = {
-      -- configurations go here
     },
     config = function()
       -- triggers CursorHold event faster
@@ -159,10 +154,6 @@ return {
       options = {
         -- icons_enabled = false,
         theme = 'tokyonight-night', -- -night', --'onedark',
-        -- theme = 'material', --'tokyonight', -- -night', --'onedark',
-        --component_separators = '|',
-        --section_separators = '',
-
       },
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -179,7 +170,6 @@ return {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
-
     config = function()
       -- local highlight = { "CursorColumn" }
       -- local highlight = { "CursorColumn", "Whitespace" }
@@ -193,9 +183,8 @@ return {
       })
     end
   },
-
-  -- "gc" to comment visual regions/lines
   {
+    -- "gc" to comment visual regions/lines
     'numToStr/Comment.nvim',
     opts = {},
   },
@@ -206,27 +195,11 @@ return {
         { desc = "[T]reesitter [P]layground", noremap = true, silent = true })
     end
   },
-  -- {
-  -- disabling this for now, not sure i use it or use it properly anyway, and don't really
-  -- care for the ) binding and i wanna steal it
-  --   "windwp/nvim-autopairs",
-  --   config = function()
-  --     require("nvim-autopairs").setup({})
-  --   end
-  -- },
-  -- {
-  --   --show diag in top right
-  --   'dgagn/diagflow.nvim',
-  --   opts = {
-  --     toggle_event = { "InsertEnter" },
-  --     update_event = { "DiagnosticChanged" },
-  --   }
-  -- },
   {
     "HampusHauffman/block.nvim",
     config = function()
       require("block").setup({
-        percent = 0.95,
+        percent = 0.9,
       })
     end
   },
@@ -241,6 +214,7 @@ return {
   },
   -- {
   -- maybe later when i care
+  -- pre sure this is for like => to (){}
   --   'Wansmer/treesj',
   --   -- TODO: double check this is enough to set the default keys, might have to change in the config too
   --   keys = { '<space>nm', '<space>nj', '<space>ns' },
@@ -256,7 +230,8 @@ return {
       require('numb').setup({})
     end
   },
-  { 'abecodes/tabout.nvim' },
+  -- shoudl be able to just tab to get out of things that aren't strings
+  'abecodes/tabout.nvim',
   -- {
   --   -- testing this idk if i will keep it
   --   'folke/flash.nvim',
@@ -264,10 +239,6 @@ return {
   -- },
   {
     "aznhe21/actions-preview.nvim",
-    config = function()
-      vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
-        { desc = "[C]ode actions [P]review" })
-    end,
   },
   "delphinus/vim-firestore",
   {
@@ -276,5 +247,4 @@ return {
       "gbprod/none-ls-shellcheck.nvim",
     },
   },
-
 }

@@ -4,6 +4,7 @@ local nvmap = lsp.nvmap;
 local nnomap = lsp.nnomap;
 local filter = require('after.lsp.codeaction').filter_apply_fn;
 local M = {}
+local has_custom_snips = { "dartls", "rust_analyzer" }
 M.on_attach = function(client, bufnr)
 	-- vim.notify('on_attach:' .. vim.inspect(client.name));
 	local isDebug = require('modules.debug').enabled
@@ -99,5 +100,7 @@ M.on_attach = function(client, bufnr)
 		})
 	end
 	, '[D]iagnostic [V]irtual Text [D]isable ahhahahaah toggle')
+	require('after.lsp.dap')
+	require('after.lsp.snips').try_load(client)
 end
 return M
