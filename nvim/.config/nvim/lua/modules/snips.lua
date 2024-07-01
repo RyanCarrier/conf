@@ -12,22 +12,29 @@ local function tableContains(table, value)
 	return false
 end
 
+
 local function load_snips(client)
 	local debug = require('modules.debug').enabled
 	local expected_path = 'lua/snips/' .. client.name .. '.lua';
 	local files = vim.api.nvim_get_runtime_file(expected_path, true)
+	local loaded = false
 	if #files == 0 then
 		vim.notify('no custom snips for ' .. client.name .. " at " .. expected_path)
-		return
+		return loaded
 	end
 	for _, ft_path in ipairs(files) do
 		if debug then vim.notify("loading: " .. vim.inspect(ft_path)) end
 		loadfile(ft_path)()
+		loaded = true
 		if debug then vim.notify("loaded: " .. vim.inspect(ft_path)) end
 	end
+	return loaded
 end
 
 
+--- Try to load custom snippets for a client
+--- @param client table
+--- @return boolean if snippets were loaded
 function M.try_load(client)
 	local debug = require('modules.debug').enabled
 	if debug then
@@ -35,18 +42,25 @@ function M.try_load(client)
 	end
 	if not tableContains(has_custom_snips, client.name) then
 		if debug then vim.notify('no custom snips') end
-		return
+		return false
 	end
 	if tableContains(M.loaded, client.name) then
 		if debug then vim.notify('already loaded') end
-		return
+		return false
 	end
 	table.insert(M.loaded, client.name)
-	load_snips(client)
+	return load_snips(client)
 end
 
 function M.reload(client)
 	load_snips(client)
+end
+
+--- Check if a client has custom snippets
+--- @param client table
+--- @return boolean
+function M.has_custom_snips(client)
+	return tableContains(has_custom_snips, client.name)
 end
 
 return M

@@ -43,7 +43,7 @@ vim.keymap.set('n', '))', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 -- vim.keymap.set('n', ']e', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
-vim.keymap.set('n', '<space>ss', "<cmd>source ~/.config/nvim/lua/after/luasnip.lua<CR>", { desc = '[S]ource [S]nippets' })
+-- vim.keymap.set('n', '<space>ss', "<cmd>source ~/.config/nvim/lua/after/luasnip.lua<CR>", { desc = '[S]ource [S]nippets' })
 local luasnip = require('luasnip')
 vim.keymap.set({ "i", "s" }, "<C-s>", function()
     if luasnip.expand_or_jumpable() then
