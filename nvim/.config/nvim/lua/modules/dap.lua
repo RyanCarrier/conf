@@ -21,6 +21,7 @@ M.REPL_LEFT_LOL = 5
 ---@param open boolean
 local function trouggle(open)
 	-- fucking v3 trouble uses async for everything so you can't do any sequential shit
+	t.close()
 	if not open then
 		dapui.close({ layout = M.REPL_TROUBLE })
 		t.close()
