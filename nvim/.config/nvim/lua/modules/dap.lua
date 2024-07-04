@@ -1,6 +1,7 @@
 -- this is the dumbest shit so i think it really suits me
 local M = {}
 local dapui = require('dapui')
+local dap = require('dap')
 local t = require('trouble')
 
 ---@alias layout_option integer
@@ -12,7 +13,7 @@ M.REPL_CONSOLE = 2
 ---@type layout_option
 M.REPL_TROUBLE = 3
 ---@type layout_option
-M.REPL_MICRO = 4
+M.REPL = 4
 ---@type layout_option
 M.REPL_LEFT_LOL = 5
 
@@ -21,21 +22,27 @@ M.REPL_LEFT_LOL = 5
 ---@param open boolean
 local function trouggle(open)
 	-- fucking v3 trouble uses async for everything so you can't do any sequential shit
-	t.close()
 	if not open then
-		dapui.close({ layout = M.REPL_TROUBLE })
+		-- dapui.close({ layout = M.REPL_TROUBLE })
+		dap.repl.close()
 		t.close()
 		return
 	end
+	t.close()
+	-- start creation of the ui buttons????
+	dapui.open({ layout = M.REPL })
+	dapui.close({ layout = M.REPL })
+	dap.repl.close()
 	-- i don't even know if this works anymore, but it  might so we will keep it???/
 	-- VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 	--have a secret small layout for a mini repl (size 1), to enable the controlls
 	-- controlls will then be passed to any other repl window too
 	-- there was some issue doing this before trouble, I don't remember what,
 	-- no harm but it works here... just weird
-	dapui.open({ layout = M.REPL_MICRO })
-	dapui.close({ layout = M.REPL_MICRO })
-	dapui.open({ layout = M.REPL_TROUBLE })
+	-- dapui.open({ layout = M.REPL })
+	-- dapui.close({ layout = M.REPL })
+	-- dapui.open({ layout = M.REPL_TROUBLE })
+	dap.repl.open({ height = 20 })
 	-- i want to die
 	vim.cmd("wincmd j")
 	local winwidth = vim.fn.winwidth(0)
@@ -50,6 +57,9 @@ local function trouggle(open)
 			},
 		},
 	})
+	-- select back to repl to active buttons?
+	-- it didn't work i think the app needs to be fully running?
+	-- vim.cmd("wincmd h")
 	vim.cmd("wincmd k")
 end
 
@@ -77,7 +87,7 @@ M.layouts = {
 		fn = trouggle,
 	},
 	{
-		title = "REPL_MICRO",
+		title = "REPL",
 		open = false,
 		fn = nil,
 	},
@@ -111,7 +121,7 @@ M.dapui_layouts = {
 	},
 	{ elements = { "repl", "console", }, size = 10, position = "bottom" },
 	{ elements = { "repl" },             size = 20, position = "bottom" },
-	{ elements = { "repl" },             size = 1,  position = "bottom" },
+	{ elements = { "repl" },             size = 20, position = "bottom" },
 	{ elements = { "repl" },             size = 40, position = "left" },
 }
 

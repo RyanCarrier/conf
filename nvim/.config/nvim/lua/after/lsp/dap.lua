@@ -27,8 +27,9 @@ nmap('<leader>B', function()
 end, "Conditional [B]reakpoint")
 
 -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
+nmap("<F4>", dapm.toggle_fn(dapm.REPL), "Repl only")
 nmap("<F6>", dapm.toggle_fn(dapm.REPL_TROUBLE), "Trouggle")
-nmap("<F7>", dapm.toggle_fn(dapm.FULL), "FAT")
+nmap("<F7>", dapm.toggle_fn(dapm.FULL), "Full")
 nmap("<F8>", dapm.toggle_fn(dapm.REPL_LEFT_LOL), "BIG REPL LEFT")
 -- nmap("<leader>de", dap.set_exception_breakpoints(""), "[D]ebug [E]xception catch all")
 nmap("<leader>dd", set_dap_ex_bp('default'), "[D]ebug [D]efault exception")

@@ -79,7 +79,7 @@ vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = "delete to void" })
 vim.keymap.set({ 'n', 'v' }, '<leader>n', [[:norm!]], { desc = "Normal mode" })
 vim.keymap.set('v', '<leader>s', [[:s/]], { desc = "Substitituter" })
-vim.keymap.set('n', '<leader>s', [[:%s/]], { desc = "Substitituter" })
+vim.keymap.set('n', '<leader>ss', [[:%s/]], { desc = "Substitituter" })
 vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
 vim.keymap.set('n', "X", '"_X', { desc = "Delete without overwriting register", silent = true, noremap = true })
 
@@ -187,9 +187,10 @@ nmapai('<leader>ait', require("modules.ai.fim").toggle, "[AI] FIM [T]oggle")
 
 
 local t = require('trouble')
-local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
+-- local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
+local trouble_next = t.next;
 -- Lua
-nmapt = function(input, cmd, desc)
+local nmapt = function(input, cmd, desc)
     vim.keymap.set("n", input, cmd, { desc = "[Trouble] " .. desc })
 end
 
