@@ -168,7 +168,31 @@ ls.add_snippets("dart", {
 				fmt("only(left: {}, top: {}, right: {}, bottom: {}),", { i(1, "8"), i(2, "8"), i(3, "8"), i(4, "8") }),
 			}),
 		}),
+	s({ trig = "freezed", name = "freezed" },
+		c(1, {
+			fmt([[
+part '{}.freezed.dart';
+part '{}.g.dart';
 
+@freezed
+abstract class {} with _${} {{
+	const factory {}({{
+		{}	
+	}}) = _{};
+
+	factory {}.fromJson(Map<String, dynamic> json) => _${}FromJson(json);
+}}]], { i(2, "dataclass"), rep(2), i(1, "DataClass"), rep(1), rep(1), i(0), rep(1), rep(1), rep(1) }),
+			fmt([[
+part '{}.freezed.dart';
+
+@freezed
+abstract class {} with _${} {{
+	const factory {}({{
+		{}	
+	}}) = _{};
+}}]], { i(2, "dataclass"), i(1, "DataClass"), rep(1), rep(1), i(0), rep(1) }),
+		})
+	),
 	s({ trig = "ss", name = "setState" },
 		f("setState((){{\n\t{}\n}});", { i(1) })
 	),
