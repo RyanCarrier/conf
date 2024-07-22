@@ -43,6 +43,17 @@ local function count(results, filter)
 	return found
 end
 
+local function get_first(results, filter)
+	for _, result in pairs(results) do
+		for _, action in pairs(result.result or {}) do
+			if string.find(action.title, filter) then
+				return action.title
+			end
+		end
+	end
+	return ""
+end
+
 --- Get the first code action that matches the filter
 --- @param results table
 --- @param filter string
@@ -61,8 +72,10 @@ end
 --- Apply a filter to the code actions and run the first one that matches
 --- the filter.
 --- @param filters table<string> | string
+--- @param apply_not_exact boolean | nil
+---  if true, will apply the first code action even if it has more than 1 match
 --- @return nil
-function M.filter_apply(filters)
+function M.filter_apply(filters, apply_not_exact)
 	-- at this point it should just be a table but idc
 	-- local bufnr = vim.api.nvim_get_current_buf()
 	-- vim.notify("Filtering code actions")
@@ -100,8 +113,11 @@ function M.filter_apply(filters)
 		for _, filter in ipairs(filters) do
 			local countResult = count(results, filter)
 			-- vim.notify("Trying filter[" .. i .. "] " .. filter .. " matched " .. countResult)
+			if countResult > 1 and apply_not_exact then
+				filter = get_first(results, filter)
+				countResult = 1
+			end
 			if countResult == 1 then
-				-- vim.notify("Applying filter " .. filter)
 				if require('modules.debug').enabled then
 					vim.notify("Applying exact Filter:\n" .. get_matched_ca(results, filter))
 				end
@@ -117,11 +133,13 @@ function M.filter_apply(filters)
 end
 
 --- return a function that would apply the filters and run the code action
----@param filters table<string> | string
+--- @param filters table<string> | string
+--- @param apply_not_exact boolean | nil
+---  if true, will apply the first code action even if it has more than 1 match
 ---@return function <nil> The function that applies the filter to an array of values.
-function M.filter_apply_fn(filters)
+function M.filter_apply_fn(filters, apply_not_exact)
 	-- vim.notify("Requesting filter fn " .. filters)
-	return function() M.filter_apply(filters) end
+	return function() M.filter_apply(filters, apply_not_exact) end
 end
 
 return M

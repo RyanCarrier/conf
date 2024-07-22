@@ -23,16 +23,16 @@ M.REPL_LEFT_LOL = 5
 local function trouggle(open)
 	-- fucking v3 trouble uses async for everything so you can't do any sequential shit
 	if not open then
-		-- dapui.close({ layout = M.REPL_TROUBLE })
-		dap.repl.close()
+		dapui.close({ layout = M.REPL })
+		-- dap.repl.close()
 		t.close()
 		return
 	end
 	t.close()
 	-- start creation of the ui buttons????
 	dapui.open({ layout = M.REPL })
-	dapui.close({ layout = M.REPL })
-	dap.repl.close()
+	-- dapui.close({ layout = M.REPL })
+	-- dap.repl.close()
 	-- i don't even know if this works anymore, but it  might so we will keep it???/
 	-- VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 	--have a secret small layout for a mini repl (size 1), to enable the controlls
@@ -42,7 +42,7 @@ local function trouggle(open)
 	-- dapui.open({ layout = M.REPL })
 	-- dapui.close({ layout = M.REPL })
 	-- dapui.open({ layout = M.REPL_TROUBLE })
-	dap.repl.open({ height = 20 })
+	-- dap.repl.open({ height = 20 })
 	-- i want to die
 	vim.cmd("wincmd j")
 	local winwidth = vim.fn.winwidth(0)

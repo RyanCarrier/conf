@@ -5,7 +5,7 @@ nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
 nmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
 nmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
 nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')
-nmap('<leader>fa', filter({ 'required argument', 'missing switch cases' }), '[F]ix required [A]rgument')
+nmap('<leader>fa', filter({ 'required argument', 'missing switch cases' }, true), '[F]ix required [A]rgument')
 
 local qf = filter({ 'Fix All', 'Fix all' })
 nmap('<leader>q', qf, '[Q]uicky fixy')

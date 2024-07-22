@@ -188,7 +188,11 @@ nmapai('<leader>ait', require("modules.ai.fim").toggle, "[AI] FIM [T]oggle")
 
 local t = require('trouble')
 -- local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
-local trouble_next = t.next;
+local trouble_next = function()
+    t.next()
+    t.jump_only()
+    -- t.next(nil, { opts = { jump = true } })
+end;
 -- Lua
 local nmapt = function(input, cmd, desc)
     vim.keymap.set("n", input, cmd, { desc = "[Trouble] " .. desc })
