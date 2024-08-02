@@ -6,63 +6,26 @@ gen.prompts['Fix_Code'] = {
 	replace = true,
 	extract = "```$filetype\n(.-)```"
 }
-wk.register({
-	a = {
-		name = "[A]rtificial Intelligence",
-		i = {
-			name = "[AI]",
-			i = {
-				chatgpt.edit_with_instructions,
-				"Edit with [I]nstructions",
-			},
-			f = {
-				"<cmd>ChatGPTRun fix_bugs<CR>",
-				"[AI] [F]ix bugs",
-			},
-			d = {
-				"<cmd>ChatGPTRun docstring<CR>",
-				"[AI] [D]ocstring",
-			},
-			g = {
-				":Gen<CR>",
-				"[AI] [G]en (ollama)",
-			},
-		}
-	},
-}, {
-	prefix = "<leader>",
-	mode = "v",
-})
-
-wk.register({
-	a = {
-		name = "[A]rtificial Intelligence",
-		i = {
-			name = "[AI]",
-			-- set c in chatgpt so it's not bound if not initialized
-			-- c = {
-			-- 	chatgpt.openChat,
-			-- 	"[AI] [C]hat",
-			-- },
-			p = {
-				chatgpt.selectAwesomePrompt,
-				"[AI] [P]rompt",
-			},
-			o = {
-				":Gen Chat<CR>",
-				"[AI] [O]llama Chat",
-			},
-			g = {
-				":Gen<CR>",
-				"[AI] [G]en (ollama)",
-			},
-			m = {
-				gen.select_model,
-				"[AI] Select [M]odel (ollama)",
-			},
+wk.add(
+	{
+		{
+			mode = { "v" },
+			{ "<leader>a",   group = "[A]rtificial Intelligence" },
+			{ "<leader>ai",  group = "[AI]" },
+			{ "<leader>aid", "<cmd>ChatGPTRun docstring<CR>",    desc = "[AI] [D]ocstring" },
+			{ "<leader>aif", "<cmd>ChatGPTRun fix_bugs<CR>",     desc = "[AI] [F]ix bugs" },
+			{ "<leader>aig", ":Gen<CR>",                         desc = "[AI] [G]en (ollama)" },
+			{ "<leader>aii", chatgpt.edit_with_instructions,     desc = "Edit with [I]nstructions" },
 		},
-	},
-}, {
-	prefix = "<leader>",
-	mode = "n",
-})
+	})
+
+
+wk.add(
+	{
+		{ "<leader>a",   group = "[A]rtificial Intelligence" },
+		{ "<leader>ai",  group = "[AI]" },
+		{ "<leader>aig", ":Gen<CR>",                         desc = "[AI] [G]en (ollama)" },
+		{ "<leader>aim", gen.select_model,                   desc = "[AI] Select [M]odel (ollama)" },
+		{ "<leader>aio", ":Gen Chat<CR>",                    desc = "[AI] [O]llama Chat" },
+		{ "<leader>aip", chatgpt.selectAwesomePrompt,        desc = "[AI] [P]rompt" },
+	})

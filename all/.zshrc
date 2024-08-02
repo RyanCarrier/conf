@@ -29,3 +29,4 @@ plugins=(git golang adb colored-man-pages rust command-not-found common-aliases 
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile.sh
+source /usr/share/nvm/init-nvm.sh

@@ -1,5 +1,5 @@
 local t_builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>?', t_builtin.oldfiles, { desc = 'What did I last have open[?]' })
+-- vim.keymap.set('n', '<leader>?', t_builtin.oldfiles, { desc = 'What did I last have open[?]' })
 vim.keymap.set('n', '<leader><space>', t_builtin.buffers, { desc = 'Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
     -- You can pass additional configuration to telescope to change theme, layout, etc.

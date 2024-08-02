@@ -9,7 +9,7 @@ local function filter_apply(filter)
 	vim.lsp.buf.code_action({
 		apply = true,
 		filter = function(action)
-			return string.find(action.title, filter) ~= nil
+			return string.find(string.lower(action.title), filter) ~= nil
 		end
 	})
 end
@@ -76,6 +76,18 @@ end
 ---  if true, will apply the first code action even if it has more than 1 match
 --- @return nil
 function M.filter_apply(filters, apply_not_exact)
+	if filters == nil then
+		vim.notify("No filters provided")
+		return
+	end
+	-- if filters is a string, convert it to a table
+	if type(filters) == "string" then
+		filters = { filters }
+	end
+	-- loop through filters and convert all to lower case
+	for i, filter in ipairs(filters) do
+		filters[i] = string.lower(filter)
+	end
 	-- at this point it should just be a table but idc
 	-- local bufnr = vim.api.nvim_get_current_buf()
 	-- vim.notify("Filtering code actions")
@@ -91,22 +103,15 @@ function M.filter_apply(filters, apply_not_exact)
 			diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
 		}
 	}
-	if filters == nil then
-		vim.notify("No filters provided")
-		return
-	end
-	-- if filters is a string, convert it to a table
-	if type(filters) == "string" then
-		filters = { filters }
-	end
 
 
 	vim.lsp.buf_request_all(bufnr, method, params, function(results)
 		-- vim.notify(vim.inspect(results))
-		local all_actions = ""
-		for _, result in pairs(results) do
-			for _, action in pairs(result.result or {}) do
-				all_actions = all_actions .. action.title .. "\n"
+		-- local all_actions = ""
+		for i, result in pairs(results) do
+			for j, action in pairs(result.result or {}) do
+				results[i].result[j].title = string.lower(action.title)
+				-- all_actions = all_actions .. action.title .. "\n"
 			end
 		end
 		-- vim.notify("All actions:\n" .. all_actions)

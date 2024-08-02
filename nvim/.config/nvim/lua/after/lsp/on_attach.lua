@@ -102,9 +102,9 @@ M.on_attach = function(client, bufnr)
 	require('after.lsp.dap')
 	local snips = require('modules.snips')
 	if snips.has_custom_snips(client) then
-		vim.keymap.set('n', '<space>ss', function()
+		vim.keymap.set('n', '<space>sn', function()
 			snips.reload(client)
-		end, { desc = '[S]ource [S]nippets' })
+		end, { desc = '[S]ource [Sn]ippets' })
 		snips.try_load(client)
 	end
 end
