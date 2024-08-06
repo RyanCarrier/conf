@@ -69,7 +69,6 @@ alias rm="rm" #overwrite oh my zsh rm -i
 alias xo="xdg-open"
 alias p1="ping 1.1.1.1"
 alias ip='ip -color=auto'
-alias open='xdg-open'
 alias vim='nvim'
 alias grep='rg'
 alias neovide='env -u WAYLAND_DISPLAY neovide'
