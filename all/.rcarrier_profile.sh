@@ -34,6 +34,7 @@ if [ -x "$(command -v rustc >/dev/null 2>&1)" ]; then
 	export RUST_SRC_PATH
 fi
 
+#?? idk
 fpath+=~/.zfunc
 
 if [ -z "$ZSH_NAME" ]; then
@@ -94,8 +95,11 @@ alias tl="tmux ls"
 alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
 # unset gl
-alias task="go-task"
+
 alias feh="feh --scale-down"
+if command -v go-task &>/dev/null; then
+	alias task="go-task"
+fi
 
 #lol
 function tng() {
@@ -171,6 +175,10 @@ fi
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
 	echo -e "no tmux theme;\ngit clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack"
 fi
-
 export DEFAULT_USER="rcarrier"
 unsetopt nomatch
+if [ "$(uname)" = "Darwin" ]; then
+	include "$HOME/.mac.sh"
+else
+	source /usr/share/nvm/init-nvm.sh
+fi

@@ -3,3 +3,4 @@ test.sh
 .luarc.json
 lazy-lock.json
 all/.host_profile
+*.DS_Store

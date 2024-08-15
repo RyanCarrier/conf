@@ -28,6 +28,7 @@ return {
                         "txt",
                         "yml",
                         "yaml",
+                        "hcl",
                     },
                     -- why won't you work
                     -- extra_filetypes = { "toml" },
