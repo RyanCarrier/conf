@@ -117,7 +117,7 @@ function tng() {
 	t neww -d -t 'gym_score' -n 'emulator'
 	tmux send-keys -t gym_score:emulator 'task emulator' Enter
 	tmux send-keys -t gym_score:vim 'vim ./' Enter
-	ta -t gym_score
+	ta gym_score
 }
 
 function touche() {
