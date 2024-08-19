@@ -88,7 +88,7 @@ alias gb="git branch"
 alias gc="git checkout"
 alias lns="ln -s"
 alias t="tmux"
-alias ta="tmux attach"
+# alias ta="tmux attach"
 alias tn="tmux new-session -s"
 alias tl="tmux ls"
 ## Project specific
@@ -100,6 +100,15 @@ alias feh="feh --scale-down"
 if command -v go-task &>/dev/null; then
 	alias task="go-task"
 fi
+
+function ta() {
+	if [ -z "$1" ]; then
+		tmux attach
+	else
+		tmux attach -t "$1"
+	fi
+
+}
 
 #lol
 function tng() {
