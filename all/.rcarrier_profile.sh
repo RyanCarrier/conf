@@ -88,7 +88,7 @@ alias gb="git branch"
 alias gc="git checkout"
 alias lns="ln -s"
 alias t="tmux"
-alias ta="tmux attach"
+# alias ta="tmux attach"
 alias tn="tmux new-session -s"
 alias tl="tmux ls"
 ## Project specific
@@ -101,6 +101,15 @@ if command -v go-task &>/dev/null; then
 	alias task="go-task"
 fi
 
+function ta() {
+	if [ -z "$1" ]; then
+		tmux attach
+	else
+		tmux attach -t "$1"
+	fi
+
+}
+
 #lol
 function tng() {
 	jg
@@ -108,7 +117,7 @@ function tng() {
 	t neww -d -t 'gym_score' -n 'emulator'
 	tmux send-keys -t gym_score:emulator 'task emulator' Enter
 	tmux send-keys -t gym_score:vim 'vim ./' Enter
-	ta -t gym_score
+	ta gym_score
 }
 
 function touche() {
