@@ -24,6 +24,9 @@ export PATH=$PATH:"$ANDROID_SDK_ROOT/tools/bin"
 export PATH=$PATH:"$HOME/.pub-cache/bin"
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
+#RUBY
+export GEM_HOME="$(gem env user_gemhome)"
+export PATH="$PATH:$GEM_HOME/bin"
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
