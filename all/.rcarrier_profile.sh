@@ -25,7 +25,10 @@ export PATH=$PATH:"$HOME/.pub-cache/bin"
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
 #RUBY
-export GEM_HOME="$(gem env user_gemhome)"
+
+if [ -x "$(command -v gem >/dev/null 2>&1)" ]; then
+	export GEM_HOME="$(gem env user_gemhome)"
+fi
 export PATH="$PATH:$GEM_HOME/bin"
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
