@@ -143,6 +143,10 @@ end
 ls.add_snippets("dart", {
 
 	-- TODO: make one for to string, make one for equality, maybe one for compareto idk
+	s({ trig = "cs", name = "Theme of context" },
+		fmt("ColorScheme cs = Theme.of(context).colorScheme{};", i(1, "")),
+		fmt("ColorScheme cs = theme.colorScheme{};", i(1, "")),
+	),
 	s({ trig = "theme", name = "Theme of context" },
 		fmt("ThemeData theme = Theme.of(context){};", i(1, ""))
 	),
