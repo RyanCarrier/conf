@@ -28,6 +28,21 @@ local function make_position_param()
 	return { line = row, character = col_encoded }
 end
 
+local function apply_to_codeactions(apply)
+	local bufnr = 0
+	local method = 'textDocument/codeAction'
+	local position = make_position_param()
+	local params = {
+		textDocument = { uri = vim.uri_from_bufnr(bufnr) },
+		range = { start = position, ['end'] = position },
+		context = {
+			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
+			diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
+		}
+	}
+	return vim.lsp.buf_request_all(bufnr, method, params, apply)
+end
+
 
 -- count how many filter matches in ca results
 local function count(results, filter)
@@ -43,22 +58,23 @@ local function count(results, filter)
 	return found
 end
 
-local function get_first(results, filter)
-	for _, result in pairs(results) do
-		for _, action in pairs(result.result or {}) do
-			if string.find(action.title, filter) then
-				return action.title
+function M.has_action(filter)
+	filter = string.lower(filter)
+	return apply_to_codeactions(function(results)
+		for i, result in pairs(results) do
+			for j, action in pairs(result.result or {}) do
+				results[i].result[j].title = string.lower(action.title)
 			end
 		end
-	end
-	return ""
+		return count(results, filter) > 0
+	end)
 end
 
 --- Get the first code action that matches the filter
 --- @param results table
 --- @param filter string
---- @return string
-local function get_matched_ca(results, filter)
+--- @return string | nil
+function M.get_first(results, filter)
 	for _, result in pairs(results) do
 		for _, action in pairs(result.result or {}) do
 			if string.find(action.title, filter) then
@@ -66,7 +82,22 @@ local function get_matched_ca(results, filter)
 			end
 		end
 	end
-	return "Idiot"
+	return nil
+end
+
+--- Get the first code action that matches the filter
+--- @param results table
+--- @param filter string
+--- @return string | nil
+function M.get_matched_ca(results, filter)
+	for _, result in pairs(results) do
+		for _, action in pairs(result.result or {}) do
+			if string.find(action.title, filter) then
+				return action.title
+			end
+		end
+	end
+	return nil
 end
 
 --- Apply a filter to the code actions and run the first one that matches
@@ -91,21 +122,9 @@ function M.filter_apply(filters, apply_not_exact)
 	-- at this point it should just be a table but idc
 	-- local bufnr = vim.api.nvim_get_current_buf()
 	-- vim.notify("Filtering code actions")
+
 	if require('modules.debug').enabled then vim.notify("requesting filters;" .. vim.inspect(filters)) end
-	local bufnr = 0
-	local method = 'textDocument/codeAction'
-	local position = make_position_param()
-	local params = {
-		textDocument = { uri = vim.uri_from_bufnr(bufnr) },
-		range = { start = position, ['end'] = position },
-		context = {
-			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
-			diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
-		}
-	}
-
-
-	vim.lsp.buf_request_all(bufnr, method, params, function(results)
+	apply_to_codeactions(function(results)
 		-- vim.notify(vim.inspect(results))
 		-- local all_actions = ""
 		for i, result in pairs(results) do
@@ -119,12 +138,17 @@ function M.filter_apply(filters, apply_not_exact)
 			local countResult = count(results, filter)
 			-- vim.notify("Trying filter[" .. i .. "] " .. filter .. " matched " .. countResult)
 			if countResult > 1 and apply_not_exact then
-				filter = get_first(results, filter)
+				local first = M.get_first(results, filter)
+				if filter == nil then
+					vim.notify("ERROR FILTER")
+					return
+				end
+				filter = first or filter
 				countResult = 1
 			end
 			if countResult == 1 then
 				if require('modules.debug').enabled then
-					vim.notify("Applying exact Filter:\n" .. get_matched_ca(results, filter))
+					vim.notify("Applying exact Filter:\n" .. M.get_matched_ca(results, filter))
 				end
 				filter_apply(filter)
 				return

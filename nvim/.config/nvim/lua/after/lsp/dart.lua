@@ -1,5 +1,7 @@
 local nmap = require('after.lsp.generic').nmap
 local filter = require('after.lsp.codeaction').filter_apply_fn;
+local filter_apply = require('after.lsp.codeaction').filter_apply;
+local has_action = require('after.lsp.codeaction').has_action;
 
 nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
 nmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
@@ -26,4 +28,12 @@ nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 --assuming we have a comma lol...
 --otherwise we would only do 1x
 --we are also assuming child is the last field lol
-nmap('<leader>wd', 'f(%xx<C-o>bv/child<CR>wd', '[W]rap [D]elete')
+nmap('<leader>wd',
+	function()
+		if has_action('Remove this widget') then
+			return filter_apply('Remove this widget', true)
+		else
+			return "f(%xx<C-o>bv/child<CR>wd"
+		end
+	end
+	, '[W]rap [D]elete')

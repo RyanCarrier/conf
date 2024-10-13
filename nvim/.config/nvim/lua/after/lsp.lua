@@ -12,7 +12,7 @@ local servers = {
 	-- },
 	pyright = {},
 	-- move_analyzer = {},
-	tsserver = {
+	ts_ls = {
 		format = { enable = false },
 	},
 	eslint = {

@@ -159,6 +159,12 @@ end
 function M.open(layout) return apply(layout, true) end
 
 ---@param layout layout_option
+function M.open_fn(layout) return function() apply(layout, true) end end
+
+---@param layout layout_option
 function M.close(layout) return apply(layout, false) end
+
+---@param layout layout_option
+function M.close_fn(layout) return function() apply(layout, false) end end
 
 return M

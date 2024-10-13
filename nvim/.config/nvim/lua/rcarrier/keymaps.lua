@@ -1,12 +1,7 @@
 local t_builtin = require('telescope.builtin')
--- vim.keymap.set('n', '<leader>?', t_builtin.oldfiles, { desc = 'What did I last have open[?]' })
 vim.keymap.set('n', '<leader><space>', t_builtin.buffers, { desc = 'Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
-    -- You can pass additional configuration to telescope to change theme, layout, etc.
-    t_builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        -- winblend = 10,
-        -- previewer = false,
-    })
+    t_builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({}))
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>t?', t_builtin.commands, { desc = '[T]elescope commands[?]' })
@@ -17,14 +12,13 @@ vim.keymap.set('n', '<leader>tq', function()
     -- test this, I want it to work while closed, but might need to go resume, send, close or something
     -- there is also a ta.open_qflist or smth
     ta.send_to_qflist()
-end, { desc = '[T]elescope [R]esume' })
+end, { desc = '[T]elescope [Q]uestion what i made this for idk' })
 
 
 vim.keymap.set('n', '<leader>pg', t_builtin.git_files, { desc = '[P]roject [G]it files' })
 vim.keymap.set('n', '<leader>pf', t_builtin.find_files, { desc = '[P]rojcet [F]iles' })
 vim.keymap.set('n', '<C-p>', t_builtin.git_files,
     { desc = "[P]ersonal preference - idk this is from vscode and I'm use to it" })
-
 vim.keymap.set('n', '<leader>sh', t_builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', t_builtin.grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', t_builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -32,18 +26,11 @@ vim.keymap.set('n', '<leader>sd', t_builtin.diagnostics, { desc = '[S]earch [D]i
 vim.keymap.set('n', '<leader>tk', t_builtin.keymaps, { desc = '[T]elescope [K]eymaps' })
 
 -- Diagnostic keymaps
--- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
--- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
--- vim.keymap.set('n', '[[', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
--- vim.keymap.set('n', ']]', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '((', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', '))', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 -- make this next and prev error
--- vim.keymap.set('n', '[e', vim.diagnostic.goto_next, { desc = 'Go to previous diagnostic message' })
--- vim.keymap.set('n', ']e', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
--- vim.keymap.set('n', '<space>ss', "<cmd>source ~/.config/nvim/lua/after/luasnip.lua<CR>", { desc = '[S]ource [S]nippets' })
 local luasnip = require('luasnip')
 vim.keymap.set({ "i", "s" }, "<C-s>", function()
     if luasnip.expand_or_jumpable() then
@@ -90,14 +77,6 @@ vim.keymap.set('n', 'N', "Nzzzv", { desc = "[N]ext but centered" })
 
 vim.keymap.set("n", "<leader>cx", "<cmd>!chmod +x %<CR>", { silent = true, desc = 'chmod +x' })
 
--- need to learn about cnext and lnext
--- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
--- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
--- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
--- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
---
---
---
 -- recommended mappings
 -- resizing splits
 -- these keymaps will also accept a range,
@@ -130,6 +109,7 @@ vim.keymap.set('n', '<leader>gl', "<cmd>:Git log<CR>", { desc = "[G]it [L]og" })
 vim.keymap.set('n', '<leader>gpp', "<cmd>:Git push<CR>", { desc = "[G]it [P]ush... ([P]lease)" })
 vim.keymap.set('n', '<leader>gpl', "<cmd>:Git pull<CR>", { desc = "[G]it [P]ul[L]" })
 vim.keymap.set('n', '<leader>gc', "<cmd>:Git checkout ", { desc = "[G]it [C]heckout" })
+
 -- maybe do this stuff for git later
 -- " fugitive git bindings
 -- nnoremap <space>ga :Git add %:p<CR><CR>
@@ -156,6 +136,11 @@ vim.keymap.set('n', '<leader>mp', "<cmd>:MarkdownPreviewToggle<CR>", { desc = "[
 -- revisit this
 -- vim.keymap.set('n', '<leader>n', "<cmd>cnext<CR>", { desc = "Next quickfix" })
 -- vim.keymap.set('n', '<leader>N', "<cmd>cprev<CR>", { desc = "Prev quickfix" })
+-- need to learn about cnext and lnext
+-- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+-- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -179,12 +164,6 @@ nmapt("<leader>to", function() require("neotest").output.open({ enter = true, au
 nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")
 nmapt("<leader>tS", require("neotest").run.stop, "Stop")
 
--- AI
-local nmapai = function(keys, func, desc)
-    if desc then desc = 'AI: ' .. desc end
-    vim.keymap.set('n', keys, func, { desc = desc })
-end
-nmapai('<leader>ait', require("modules.ai.fim").toggle, "[AI] FIM [T]oggle")
 
 
 local t = require('trouble')
@@ -192,10 +171,13 @@ local t = require('trouble')
 local trouble_next = function()
     t.next()
     t.jump_only()
-    -- t.next(nil, { opts = { jump = true } })
+    -- get default trouble window
+    -- t.next({ mode = "lsp_workspace_diagnostics" }, { opts = { jump = true } })
+    -- t.next({ opts = { jump = true } })
+    -- t.open
 end;
 -- Lua
-local nmapt = function(input, cmd, desc)
+nmapt = function(input, cmd, desc)
     vim.keymap.set("n", input, cmd, { desc = "[Trouble] " .. desc })
 end
 
@@ -206,17 +188,10 @@ nmapt("<leader>xw",
         t.open({ mode = "diagnostics_workspace" })
     end
     , "Workspace diagnostics")
--- vim.keymap.set('n', "<leader>xw",
---     function()
---         vim.cmd [[ Trouble diagnostics focus=true]]
---     end,
---     { desc = "Workspace diagnostics" })
 nmapt("<leader>xd",
     function()
         t.close()
-        t.open({
-            mode = "diagnostics_buffer",
-        })
+        t.open({ mode = "diagnostics_buffer" })
     end,
     "Document diagnostics")
 -- nmap("gR", "lsp_references", "LSP references")

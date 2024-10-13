@@ -1,11 +1,10 @@
 local M = {}
+M.name = "copilot"
 function M.enable()
-	vim.notify("Copilot enabled", vim.log.levels.INFO, { timeout = 500, animate = false })
 	require("copilot.command").enable()
 end
 
 function M.disable()
-	vim.notify("Copilot disabled", vim.log.levels.INFO, { timeout = 500, animate = false })
 	require("copilot.command").disable()
 end
 

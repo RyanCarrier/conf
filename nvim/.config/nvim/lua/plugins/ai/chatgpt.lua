@@ -35,6 +35,7 @@ return {
                 max_tokens = 1000,
             }
         })
-        vim.keymap.set("n", "<leader>ai", chatgpt.openChat, { noremap = true, silent = true, desc = "[AI] [C]hat" })
+        vim.keymap.set("n", "<leader>ai", chatgpt.openChat,
+            { noremap = true, silent = true, desc = "[AI] [C]hat (CHATGPT)" })
     end,
 }

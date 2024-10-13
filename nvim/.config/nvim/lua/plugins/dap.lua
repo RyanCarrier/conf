@@ -52,7 +52,7 @@ return {
       layouts = dapm.dapui_layouts,
     })
 
-    dap.listeners.after.event_initialized['dapui_config'] = dapm.toggle_fn(dapm.REPL_TROUBLE)
+    dap.listeners.after.event_initialized['dapui_config'] = dapm.open_fn(dapm.REPL_TROUBLE)
     -- dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     -- dap.listeners.before.event_exited['dapui_config'] = dapui.close
 

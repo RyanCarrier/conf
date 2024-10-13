@@ -12,4 +12,4 @@ require('tint').setup({
 	-- tint = -5,
 	tint = -10,
 })
-require('modules.ai.fim').toggle()
+require('modules.ai.fim').init()
