@@ -25,7 +25,7 @@ export UPDATE_ZSH_DAYS=60
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-plugins=(git golang adb colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search zsh-autosuggestions)
+plugins=(git golang colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile.sh

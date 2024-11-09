@@ -156,13 +156,14 @@ local nmapt = function(keys, func, desc)
     if desc then desc = '[T]est ' .. desc end
     vim.keymap.set('n', keys, func, { desc = desc })
 end
-nmapt("<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, "[t]his File")
-nmapt("<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, "[T]hese Files lol")
-nmapt("<leader>tn", function() require("neotest").run.run({ strategy = "dap" }) end, "[N]earest")
-nmapt("<leader>ts", require("neotest").summary.toggle, "Toggle Summary")
-nmapt("<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, "Show Output")
-nmapt("<leader>tO", require("neotest").output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")
-nmapt("<leader>tS", require("neotest").run.stop, "Stop")
+local nt = require('neotest')
+nmapt("<leader>tt", function() nt.run.run(vim.fn.expand("%")) end, "[t]his File")
+nmapt("<leader>tT", function() nt.run.run(vim.loop.cwd()) end, "[T]hese Files lol")
+nmapt("<leader>tn", function() nt.run.run({ strategy = "dap" }) end, "[N]earest")
+nmapt("<leader>ts", nt.summary.toggle, "Toggle Summary")
+nmapt("<leader>to", function() nt.output.open({ enter = true, auto_close = true }) end, "Show Output")
+nmapt("<leader>tO", nt.output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")
+nmapt("<leader>tS", nt.run.stop, "Stop")
 
 
 
