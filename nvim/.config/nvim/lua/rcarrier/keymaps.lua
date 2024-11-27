@@ -164,6 +164,11 @@ nmapt("<leader>ts", nt.summary.toggle, "Toggle Summary")
 nmapt("<leader>to", function() nt.output.open({ enter = true, auto_close = true }) end, "Show Output")
 nmapt("<leader>tO", nt.output_panel.toggle, "Toggle Output Panel (VIEW ALL TESTS)")
 nmapt("<leader>tS", nt.run.stop, "Stop")
+nmapt(")t", nt.jump.next, "Next [t]est")
+nmapt("(t", nt.jump.prev, "Prev [t]est")
+nmapt(")f", function() nt.jump.next({ status = "failed" }) end, "Next [f]ailed test")
+nmapt("(f", function() nt.jump.prev({ status = "failed" }) end, "Prev [f]ailed test")
+
 
 
 

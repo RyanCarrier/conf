@@ -1,7 +1,26 @@
 return {
   {
     'rcarriga/nvim-notify',
-    config = function() vim.notify = require('notify') end
+    config = function()
+      vim.notify = require('notify')
+      vim.api.nvim_create_autocmd(
+        "RecordingEnter", {
+          callback = function(ctx)
+            vim.opt.cmdheight = 1
+            local msg = string.format("Key:  %s\nFile: %s", vim.fn.reg_recording(), ctx.file)
+            vim.notify(msg, vim.log.levels.INFO, {
+              title = "Macro Recording"
+            })
+          end
+        })
+
+      vim.api.nvim_create_autocmd(
+        "RecordingLeave", {
+          callback = function()
+            vim.opt.cmdheight = 0
+          end
+        })
+    end
   },
   "luckasRanarison/tree-sitter-hypr",
   "ThePrimeagen/vim-be-good",
