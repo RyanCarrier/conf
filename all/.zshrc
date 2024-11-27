@@ -29,3 +29,9 @@ plugins=(git golang colored-man-pages rust command-not-found common-aliases pip 
 
 source $ZSH/oh-my-zsh.sh
 source ~/.rcarrier_profile.sh
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /home/rcarrier/.dart-cli-completion/zsh-config.zsh ]] && . /home/rcarrier/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
