@@ -1,95 +1,96 @@
 * {
-    border: none;
-    border-radius: 0;
-    font-family: JetBrainsMono Nerd Font;
-    font-size: 12px;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: JetBrainsMono Nerd Font;
+  font-size: 12px;
+  min-height: 0;
 }
 
 window#waybar {
-    background: transparent;
-    color: white;
+  background: transparent;
+  color: white;
 }
 
 #workspaces {
-	background-color: #24283b;
-	margin: 2px;
-	margin-left: 10px;
-	border-radius: 2px;
+  background-color: #24283b;
+  margin: 2px;
+  margin-left: 10px;
+  border-radius: 2px;
 }
 #workspaces button {
-    padding: 0px 7px;
-    color: #c0caf5;
+  padding: 0px 7px;
+  color: #c0caf5;
 }
 
 #workspaces button.active {
-    color: #24283b;
-    background-color: #7aa2f7;
-    border-radius: 2px;
+  color: #24283b;
+  background-color: #7aa2f7;
+  border-radius: 2px;
 }
 
 #workspaces button:hover {
-	background-color: #7dcfff;
-	color: #24283b;
-	border-radius: 2px;
+  background-color: #7dcfff;
+  color: #24283b;
+  border-radius: 2px;
 }
 
-#custom-wl-gammarelay-temperature, #custom-date, #clock, #battery, #pulseaudio, #network, #backlight{
-	background-color: #24283b;
-	padding: 2px 8px;
-	margin: 0px 0px;
+#custom-wl-gammarelay-temperature-rs,
+#custom-date,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#backlight {
+  padding: 0px 8px;
 }
 
-#custom-wl-gammarelay-temperature{
-   color:#7dcfff;
+#custom-wl-gammarelay-temperature-rs {
+  color: #7dcfff;
 }
 
 #custom-date {
-	color: #7dcfff;
+  color: #7dcfff;
 }
 
-#tray {
-    background-color: #24283b;
-    border-radius: 0px 2px 2px 0px;
-    margin-right: 5px;
-    margin: 0px;
-    margin-left: 2px;
-    border-radius: 2px;
-    padding: 0px 5px;
+#tray,
+#right {
+  background-color: #24283b;
+  border-radius: 2px;
+  margin: 0px;
+  padding: 2px 5px;
 }
 
 #clock {
-    color: #b48ead;
+  color: #b48ead;
 }
 
-
 #battery {
-    color: #9ece6a;
+  color: #9ece6a;
 }
 
 #battery.charging {
-    color: #9ece6a;
+  color: #9ece6a;
 }
 
 #battery.warning:not(.charging) {
-    background-color: #f7768e;
-    color: #24283b;
+  background-color: #f7768e;
+  color: #24283b;
 }
 
 #backlight {
-    background-color: #24283b;
-    color: #db4b4b;
+  background-color: #24283b;
+  color: #db4b4b;
 }
 
 #network {
-    color: #f7768e;
+  color: #f7768e;
 }
 
 #pulseaudio {
-    color: #e0af68;
+  color: #e0af68;
 }
 
 #pulseaudio.muted {
-    background-color: #e0af68;
-    color: #24283b;
+  background-color: #e0af68;
+  color: #24283b;
 }
