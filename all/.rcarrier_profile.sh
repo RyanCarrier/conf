@@ -1,8 +1,12 @@
 #!/bin/bash
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/Projects
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-# export ANDROID_SDK_ROOT="/opt/android-sdk"
+# check if Android/Sdk exists
+if [ -d "$HOME/Android/Sdk" ]; then
+	export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+else
+	export ANDROID_SDK_ROOT="/opt/android-sdk"
+fi 
 export JAVA_HOME='/usr/lib/jvm/default'
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 CHROME_EXECUTABLE=$(which google-chrome-stable)
@@ -21,6 +25,7 @@ export PATH=$PATH:"$ANDROID_SDK_ROOT"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/platform-tools"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/emulator"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/tools/bin"
+export PATH=$PATH:"$ANDROID_SDK_ROOT/cmdline-tools/latest/bin"
 export PATH=$PATH:"$HOME/.pub-cache/bin"
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
