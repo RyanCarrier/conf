@@ -3,4 +3,5 @@ test.sh
 .luarc.json
 lazy-lock.json
 all/.host_profile
+hypr/.config/hypr/host-specific.conf
 *.DS_Store
