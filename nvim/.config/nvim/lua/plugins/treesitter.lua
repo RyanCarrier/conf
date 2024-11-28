@@ -34,6 +34,7 @@ return {
                 ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim',
                     'bash',
                     'dart',
+                    'hyprlang',
                     'zig', 'toml', 'yaml', 'gomod', 'json', 'jsonc' },
 
                 -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself! )
@@ -112,6 +113,7 @@ return {
             vim.keymap.set("n", "]]", function()
                 mts:move_parent('list_literal', false)
             end, { desc = tsmove .. "Next List End" })
+            vim.filetype.add({ pattern = { [".*/hyprland%.conf"] = "hyprlang" }, })
         end,
     }
 }
