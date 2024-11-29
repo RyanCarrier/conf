@@ -1,7 +1,9 @@
 #!/bin/bash
 sudo echo ""
 
-PACKAGES="which zsh wget curl tar tmux vim rsync traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs iperf ripgrep"
+PACKAGES="which zsh wget curl tar tmux vim rsync traceroute vlc htop zip unzip python-pip shellcheck vlc v4l-utils ncdu tree neofetch nmap htop nethogs iperf iperf3 ripgrep nvm zoxide fzf prettier less"
+ARCH_PACKAGES="fakeroot debugedit openssh make base-devel"
+YAY_PACKAGES="light imagemagick feh fd bat neovim neovide hostname ttf-dejavu-nerd ttf-jetbrains-mono-nerd ttf-noto-nerd kitty pipewire wireplumber github-cli go-task go-yq"
 echo "installing $PACKAGES"
 echo "Cancel if you want, waiting for 10 seconds"
 for _ in {10..1}; do
@@ -12,7 +14,7 @@ done
 if [ -f "/etc/arch-release" ]; then
 	sudo pacman -Syyu --noconfirm
 	# shellcheck disable=2086
-	sudo pacman --noconfirm -S $PACKAGES fakeroot debugedit openssh make base-devel
+	sudo pacman --noconfirm -S $PACKAGES $ARCH_PACKAGES
 	cd /tmp || exit
 	pacman -S --needed git base-devel
 	git clone https://aur.archlinux.org/yay.git
@@ -22,6 +24,8 @@ if [ -f "/etc/arch-release" ]; then
 	sudo systemctl enable --now snapd.socket
 	sudo ln -s /var/lib/snapd/snap /snap
 	cd ~/conf || exit
+	# shellcheck disable=2086
+	yay -Syyu --noconfirm $YAY_PACKAGES
 else
 	sudo apt upgrade && sudo apt install -y "$PACKAGES" openssh-server snapd
 fi
