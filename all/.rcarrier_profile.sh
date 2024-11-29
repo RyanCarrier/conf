@@ -6,7 +6,7 @@ if [ -d "$HOME/Android/Sdk" ]; then
 	export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 else
 	export ANDROID_SDK_ROOT="/opt/android-sdk"
-fi 
+fi
 export JAVA_HOME='/usr/lib/jvm/default'
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 CHROME_EXECUTABLE=$(which google-chrome-stable)
@@ -32,9 +32,9 @@ export PATH=$PATH:"$JAVA_HOME/bin"
 #RUBY
 
 if [ -x "$(command -v gem >/dev/null 2>&1)" ]; then
-	export GEM_HOME="$(gem env user_gemhome)"
+	GEM_HOME="$(gem env user_gemhome)"
+	export PATH="$PATH:$GEM_HOME/bin"
 fi
-export PATH="$PATH:$GEM_HOME/bin"
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
@@ -105,6 +105,7 @@ alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
+alias icat="kitten icat"
 # unset gl
 
 alias feh="feh --scale-down"
@@ -200,5 +201,5 @@ unsetopt nomatch
 if [ "$(uname)" = "Darwin" ]; then
 	include "$HOME/.mac.sh"
 else
-	source /usr/share/nvm/init-nvm.sh
+	include /usr/share/nvm/init-nvm.sh
 fi
