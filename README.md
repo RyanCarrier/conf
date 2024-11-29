@@ -1,6 +1,7 @@
-## What is it? ##
-my configs and scripts to apply them also helper git status scripts
+## What is it?
 
-`wget https://raw.githubusercontent.com/RyanCarrier/conf/master/get.sh;bash ./get.sh `
+tings
 
-`stow all nvim bin`
+## How
+
+`stow`
