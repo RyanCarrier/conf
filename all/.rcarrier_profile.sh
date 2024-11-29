@@ -105,7 +105,9 @@ alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
-alias icat="kitten icat"
+alias icat="kitty +kitten icat"
+alias diff="kitty +kitten diff"
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 # unset gl
 
 alias feh="feh --scale-down"
