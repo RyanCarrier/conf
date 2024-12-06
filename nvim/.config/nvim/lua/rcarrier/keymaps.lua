@@ -4,6 +4,8 @@ vim.keymap.set('n', '<leader>/', function()
     t_builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({}))
 end, { desc = '[/] Fuzzily search in current buffer' })
 
+vim.keymap.set("n", "yc", "yy<cmd>normal gcc<CR>p", { desc = "Yank and comment" })
+
 vim.keymap.set('n', '<leader>t?', t_builtin.commands, { desc = '[T]elescope commands[?]' })
 vim.keymap.set('n', '<leader>th', t_builtin.command_history, { desc = '[T]elescope [H]istory' })
 vim.keymap.set('n', '<leader>tr', t_builtin.resume, { desc = '[T]elescope [R]esume' })
