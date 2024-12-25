@@ -83,7 +83,7 @@ alias p1="ping 1.1.1.1"
 alias ip='ip -color=auto'
 alias vim='nvim'
 alias grep='rg'
-alias neovide='env -u WAYLAND_DISPLAY neovide'
+# alias neovide='env -u WAYLAND_DISPLAY neovide'
 alias gvim='neovide'
 alias gs='$HOME/.local/bin/gs'
 alias yaysyyu='yay -Syyu --noconfirm'
@@ -105,9 +105,11 @@ alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
-alias icat="kitty +kitten icat"
-alias diff="kitty +kitten diff"
-[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+if [ "$TERM" = "xterm-kitty" ]; then
+	alias ssh="kitty +kitten ssh"
+	alias icat="kitty +kitten icat"
+	alias diff="kitty +kitten diff"
+fi
 # unset gl
 
 alias feh="feh --scale-down"
