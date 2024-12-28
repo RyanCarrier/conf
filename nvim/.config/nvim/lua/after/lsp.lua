@@ -34,8 +34,11 @@ local servers = {
 require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- BLINK.CMP
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+local lspconfig = require('lspconfig')
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require('mason-lspconfig')
@@ -48,7 +51,7 @@ mason_lspconfig.setup({
 mason_lspconfig.setup_handlers({
 	function(server_name)
 		if server_name == 'rust_analyzer' then return end
-		require('lspconfig')[server_name].setup {
+		lspconfig[server_name].setup {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = servers[server_name],

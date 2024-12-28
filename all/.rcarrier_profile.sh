@@ -82,7 +82,7 @@ alias xo="xdg-open"
 alias p1="ping 1.1.1.1"
 alias ip='ip -color=auto'
 alias vim='nvim'
-alias grep='rg'
+# alias grep='rg'
 # alias neovide='env -u WAYLAND_DISPLAY neovide'
 alias gvim='neovide'
 alias gs='$HOME/.local/bin/gs'
