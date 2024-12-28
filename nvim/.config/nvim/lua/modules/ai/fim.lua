@@ -1,8 +1,9 @@
 local M = {}
 local copilot = require("modules.ai.copilot")
-local supermaven = require("modules.ai.supermaven")
+-- local supermaven = require("modules.ai.supermaven")
 local codeium = require("modules.ai.codeium")
-local providers = { copilot, supermaven, codeium }
+-- local providers = { copilot, supermaven, codeium }
+local providers = { copilot, codeium }
 local fim_keymaps = {
 	accept = '<M-j>',
 	accept_line = '<M-l>',
