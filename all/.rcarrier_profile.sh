@@ -208,5 +208,9 @@ unsetopt nomatch
 if [ "$(uname)" = "Darwin" ]; then
 	include "$HOME/.mac.sh"
 else
-	include /usr/share/nvm/init-nvm.sh
+	if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
+		include /usr/share/nvm/init-nvm.sh
+	elif [ -f "$HOME/.nvm/nvm.sh" ]; then
+		include "$HOME/.nvm/nvm.sh"
+	fi
 fi
