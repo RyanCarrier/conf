@@ -110,6 +110,9 @@ if [ "$TERM" = "xterm-kitty" ]; then
 	alias icat="kitty +kitten icat"
 	alias diff="kitty +kitten diff"
 fi
+if [ "$TERM" = "xterm-ghostty" ]; then
+	alias ssh="TERM=xterm-256color ssh"
+fi
 # unset gl
 
 alias feh="feh --scale-down"
