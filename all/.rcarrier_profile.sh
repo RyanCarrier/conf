@@ -31,7 +31,7 @@ export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
 #RUBY
 
-if [ -x "$(command -v gem >/dev/null 2>&1)" ]; then
+if command -v gem >/dev/null 2>&1; then
 	GEM_HOME="$(gem env user_gemhome)"
 	export PATH="$PATH:$GEM_HOME/bin"
 fi
@@ -40,7 +40,7 @@ if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
 fi
 
-if [ -x "$(command -v rustc >/dev/null 2>&1)" ]; then
+if command -v rustc >/dev/null 2>&1; then
 	RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 	export RUST_SRC_PATH
 fi
