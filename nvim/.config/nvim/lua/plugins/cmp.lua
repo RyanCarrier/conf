@@ -64,6 +64,9 @@ return {
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
+            min_keyword_length = function()
+                return vim.bo.filetype == 'markdown' and 2 or 0
+            end,
             default = { 'lsp', 'path', 'snippets', 'buffer' },
         },
     },
