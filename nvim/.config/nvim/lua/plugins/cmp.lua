@@ -3,7 +3,8 @@ return {
     'saghen/blink.cmp',
     -- specify version until we can build with nightly? idk just check the docs
     -- leave for now or manually update version
-    version = '0.8.2',
+    -- version = '0.8.2',
+    version = '*',
     dependencies = {
         -- 'hrsh7th/cmp-nvim-lsp-signature-help',
         -- 'hrsh7th/cmp-path',
@@ -16,7 +17,7 @@ return {
         -- Adds a number of user-friendly snippets
         -- 'rafamadriz/friendly-snippets',
     },
-    -- build = "cargo build --release",
+    build = "cargo build --release",
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -67,7 +68,12 @@ return {
             min_keyword_length = function()
                 return vim.bo.filetype == 'markdown' and 2 or 0
             end,
-            default = { 'lsp', 'path', 'snippets', 'buffer' },
+            default = {
+                'lsp',
+                'path',
+                'snippets',
+                'buffer',
+            },
         },
     },
     opts_extend = { "sources.default" }
