@@ -135,3 +135,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		})
 	end,
 })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = {
+		'Fastfile', 'Appfile', 'Matchfile', 'Pluginfile',
+	},
+	command = "set filetype=ruby",
+})

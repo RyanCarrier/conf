@@ -10,6 +10,7 @@ local servers = {
 	-- rust_analyzer = {
 	-- 	format = { enable = true },
 	-- },
+	ruby_lsp = {},
 	pyright = {},
 	-- move_analyzer = {},
 	ts_ls = {
