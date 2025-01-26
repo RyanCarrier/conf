@@ -12,6 +12,7 @@ return {
                 -- require("none-ls-shellcheck.code_actions"),
                 -- null_ls.builtins.formatting.beautysh,
                 null_ls.builtins.formatting.shfmt,
+                null_ls.builtins.formatting.rubyfmt,
                 -- null_ls.builtins.formatting.prettierd,
                 null_ls.builtins.formatting.prettier.with({
                     filetypes = {
