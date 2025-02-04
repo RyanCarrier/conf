@@ -142,3 +142,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	},
 	command = "set filetype=ruby",
 })
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+	pattern = "*",
+	command = "checktime",
+})

@@ -215,3 +215,4 @@ vim.keymap.set('n', '<leader>taa', o.run_template, { desc = '[Ta]sks' })
 vim.keymap.set('n', '<leader>tao', o.toggle, { desc = '[Ta]sks [O]pen' })
 vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
     { desc = "[C]ode actions [P]review" })
+vim.keymap.set('n', '<leader>c', "checktime", { desc = '[c]hecktime' })

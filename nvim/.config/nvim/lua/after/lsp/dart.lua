@@ -1,11 +1,13 @@
-local nmap = require('after.lsp.generic').nmap
+local lspg = require('after.lsp.generic')
+local nmap = lspg.nmap
+local nvmap = lspg.nvmap
 local filter = require('after.lsp.codeaction').filter_apply_fn;
 local filter_apply = require('after.lsp.codeaction').filter_apply;
 local has_action = require('after.lsp.codeaction').has_action;
 
 nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
-nmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
-nmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
+nvmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
+nvmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
 nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')
 nmap('<leader>fa', filter({ 'required argument', 'missing switch cases' }, true), '[F]ix required [A]rgument')
 
