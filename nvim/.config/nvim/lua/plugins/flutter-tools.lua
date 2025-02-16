@@ -67,7 +67,6 @@ return {
             type = "executable",
             command = "flutter",
             args = { "debug-adapter" },
-
         }
         vim.keymap.set("n", "<leader>fl", function()
             require("telescope").extensions.flutter.commands()

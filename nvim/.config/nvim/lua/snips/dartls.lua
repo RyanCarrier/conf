@@ -157,11 +157,6 @@ ls.add_snippets("dart", {
 		-- need to correct for List<X> cause it don't work lol
 		d(1, get_parameters_without_query, {})
 	),
-	s({ trig = "ctx", name = "BuildContext" },
-		fmta([[
-		BuildContext context<>
-		]], { i(1) })
-	),
 	s({ trig = "ei", name = "EdgeInsets" },
 		-- todo: test this one lol (the default works)
 		{ t("EdgeInsets."),
@@ -301,6 +296,11 @@ class <>State extends ConsumerState<<<>>> {
 	s({ trig = "ctx", name = "BuildContext" },
 		fmta([[
 		BuildContext context<>
+		]], { i(1) })
+	),
+	s({ trig = "ref", name = "WidgetRef" },
+		fmta([[
+		WidgetRef ref<>
 		]], { i(1) })
 	),
 

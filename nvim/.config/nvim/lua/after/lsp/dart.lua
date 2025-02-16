@@ -15,7 +15,7 @@ local qf = filter({ 'Fix All', 'Fix all' })
 nmap('<leader>q', qf, '[Q]uicky fixy')
 
 local fix_import = filter({ "Import library 'dart:developer'", "Import library '%.", "Import library 'package",
-	"Import library 'dart" })
+	"Import library 'dart", "Import library '.." })
 nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 nmap('<leader>fdi', function()
 	vim.diagnostic.goto_next()
