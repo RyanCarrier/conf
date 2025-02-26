@@ -28,6 +28,7 @@ export PATH=$PATH:"$ANDROID_SDK_ROOT/tools/bin"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/cmdline-tools/latest/bin"
 export PATH=$PATH:"$HOME/.pub-cache/bin"
 export PATH=$PATH:"$HOME/.cargo/bin"
+export PATH=$PATH:"$HOME/.shorebird/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
 #RUBY
 
@@ -134,10 +135,12 @@ function ta() {
 #lol
 function tng() {
 	jg
-	tn gym_score -d -n 'vim'
+	tn gym_score -d -n ''
 	t neww -d -t 'gym_score' -n 'emulator'
-	tmux send-keys -t gym_score:emulator 'task emulator' Enter
-	tmux send-keys -t gym_score:vim 'vim ./' Enter
+	tmux split-window -h -t gym_score:emulator
+	tmux send-keys -t gym_score:1.0 'task emulator' Enter
+	tmux send-keys -t gym_score:1.1 'aider --lint-cmd "dart analyze"' Enter
+	tmux send-keys -t gym_score:0 'vim ./' Enter
 	ta gym_score
 }
 
