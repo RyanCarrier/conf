@@ -217,3 +217,6 @@ vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actio
     { desc = "[C]ode actions [P]review" })
 vim.keymap.set('n', '<leader>cc', "<cmd>checktime<cr>", { desc = '[c]hecktime' })
 vim.keymap.set('n', '<leader>csv', require('csvview').toggle, { desc = '[csv]view' })
+local pa = require('pubspec-assist');
+vim.keymap.set("n", "<leader>pal", function() pa.set_latest_version() end);
+vim.keymap.set("n", "<leader>pap", function() pa.open_version_picker() end);

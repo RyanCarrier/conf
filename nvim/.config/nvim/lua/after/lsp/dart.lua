@@ -14,8 +14,13 @@ nmap('<leader>fa', filter({ 'required argument', 'missing switch cases' }, true)
 local qf = filter({ 'Fix All', 'Fix all' })
 nmap('<leader>q', qf, '[Q]uicky fixy')
 
-local fix_import = filter({ "Import library 'dart:developer'", "Import library '%.", "Import library 'package",
-	"Import library 'dart", "Import library '.." })
+local fix_import = filter({
+	"Import library 'dart:developer' with 'show'",
+	"Import library '%.",
+	"Import library 'package",
+	"Import library 'dart",
+	"Import library '.."
+}, true)
 nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 nmap('<leader>fdi', function()
 	vim.diagnostic.goto_next()

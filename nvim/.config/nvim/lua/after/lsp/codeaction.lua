@@ -9,7 +9,8 @@ local function filter_apply(filter)
 	vim.lsp.buf.code_action({
 		apply = true,
 		filter = function(action)
-			return string.find(string.lower(action.title), filter) ~= nil
+			-- return string.find(string.lower(action.title), filter) ~= nil
+			return string.lower(action.title) == filter
 		end
 	})
 end
@@ -138,18 +139,24 @@ function M.filter_apply(filters, apply_not_exact)
 			local countResult = count(results, filter)
 			-- vim.notify("Trying filter[" .. i .. "] " .. filter .. " matched " .. countResult)
 			if countResult > 1 and apply_not_exact then
+				-- local first = M.get_first(results, filter)
+				-- if filter == nil then
+				-- 	vim.notify("ERROR FILTER")
+				-- 	return
+				-- end
+				-- filter = first or filter
+				countResult = 1
+			end
+			if countResult == 1 then
 				local first = M.get_first(results, filter)
 				if filter == nil then
 					vim.notify("ERROR FILTER")
 					return
 				end
 				filter = first or filter
-				countResult = 1
-			end
-			if countResult == 1 then
-				if require('modules.debug').enabled then
-					vim.notify("Applying exact Filter:\n" .. M.get_matched_ca(results, filter))
-				end
+				-- if require('modules.debug').enabled then
+				-- 	vim.notify("Applying exact Filter:\n" .. M.get_matched_ca(results, filter))
+				-- end
 				filter_apply(filter)
 				return
 			end
