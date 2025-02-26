@@ -103,3 +103,4 @@ if ! shopt -oq posix; then
     fi
 fi
 . "$HOME/.cargo/env"
+export PATH="/home/rcarrier/.shorebird/bin:$PATH"
