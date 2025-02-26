@@ -35,3 +35,4 @@ source ~/.rcarrier_profile.sh
 [[ -f /home/rcarrier/.dart-cli-completion/zsh-config.zsh ]] && . /home/rcarrier/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+export PATH="/home/rcarrier/.shorebird/bin:$PATH"
