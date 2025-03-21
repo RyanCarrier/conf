@@ -43,3 +43,12 @@ vim.opt.shiftwidth = 4
 vim.opt.isfname:append("@-@")
 vim.opt.ff = "unix"
 vim.opt.autoread = true
+
+vim.opt.diffopt = {
+    "internal",
+    "filler",
+    "closeoff",
+    "indent-heuristic",
+    "linematch:60",
+    "algorithm:histogram",
+}

@@ -36,3 +36,7 @@ source ~/.rcarrier_profile.sh
 ## [/Completion]
 
 export PATH="/home/rcarrier/.shorebird/bin:$PATH"
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"

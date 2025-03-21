@@ -5,7 +5,18 @@ local filter = require('after.lsp.codeaction').filter_apply_fn;
 local filter_apply = require('after.lsp.codeaction').filter_apply;
 local has_action = require('after.lsp.codeaction').has_action;
 
+function wrapWidget(newWidget)
+	return function()
+		-- this didn't work
+		filter('Wrap with widget')
+		vim.api.nvim_feedkeys("hciw" .. newWidget .. "<esc>", "n", false)
+	end
+end
+
 nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
+lspg.nnomap('<leader>ws', wrapWidget("SingleChildScrollView"), '[W]rap [S]ingleChildScrollView')
+lspg.nnomap('<leader>wf', wrapWidget("Flexible"), '[W]rap [F]exible')
+nmap('<leader>wa', filter('Wrap with Align'), '[W]rap [A]lign')
 nvmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
 nvmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
 nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')

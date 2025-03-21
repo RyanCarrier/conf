@@ -105,12 +105,26 @@ vim.keymap.set("n", "<M-x>", "<C-a>")
 vim.keymap.set('n', "vp", [[viw"_dP]], { desc = "paste in word" })
 
 vim.keymap.set('n', '<leader>gs', vim.cmd.Git, { desc = "[G]it [S]tatus" })
-vim.keymap.set('n', '<leader>gd', "<cmd>:Gdiff<CR>", { desc = "[G]it [D]iff" })
 vim.keymap.set('n', '<leader>gb', "<cmd>:Git blame<CR>", { desc = "[G]it [B]lame" })
 vim.keymap.set('n', '<leader>gl', "<cmd>:Git log<CR>", { desc = "[G]it [L]og" })
 vim.keymap.set('n', '<leader>gpp', "<cmd>:Git push<CR>", { desc = "[G]it [P]ush... ([P]lease)" })
 vim.keymap.set('n', '<leader>gpl', "<cmd>:Git pull<CR>", { desc = "[G]it [P]ul[L]" })
 vim.keymap.set('n', '<leader>gc', "<cmd>:Git checkout ", { desc = "[G]it [C]heckout" })
+
+vim.keymap.set('n', '<leader>gtw', require('gitsigns').toggle_word_diff, { desc = "[G]it [T]oggle [W]ord diff" })
+vim.keymap.set('n', '<leader>gtl', require('gitsigns').toggle_linehl, { desc = "[G]it [T]oggle [L]ine diff" })
+vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk, { desc = "[G]it [H]unk preview" })
+vim.keymap.set('n', '<leader>gd', "<cmd>DiffviewOpen<CR>", { desc = "[G]it [D]iff" })
+vim.keymap.set('n', '<leader>gmd',
+    function() vim.cmd('DiffviewOpen main') end
+    , { desc = "[G]it [M]ain [D]iff (local)" })
+vim.keymap.set('n', '<leader>gMd',
+    function() vim.cmd('DiffviewOpen HEAD..origin/main') end
+    , { desc = "[G]it [M]ain [D]iff (remote)" })
+vim.keymap.set('n', '<leader><leader>v',
+    function() if next(require('diffview.lib').views) == nil then vim.cmd('DiffviewOpen') else vim.cmd('DiffviewClose') end end)
+
+
 
 -- maybe do this stuff for git later
 -- " fugitive git bindings
