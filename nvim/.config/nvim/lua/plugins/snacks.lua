@@ -5,6 +5,15 @@ return {
     opts = {
         image = { enabled = true },
         bigfile = { enabled = true },
+        indent = {
+            enabled = true,
+            animate = {
+                duration = {
+                    step = 6,
+                    total = 150,
+                },
+            },
+
+        },
     }
 }
-
