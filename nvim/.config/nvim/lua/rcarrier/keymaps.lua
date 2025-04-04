@@ -234,3 +234,11 @@ vim.keymap.set('n', '<leader>csv', require('csvview').toggle, { desc = '[csv]vie
 local pa = require('pubspec-assist');
 vim.keymap.set("n", "<leader>pal", function() pa.set_latest_version() end);
 vim.keymap.set("n", "<leader>pap", function() pa.open_version_picker() end);
+
+
+vim.keymap.set('n', '<leader>pwd', function()
+    local filepath = vim.fn.expand('%')
+    vim.fn.setreg('+', filepath) -- write to clippoard end
+end, { noremap = true, silent = true, desc = "[P]ut(rint) [W]orking [D]irectory (file in clipboard)" })
+vim.keymap.set('n', '<leader>gwd', ":e <C-r>+<CR>",
+    { noremap = true, desc = "[G]o [W]orking [D]irectory (file in clipboard)" })

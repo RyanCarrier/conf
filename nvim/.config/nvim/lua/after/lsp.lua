@@ -28,6 +28,7 @@ local servers = {
 			telemetry = { enable = false },
 		},
 	},
+	taplo = {},
 	-- shfmt = {},
 }
 
