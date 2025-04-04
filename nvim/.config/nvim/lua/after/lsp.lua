@@ -30,9 +30,6 @@ local servers = {
 	},
 	-- shfmt = {},
 }
-local ensure_installed_servers = {
-	"actionlint"
-}
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -48,8 +45,7 @@ local lspconfig = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
 
 mason_lspconfig.setup({
-	-- join server keys and ensure_installed_servers
-	ensure_installed = vim.list_extend(vim.tbl_keys(servers), ensure_installed_servers),
+	ensure_installed = vim.tbl_keys(servers),
 	automatic_installation = true,
 })
 
