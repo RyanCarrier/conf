@@ -249,8 +249,42 @@ return {
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   },
-  { "tpope/vim-eunuch",
+  {
+    "tpope/vim-eunuch",
     -- :Delete
     -- don't remember why i just added but look it up
-  }
+  },
+  -- {
+  --   "kevinhwang91/nvim-ufo",
+  --   dependencies = { "kevinhwang91/promise-async",
+  --     {
+  --       "luukvbaal/statuscol.nvim",
+  --       config = function()
+  --         local builtin = require("statuscol.builtin")
+  --         require("statuscol").setup({
+  --           relculright = true,
+  --           segments = {
+  --             { text = { builtin.foldfunc },      click = "v:lua.ScFa" },
+  --             { text = { "%s" },                  click = "v:lua.ScSa" },
+  --             { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+  --           },
+  --         })
+  --       end,
+  --     },
+  --   },
+  --   config = function()
+  --     require('ufo').setup({
+  --       provider_selector = function(bufnr, filetype, buftype)
+  --         return { 'treesitter', 'indent' }
+  --       end,
+  --       -- preview = {
+  --       --   win_config = {
+  --       --     winblend = 0,
+  --       --     winhighlight = "Normal:Normal",
+  --       --   },
+  --       -- },
+  --     })
+  --   end
+  -- },
+
 }

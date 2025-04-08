@@ -242,3 +242,8 @@ vim.keymap.set('n', '<leader>pwd', function()
 end, { noremap = true, silent = true, desc = "[P]ut(rint) [W]orking [D]irectory (file in clipboard)" })
 vim.keymap.set('n', '<leader>gwd', ":e <C-r>+<CR>",
     { noremap = true, desc = "[G]o [W]orking [D]irectory (file in clipboard)" })
+
+-- zv to toggle fold column
+vim.keymap.set('n', 'zv', function()
+    vim.o.foldcolumn = vim.o.foldcolumn == '0' and '1' or '0'
+end)

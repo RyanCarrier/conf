@@ -52,3 +52,17 @@ vim.opt.diffopt = {
     "linematch:60",
     "algorithm:histogram",
 }
+
+
+--folding
+vim.o.fillchars = 'eob: ,fold: ,foldopen:,foldsep:.,foldclose:'
+-- how many fold columns to show
+vim.o.foldcolumn = '0'
+-- vim.o.foldcolumn = 'auto:9'
+vim.o.foldenable = true
+-- lsp folding
+vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+-- idk
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldmethod = 'expr'
