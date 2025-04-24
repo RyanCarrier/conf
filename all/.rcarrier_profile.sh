@@ -21,6 +21,7 @@ export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.local/bin"
 export PATH=$PATH:"/snap/bin"
+export PATH=$PATH:"/var/lib/snapd/snap/bin"
 export PATH=$PATH:"$ANDROID_SDK_ROOT"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/platform-tools"
 export PATH=$PATH:"$ANDROID_SDK_ROOT/emulator"
