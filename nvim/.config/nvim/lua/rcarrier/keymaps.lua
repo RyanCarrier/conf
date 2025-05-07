@@ -173,8 +173,8 @@ local nmapt = function(keys, func, desc)
     vim.keymap.set('n', keys, func, { desc = desc })
 end
 local nt = require('neotest')
-nmapt("<leader>tt", function() nt.run.run(vim.fn.expand("%")) end, "[t]his File")
-nmapt("<leader>tT", function() nt.run.run(vim.loop.cwd()) end, "[T]hese Files lol")
+nmapt("<leader>tT", function() nt.run.run(vim.fn.expand("%")) end, "[t]his File")
+-- nmapt("<leader>tT", function() nt.run.run(vim.loop.cwd()) end, "[T]hese Files lol")
 nmapt("<leader>tn", function() nt.run.run({ strategy = "dap" }) end, "[N]earest")
 nmapt("<leader>ts", nt.summary.toggle, "Toggle Summary")
 nmapt("<leader>to", function() nt.output.open({ enter = true, auto_close = true }) end, "Show Output")
@@ -185,48 +185,9 @@ nmapt("(t", nt.jump.prev, "Prev [t]est")
 nmapt(")f", function() nt.jump.next({ status = "failed" }) end, "Next [f]ailed test")
 nmapt("(f", function() nt.jump.prev({ status = "failed" }) end, "Prev [f]ailed test")
 
-
-
-
-local t = require('trouble')
--- local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
-local trouble_next = function()
-    t.next()
-    t.jump_only()
-    -- get default trouble window
-    -- t.next({ mode = "lsp_workspace_diagnostics" }, { opts = { jump = true } })
-    -- t.next({ opts = { jump = true } })
-    -- t.open
-end;
--- Lua
-nmapt = function(input, cmd, desc)
-    vim.keymap.set("n", input, cmd, { desc = "[Trouble] " .. desc })
-end
-
-nmapt("<leader>xx", t.close, "toggle")
-nmapt("<leader>xw",
-    function()
-        t.close()
-        t.open({ mode = "diagnostics_workspace" })
-    end
-    , "Workspace diagnostics")
-nmapt("<leader>xd",
-    function()
-        t.close()
-        t.open({ mode = "diagnostics_buffer" })
-    end,
-    "Document diagnostics")
--- nmap("gR", "lsp_references", "LSP references")
-
-vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
-vim.keymap.set('n', '<leader>xn', trouble_next, { silent = true, noremap = true, desc = "Trouble [N]ext" })
-
 vim.keymap.set('n', '<leader>to', '<cmd>TodoTelescope<cr>',
     { desc = "[To]do list", silent = true, noremap = true })
 
-local o = require('overseer')
-vim.keymap.set('n', '<leader>taa', o.run_template, { desc = '[Ta]sks' })
-vim.keymap.set('n', '<leader>tao', o.toggle, { desc = '[Ta]sks [O]pen' })
 vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
     { desc = "[C]ode actions [P]review" })
 vim.keymap.set('n', '<leader>cc', "<cmd>checktime<cr>", { desc = '[c]hecktime' })
@@ -246,4 +207,66 @@ vim.keymap.set('n', '<leader>gwd', ":e <C-r>+<CR>",
 -- zv to toggle fold column
 vim.keymap.set('n', 'zv', function()
     vim.o.foldcolumn = vim.o.foldcolumn == '0' and '1' or '0'
-end)
+end, { desc = "Toggle fold column" })
+
+
+-- tabs
+local wk = require("which-key")
+wk.add(
+    {
+        {
+            mode = { "n" },
+            { "<leader>tt",  group = "[T]ab [T]ab" },
+            { "<leader>ttn", "<cmd>tabnext<CR>",     desc = "[T]ab [N]ext" },
+            { "<leader>ttN", "<cmd>tabnew<CR>",      desc = "[T]ab [N]ew" },
+            { "<leader>ttp", "<cmd>tabprevious<CR>", desc = "[T]ab [P]revious" },
+            { "<leader>ttc", "<cmd>tabclose<CR>",    desc = "[T]ab [C]lose" },
+        },
+    })
+local o = require('overseer')
+wk.add(
+    {
+        {
+            mode = { "n" },
+            { "<leader>ta",  group = "[Ta]sks" },
+            { "<leader>taa", o.run_template,   desc = "[Ta]sks [A]ll" },
+            { "<leader>tao", o.toggle,         desc = "[Ta]sks [O]pen" },
+        },
+    })
+local t = require('trouble')
+-- local trouble_next = function() t.next({ skip_groups = true, jump = true }) end
+local trouble_next = function()
+    t.next()
+    t.jump_only()
+    -- get default trouble window
+    -- t.next({ mode = "lsp_workspace_diagnostics" }, { opts = { jump = true } })
+    -- t.next({ opts = { jump = true } })
+    -- t.open
+end;
+-- Lua
+nmapt = function(input, cmd, desc)
+    vim.keymap.set("n", input, cmd, { desc = "[Trouble] " .. desc })
+end
+wk.add({ {
+    mode = { "n" },
+    { "<leader>x",  group = "[Trouble]" },
+    { "<leader>xx", t.close,            desc = "Toggle" },
+    {
+        "<leader>xw",
+        function()
+            t.close()
+            t.open({ mode = "diagnostics_workspace" })
+        end,
+        desc = "Workspace diagnostics",
+    },
+    {
+        "<leader>xd",
+        function()
+            t.close()
+            t.open({ mode = "diagnostics_buffer" })
+        end,
+        desc = "Document diagnostics",
+    },
+} })
+vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
+-- nmap("gR", "lsp_references", "LSP references")

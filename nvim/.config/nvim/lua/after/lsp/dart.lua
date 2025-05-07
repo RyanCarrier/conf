@@ -42,6 +42,15 @@ end, '[F]ix [D]iagnostic [I]mport');
 nmap('<leader>we', "biExpanded(<CR>child: <Esc>f(%$i,)<Esc>%<Cmd>lua vim.lsp.buf.format()<CR>", '[W]rap [E]xpanded')
 nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 
+-- vim.keymap.set('v', '<leader>b', ":%norm! _3dwiexport '<Esc>A';", {
+-- vim.keymap.set('n', '<leader>cb', ":%norm!_3dwiexport '<Esc>A';", {
+-- vim.keymap.set('v', '<leader>b', ":%s/.*  \\(.*\\.dart\\)/export '\\1';", {
+vim.keymap.set('n', '<leader>cb', [[:%s/.*  \(.*\.dart\)/export '\1';<CR>]], {
+	noremap = true,
+	silent = true,
+	desc = '[B]arrel file fix'
+})
+
 
 --assuming we have a comma lol...
 --otherwise we would only do 1x
