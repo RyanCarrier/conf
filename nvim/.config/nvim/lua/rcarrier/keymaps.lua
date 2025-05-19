@@ -117,7 +117,7 @@ vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk, { desc = "[G
 vim.keymap.set('n', '<leader>gd', "<cmd>DiffviewOpen<CR>", { desc = "[G]it [D]iff" })
 vim.keymap.set('n', '<leader>gmd',
     function() vim.cmd('DiffviewOpen main') end
-    , { desc = "[G]it [M]ain [D]iff (local)" })
+    , { desc = "[G]it [M]ain [D]iff (local) (DiffviewOpen main)" })
 vim.keymap.set('n', '<leader>gMd',
     function() vim.cmd('DiffviewOpen HEAD..origin/main') end
     , { desc = "[G]it [M]ain [D]iff (remote)" })
