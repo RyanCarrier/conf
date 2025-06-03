@@ -254,6 +254,16 @@ return {
     -- :Delete
     -- don't remember why i just added but look it up
   },
+  {
+    -- mark things off in markdown files
+    "bngarren/checkmate.nvim",
+    ft = "markdown", -- Lazy loads for Markdown files matching patterns in 'files'
+    opts = {
+      -- your configuration here
+      -- or leave empty to use defaults
+    },
+
+  }
   -- {
   --   "kevinhwang91/nvim-ufo",
   --   dependencies = { "kevinhwang91/promise-async",

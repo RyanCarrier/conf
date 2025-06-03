@@ -270,3 +270,9 @@ wk.add({ {
 } })
 vim.keymap.set('n', '<C-t>', trouble_next, { silent = true, noremap = true, desc = "Trouble next" })
 -- nmap("gR", "lsp_references", "LSP references")
+wk.add({ {
+    mode = { "n", "v" },
+    { "<leader>T", group = "[T]odo (markdown checkmate.nvim)" },
+    -- { "<leader>TT", "<CMD>:CheckmateToggle<CR>",               { desc = "[T]odo [T]oggle" } },
+    -- { "<leader>Tc", "<CMD>:CheckmateCreate<CR>",               { desc = "[T]odo [C]reate" } },
+} });
