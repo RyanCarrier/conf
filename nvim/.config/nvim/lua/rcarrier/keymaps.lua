@@ -173,7 +173,7 @@ local nmapt = function(keys, func, desc)
     vim.keymap.set('n', keys, func, { desc = desc })
 end
 local nt = require('neotest')
-nmapt("<leader>tT", function() nt.run.run(vim.fn.expand("%")) end, "[t]his File")
+nmapt("<leader>tT", function() nt.run.run(vim.fn.expand("%")) end, "[T]his File")
 -- nmapt("<leader>tT", function() nt.run.run(vim.loop.cwd()) end, "[T]hese Files lol")
 nmapt("<leader>tn", function() nt.run.run({ strategy = "dap" }) end, "[N]earest")
 nmapt("<leader>ts", nt.summary.toggle, "Toggle Summary")
@@ -209,6 +209,16 @@ vim.keymap.set('n', 'zv', function()
     vim.o.foldcolumn = vim.o.foldcolumn == '0' and '1' or '0'
 end, { desc = "Toggle fold column" })
 
+vim.keymap.set('n', '<leader>wih',
+    function()
+        vim.lsp.inlay_hint.enable(
+            not vim.lsp.inlay_hint.is_enabled(
+            --{ bufnr = bufnr }
+                {}),
+            {}
+        --{ bufnr = bufnr }
+        )
+    end, { desc = "[W]orkspace [I]nlay [H]ints (toggle)" })
 
 -- tabs
 local wk = require("which-key")

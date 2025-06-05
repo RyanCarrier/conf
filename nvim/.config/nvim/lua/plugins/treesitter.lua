@@ -41,8 +41,8 @@ return {
                 auto_install = true,
 
                 highlight = { enable = true },
-                indent = { enable = true, disable = { 'python', 'dart', 'dartls' } },
-                -- indent = { enable = true, disable = { 'python', } },
+                -- indent = { enable = true, disable = { 'python', 'dart', 'dartls' } },
+                indent = { enable = true, disable = { 'python', } },
                 incremental_selection = {
                     enable = true,
                     keymaps = {

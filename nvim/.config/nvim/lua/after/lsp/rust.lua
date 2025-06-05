@@ -7,16 +7,6 @@ local nmape = lsp.nmape;
 M = {}
 function M.init(bufnr)
 	vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
-	nmap('<leader>wih',
-		function()
-			vim.lsp.inlay_hint.enable(
-				not vim.lsp.inlay_hint.is_enabled(
-				--{ bufnr = bufnr }
-					{}),
-				{}
-			--{ bufnr = bufnr }
-			)
-		end, "[W]orkspace [I]nlay [H]ints (toggle)")
 	vim.keymap.set("n", "<M-space>", function()
 			vim.cmd.RustLsp({ 'hover', 'actions' })
 		end,

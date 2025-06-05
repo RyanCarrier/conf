@@ -62,6 +62,7 @@ vim.o.foldcolumn = '0'
 vim.o.foldenable = true
 -- lsp folding
 vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+-- vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 -- idk
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99

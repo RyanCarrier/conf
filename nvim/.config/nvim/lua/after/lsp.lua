@@ -48,18 +48,19 @@ local mason_lspconfig = require('mason-lspconfig')
 mason_lspconfig.setup({
 	ensure_installed = vim.tbl_keys(servers),
 	automatic_installation = true,
+	automatic_enable = true,
 })
 
-mason_lspconfig.setup_handlers({
-	function(server_name)
-		if server_name == 'rust_analyzer' then return end
-		lspconfig[server_name].setup {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = servers[server_name],
-		}
-	end,
-})
+-- mason_lspconfig.setup_handlers({
+-- 	function(server_name)
+-- 		if server_name == 'rust_analyzer' then return end
+-- 		lspconfig[server_name].setup {
+-- 			capabilities = capabilities,
+-- 			on_attach = on_attach,
+-- 			settings = servers[server_name],
+-- 		}
+-- 	end,
+-- })
 vim.g.rustaceanvim = {
 	-- Plugin configuration
 	tools = {
