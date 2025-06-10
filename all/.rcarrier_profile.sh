@@ -31,6 +31,7 @@ export PATH=$PATH:"$HOME/.pub-cache/bin"
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.shorebird/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
+export PATH="$PATH:/home/rcarrier/.shorebird/bin"
 #RUBY
 
 if command -v gem >/dev/null 2>&1; then
@@ -204,6 +205,11 @@ if command -v zoxide &>/dev/null; then
 fi
 if command -v emulator &>/dev/null; then
 	complete -W "$(emulator -list-avds | sed '1d' | sed 's/^/@/g')" emulator
+fi
+if command -v pyenv &>/dev/null; then
+	export PYENV_ROOT="$HOME/.pyenv"
+	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+	eval "$(pyenv init - zsh)"
 fi
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then

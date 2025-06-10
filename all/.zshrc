@@ -35,8 +35,4 @@ source ~/.rcarrier_profile.sh
 [[ -f /home/rcarrier/.dart-cli-completion/zsh-config.zsh ]] && . /home/rcarrier/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
-export PATH="/home/rcarrier/.shorebird/bin:$PATH"
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
