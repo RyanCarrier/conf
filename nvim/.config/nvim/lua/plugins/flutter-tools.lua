@@ -86,6 +86,9 @@ return {
                 { desc = "[F]lutter [R]estart (not reload, just save a file bro)" })
             vim.keymap.set("n", "<leader>fq", "<cmd>FlutterQuit<cr>",
                 { desc = "[F]lutter [Q]uit" })
+            -- flutter outline
+            vim.keymap.set("n", "<leader>fo", "<CMD>FlutterOutlineToggle<cr>"
+            , { desc = "[F]lutter [O]utline" })
         end
     },
 }

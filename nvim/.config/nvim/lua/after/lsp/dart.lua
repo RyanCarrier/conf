@@ -5,17 +5,22 @@ local filter = require('after.lsp.codeaction').filter_apply_fn;
 local filter_apply = require('after.lsp.codeaction').filter_apply;
 local has_action = require('after.lsp.codeaction').has_action;
 
-function wrapWidget(newWidget)
+local function wrapWidget(newWidget)
 	return function()
 		-- this didn't work
-		filter('Wrap with widget')
-		vim.api.nvim_feedkeys("hciw" .. newWidget .. "<esc>", "n", false)
+		-- filter('Wrap with widget')
+		local keys = "f(mw%a,<CR>)<esc>'wf(bi" .. newWidget .. "(<CR>child: <esc>'wf(b<cmd>delmarks w<cr>"; --"<Cmd>lua vim.lsp.buf.format()<CR>";
+		local termKeys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+		vim.api.nvim_feedkeys(termKeys, "n", false)
+		-- vim.api.nvim_feedkeys("hciw" .. newWidget .. "<esc>", "n", false)
 	end
 end
 
-nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
+-- nmap('<leader>ww', filter('Wrap with widget'), '[W]rap [W]idget')
+lspg.nnomap('<leader>ww', wrapWidget("widget"), '[W]rap [W]idget')
 lspg.nnomap('<leader>ws', wrapWidget("SingleChildScrollView"), '[W]rap [S]ingleChildScrollView')
 lspg.nnomap('<leader>wf', wrapWidget("Flexible"), '[W]rap [F]exible')
+lspg.nnomap('<leader>we', wrapWidget("Expanded"), '[W]rap [E]panded')
 nmap('<leader>wa', filter('Wrap with Align'), '[W]rap [A]lign')
 nvmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
 nvmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
@@ -39,7 +44,6 @@ nmap('<leader>fdi', function()
 end, '[F]ix [D]iagnostic [I]mport');
 
 -- TODO: use treesitter for this
-nmap('<leader>we', "biExpanded(<CR>child: <Esc>f(%$i,)<Esc>%<Cmd>lua vim.lsp.buf.format()<CR>", '[W]rap [E]xpanded')
 nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 
 -- vim.keymap.set('v', '<leader>b', ":%norm! _3dwiexport '<Esc>A';", {
