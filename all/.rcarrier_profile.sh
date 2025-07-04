@@ -140,8 +140,10 @@ function tng() {
 	tn gym_score -d -n ''
 	t neww -d -t 'gym_score' -n 'emulator'
 	tmux split-window -h -t gym_score:emulator
+	tmux split-window -v -t gym_score:emulator
 	tmux send-keys -t gym_score:1.1 'aider --lint-cmd "dart analyze"' Enter
 	tmux send-keys -t gym_score:1.0 'task emulator' Enter
+	tmux send-keys -t gym_score:1.2 'gemini' Enter
 	tmux send-keys -t gym_score:0 'vim ./' Enter
 	ta gym_score
 }
