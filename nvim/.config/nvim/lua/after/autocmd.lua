@@ -157,3 +157,33 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
 -- 		end
 -- 	end,
 -- })
+
+-- Dart
+-- if you use flutter-tools lspconfig.dartls.setup you don't need to.
+local function reload_dartls_if_inactive()
+	local dartls_client
+	for _, client in ipairs(vim.lsp.get_clients()) do
+		if client.name == "dartls" then
+			dartls_client = client
+			break
+		end
+	end
+
+	vim.defer_fn(function()
+		if dartls_client and not dartls_client.is_stopped() then
+			return
+		end
+
+		if dartls_client and dartls_client.stop then
+			dartls_client.stop()
+		end
+		vim.notify("Dart LSP is inactive, reloading...", vim.log.levels.INFO, { title = "Dart LSP" })
+
+		require("flutter-tools.lsp").attach() -- <--- this line.
+	end, 2000)
+end
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "*.dart",
+	callback = reload_dartls_if_inactive,
+})

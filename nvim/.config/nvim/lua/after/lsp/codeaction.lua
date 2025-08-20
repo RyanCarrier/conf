@@ -1,5 +1,4 @@
 local M = {}
-
 -- apply a filter to the code actions
 -- @param filter string
 -- @return nil
@@ -25,6 +24,11 @@ local function make_position_param()
 	if not line then
 		return { line = 0, character = 0 }
 	end
+	if vim.fn.has('nvim-0.11') == 1 then
+		-- local _, col_encoded = vim.str_utfindex(line, 'utf-16', col)
+		local _, col_encoded = vim.str_utfindex(line, col, 'utf-16')
+		return { line = row, character = col_encoded }
+	end
 	local _, col_encoded = vim.str_utfindex(line, col)
 	return { line = row, character = col_encoded }
 end
@@ -38,7 +42,8 @@ local function apply_to_codeactions(apply)
 		range = { start = position, ['end'] = position },
 		context = {
 			triggerKind = vim.lsp.protocol.CodeActionTriggerKind.Invoked,
-			diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
+			-- diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr)
+			diagnostics = vim.diagnostic.get(bufnr, { lnum = position.line }) or {},
 		}
 	}
 	return vim.lsp.buf_request_all(bufnr, method, params, apply)
@@ -51,7 +56,7 @@ local function count(results, filter)
 	local found = 0
 	for _, result in pairs(results) do
 		for _, action in pairs(result.result or {}) do
-			if string.find(action.title, filter) then
+			if string.find(action.title, filter, 1, true) then
 				found = found + 1
 			end
 		end
@@ -64,7 +69,8 @@ function M.has_action(filter)
 	return apply_to_codeactions(function(results)
 		for i, result in pairs(results) do
 			for j, action in pairs(result.result or {}) do
-				results[i].result[j].title = string.lower(action.title)
+				action.title = string.lower(action.title)
+				results[i].result[j] = action
 			end
 		end
 		return count(results, filter) > 0
@@ -78,7 +84,7 @@ end
 function M.get_first(results, filter)
 	for _, result in pairs(results) do
 		for _, action in pairs(result.result or {}) do
-			if string.find(action.title, filter) then
+			if string.find(action.title, filter, 1, true) then
 				return action.title
 			end
 		end

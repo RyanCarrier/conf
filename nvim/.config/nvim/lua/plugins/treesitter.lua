@@ -57,8 +57,8 @@ return {
                         --BROKEN FOR DART QQ
                         -- or atleast it's just slow af
                         enable = true,
-                        disable = { 'python', 'dart', 'dartls' },
-                        -- disable = { 'python' },
+                        -- disable = { 'python', 'dart', 'dartls' },
+                        disable = { 'python' },
                         lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
                         keymaps = {
                             -- You can use the capture groups defined in textobjects.scm
