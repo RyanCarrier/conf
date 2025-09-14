@@ -36,3 +36,6 @@ source ~/.rcarrier_profile.sh
 ## [/Completion]
 
 
+
+# opencode
+export PATH=/home/rcarrier/.opencode/bin:$PATH
