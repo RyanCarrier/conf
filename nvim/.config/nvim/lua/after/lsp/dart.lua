@@ -9,7 +9,7 @@ local function wrapWidget(newWidget)
 	return function()
 		-- this didn't work
 		-- filter('Wrap with widget')
-		local keys = "f(mw%a,<CR>)<esc>'wf(bi" .. newWidget .. "(<CR>child: <esc>'wf(b<cmd>delmarks w<cr>"; --"<Cmd>lua vim.lsp.buf.format()<CR>";
+		local keys = "f(mw%a,<CR>)<esc>'wf(Bi" .. newWidget .. "(<CR>child: <esc>'wf(b<cmd>delmarks w<cr>"; --"<Cmd>lua vim.lsp.buf.format()<CR>";
 		local termKeys = vim.api.nvim_replace_termcodes(keys, true, false, true)
 		vim.api.nvim_feedkeys(termKeys, "n", false)
 		-- vim.api.nvim_feedkeys("hciw" .. newWidget .. "<esc>", "n", false)
@@ -26,10 +26,10 @@ nvmap('<leader>wr', filter('Wrap with Row'), '[W]rap [R]ow')
 nvmap('<leader>wc', filter('Wrap with Col'), '[W]rap [C]olumn')
 nmap('<leader>wp', filter('Wrap with Pad'), '[W]rap [P]adding')
 nmap('<leader>fa', filter({ 'required argument', 'missing switch cases' }, true), '[F]ix required [A]rgument')
-
-local qf = filter({ 'Fix All', 'Fix all' })
+--
+local qf = filter('Fix All')
 nmap('<leader>q', qf, '[Q]uicky fixy')
-
+--
 local fix_import = filter({
 	"Import library 'dart:developer' with 'show'",
 	"Import library '%.",
@@ -46,9 +46,6 @@ end, '[F]ix [D]iagnostic [I]mport');
 -- TODO: use treesitter for this
 nmap('<C-,>', "F)i,<Esc>", 'COMMAAAAAA')
 
--- vim.keymap.set('v', '<leader>b', ":%norm! _3dwiexport '<Esc>A';", {
--- vim.keymap.set('n', '<leader>cb', ":%norm!_3dwiexport '<Esc>A';", {
--- vim.keymap.set('v', '<leader>b', ":%s/.*  \\(.*\\.dart\\)/export '\\1';", {
 vim.keymap.set('n', '<leader>cb', [[:%s/.*  \(.*\.dart\)/export '\1';<CR>]], {
 	noremap = true,
 	silent = true,

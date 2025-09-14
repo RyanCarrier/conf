@@ -1,15 +1,26 @@
 local M = {}
 -- apply a filter to the code actions
 -- @param filter string
+--- @param apply_not_exact boolean | nil
 -- @return nil
-local function filter_apply(filter)
+local function filter_apply(filter, apply_not_exact)
 	if require('modules.debug').enabled then vim.notify("Applying ca filter: " .. filter) end
 	-- vim.notify(vim.inspect(vim.lsp.client().name))
 	vim.lsp.buf.code_action({
 		apply = true,
 		filter = function(action)
 			-- return string.find(string.lower(action.title), filter) ~= nil
-			return string.lower(action.title) == filter
+			-- return string.lower(action.title) == string.lower(filter)
+			-- if filter is an array, check if any of the values match
+			if type(filter) == "table" then
+				for _, f in ipairs(filter) do
+					if string.find(string.lower(action.title), string.lower(f), 1, true) then
+						return true
+					end
+				end
+				return false
+			end
+			return string.find(string.lower(action.title), string.lower(filter), 1, true)
 		end
 	})
 end
@@ -56,7 +67,8 @@ local function count(results, filter)
 	local found = 0
 	for _, result in pairs(results) do
 		for _, action in pairs(result.result or {}) do
-			if string.find(action.title, filter, 1, true) then
+			-- just keep using lower until it works lol
+			if string.find(string.lower(action.title), string.lower(filter), 1, true) then
 				found = found + 1
 			end
 		end
@@ -181,7 +193,8 @@ end
 ---@return function <nil> The function that applies the filter to an array of values.
 function M.filter_apply_fn(filters, apply_not_exact)
 	-- vim.notify("Requesting filter fn " .. filters)
-	return function() M.filter_apply(filters, apply_not_exact) end
+	-- return function() M.filter_apply(filters, apply_not_exact) end
+	return function() filter_apply(filters, apply_not_exact) end
 end
 
 return M

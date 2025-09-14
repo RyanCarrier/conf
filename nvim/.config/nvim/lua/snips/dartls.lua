@@ -148,10 +148,14 @@ ls.add_snippets("dart", {
 		fmt("ColorScheme cs = theme.colorScheme{};", i(1, ""))
 	),
 	s({ trig = "theme", name = "Theme of context" },
-		fmt("ThemeData theme = Theme.of(context){};", i(1, ""))
+		fmt("ThemeData theme = Theme.of(context){};", i(1, "")),
+		fmt("Theme.of(context).{};", i(1, ""))
 	),
 	s({ trig = "nav", name = "Navigator of context" },
 		fmt("Navigator.of(context).{};", i(1, "pop()"))
+	),
+	s({ trig = "s", name = "settle" },
+		fmt("settlePolicy: SettlePolicy.trySettle,{}", i(1, ""))
 	),
 	s({ trig = "copyw", name = "Generate copyWith" },
 		-- need to correct for List<X> cause it don't work lol
