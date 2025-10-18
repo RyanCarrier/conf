@@ -179,7 +179,7 @@ local function reload_dartls_if_inactive()
 		end
 		vim.notify("Dart LSP is inactive, reloading...", vim.log.levels.INFO, { title = "Dart LSP" })
 
-		require("flutter-tools.lsp").attach() -- <--- this line.
+		require("flutter-tools.lsp").attach()
 	end, 2000)
 end
 
