@@ -12,3 +12,4 @@ window-decoration = false
 
 
 copy-on-select = true
+keybind = shift+enter=text:\x1b\r
