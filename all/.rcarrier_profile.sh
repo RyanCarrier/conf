@@ -206,6 +206,7 @@ include /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.z
 include "$HOME/.host_profile"
 include "$HOME/.flutter_completion"
 include "$HOME/.copilot.zsh"
+include "$HOME/.secret_profile"
 
 if command -v fzf &>/dev/null; then
 	fzfversion=$(fzf --version | awk '{print $1}')
