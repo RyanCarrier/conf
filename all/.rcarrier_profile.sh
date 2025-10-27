@@ -125,6 +125,18 @@ if command -v go-task &>/dev/null; then
 	alias task="go-task"
 fi
 
+# clear /tmp/ai if it exists,	 and make it, then jump into it, and run 'claude' then exit back out of the dir and remove it
+function ai() {
+	if [ -d /tmp/ai ]; then
+		rm -rf /tmp/ai
+	fi
+	mkdir /tmp/ai
+	cd /tmp/ai || return
+	claude "$@"
+	cd - || return
+	rm -rf /tmp/ai
+}
+
 function ta() {
 	if [ -z "$1" ]; then
 		tmux attach

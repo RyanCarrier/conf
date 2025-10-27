@@ -1,117 +1,154 @@
 {
-  "layer": "top",
-  "position": "top",
-  "height": 24,
-  "spacing": 5,
-  "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["hyprland/window"],
-  "modules-right": ["group/right", "tray"],
-  "group/right": {
-    "spacing": 5,
-    "orientation": "horizontal",
-    "modules": [
-      "backlight",
-      "custom/wl-gammarelay-temperature-rs",
-      "network",
-      "pulseaudio",
-      "battery",
-      "clock",
-    ],
-  },
-  // Modules configuration
-  "clock": {
-    "format": "{:%I:%M%p %d/%m/%y}",
-    "tooltip": "false",
-    //        	"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%a %d %B %Y}",
-  },
-  "custom/wl-gammarelay-temperature-rs": {
-    "format": " {}",
-    "exec": "wl-gammarelay-rs watch {t}",
-    "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +25",
-    "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -25",
-    "on-click": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500",
-    "on-click-right": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 5000",
-    "on-click-middle": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 3000",
-  },
-  "hyprland/window": {
-    "rewrite": {
-      "(.*) - Google Chrome": "$1 -  ",
-      "(.*) — Konsole": "$1 -  ",
-      "t": "tmux -  ",
-    },
-  },
-  "hyprland/workspaces": {
-    "persistent-workspaces": {
-      // "*": 5,
-      "eDP-1": 5,
-    },
-    "disable-scroll": true,
-    "all-outputs": false,
-    "active-only": false,
-    // "show-special": true,
-    "on-click": "activate",
-    "warp-on-scroll": false,
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1",
-    // "format": "{icon}",
-    "format-icons": {
-      "1": "",
-      "2": "",
-      "3": "",
-      "4": "",
-      "0": "",
-      "urgent": "",
-      "active": "",
-      "default": "",
-      "sort-by-number": true,
-    },
-  },
-  "battery": {
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 15,
-    },
-    "format": "{icon}  {capacity}%",
-    "format-charging": "{capacity}% ",
-    "format-plugged": "{capacity}% ",
-    "format-alt": "{icon} {time}",
-    // "format-good": "", // An empty format will hide the module
-    // "format-full": "",
-    "format-icons": ["", "", "", "", ""],
-  },
-  "network": {
-    "format-wifi": "  {essid}",
-    "format-ethernet": " Connected",
-    "format-linked": " {ifname} (No IP)",
-    "format-disconnected": "Disconnected",
-    "format-alt": " {ifname}: {ipaddr}/{cidr}",
-  },
-  "tray": {
-    "icon-size": 17,
-    "spacing": 5,
-  },
-  "backlight": {
-    // "device": "acpi_video1",
-    "format": "{icon} {percent}%",
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
-    //	"on-scroll-up":,
-    //	"on-scroll-down":,
-  },
-  "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": " muto",
-    "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", "", ""],
-    },
-    "on-click": "pamixer --toggle-mute",
-    "on-click-right": "/home/fra/scripts/volume/on-off.sh",
-  },
+	"layer": "top",
+	"position": "top",
+	"height": 24,
+	"spacing": 5,
+	"modules-left": [
+		"hyprland/workspaces"
+	],
+	"modules-center": [
+		"hyprland/window"
+	],
+	"modules-right": [
+		"group/right",
+		"tray"
+	],
+	"group/right": {
+		"spacing": 5,
+		"orientation": "horizontal",
+		"modules": [
+			"backlight",
+			"custom/wl-gammarelay-temperature-rs",
+			"network",
+			"pulseaudio",
+			"battery",
+			"clock",
+		],
+	},
+	// Modules configuration
+	"clock": {
+		"format": "{:%I:%M%p %d/%m/%y}",
+		"tooltip": "false",
+		//        	"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+		"format-alt": "{:%a %d %B %Y}",
+	},
+	"custom/wl-gammarelay-temperature-rs": {
+		"format": " {}",
+		"exec": "wl-gammarelay-rs watch {t}",
+		"on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +25",
+		"on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -25",
+		"on-click": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500",
+		"on-click-right": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 5000",
+		"on-click-middle": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 3000",
+	},
+	"hyprland/window": {
+		"rewrite": {
+			"(.*) - Google Chrome": "$1 -  ",
+			"(.*) — Konsole": "$1 -  ",
+			"t": "tmux -  ",
+		},
+	},
+	"hyprland/workspaces": {
+		"persistent-workspaces": {
+			// "*": 5,
+			"eDP-1": [
+				1,
+				2,
+				3,
+				4,
+				5
+			],
+			"DP-3": [
+				3,
+				4
+			],
+		},
+		"disable-scroll": true,
+		"all-outputs": false,
+		"active-only": false,
+		// "show-special": true,
+		"on-click": "activate",
+		"warp-on-scroll": false,
+		"on-scroll-up": "hyprctl dispatch workspace e+1",
+		"on-scroll-down": "hyprctl dispatch workspace e-1",
+		// "format": "{icon}",
+		"format-icons": {
+			"1": "",
+			"2": "",
+			"3": "",
+			"4": "",
+			"0": "",
+			"urgent": "",
+			"active": "",
+			"default": "",
+			"sort-by-number": true,
+		},
+	},
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15,
+		},
+		"format": "{icon}  {capacity}%",
+		"format-charging": "{capacity}% ",
+		"format-plugged": "{capacity}% ",
+		"format-alt": "{icon} {time}",
+		// "format-good": "", // An empty format will hide the module
+		// "format-full": "",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+	},
+	"network": {
+		"format-wifi": "  {essid}",
+		"format-ethernet": " Connected",
+		"format-linked": " {ifname} (No IP)",
+		"format-disconnected": "Disconnected",
+		"format-alt": " {ifname}: {ipaddr}/{cidr}",
+	},
+	"tray": {
+		"icon-size": 17,
+		"spacing": 5,
+	},
+	"backlight": {
+		// "device": "acpi_video1",
+		"format": "{icon} {percent}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		//	"on-scroll-up":,
+		//	"on-scroll-down":,
+	},
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-muted": " muto",
+		"format-icons": {
+			"headphone": "",
+			"hands-free": "",
+			"headset": "",
+			"phone": "",
+			"portable": "",
+			"car": "",
+			"default": [
+				"",
+				"",
+				""
+			],
+		},
+		"on-click": "pamixer --toggle-mute",
+		"on-click-right": "/home/fra/scripts/volume/on-off.sh",
+	},
 }
