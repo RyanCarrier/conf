@@ -23,7 +23,10 @@ M.on_attach = function(client, bufnr)
 		local fix_import = filter("Add import:")
 		nmap('<leader>fi', fix_import, '[F]ix [I]mport')
 	end
-	if client.name == "eslint" or client.name == "tsserver" then
+	if client.name == "eslint"
+			or client.name == "tsserver"
+			or client.name == "ts_ls"
+	then
 		require('after.lsp.eslint')
 	end
 

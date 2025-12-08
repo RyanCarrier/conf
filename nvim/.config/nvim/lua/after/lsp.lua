@@ -1,6 +1,6 @@
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = require('after.lsp.on_attach').on_attach
+-- local on_attach = require('after.lsp.on_attach').on_attach
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
@@ -14,7 +14,8 @@ local servers = {
 	pyright = {},
 	-- move_analyzer = {},
 	ts_ls = {
-		format = { enable = false },
+		-- enable = false,
+		-- format = { enable = false },
 	},
 	eslint = {
 		enable = true,
@@ -50,6 +51,19 @@ mason_lspconfig.setup({
 	automatic_installation = true,
 	automatic_enable = true,
 })
+-- for server and serverInfo from the servers file, setup lsp
+local lspsetup = function(server, config)
+	if config then vim.lsp.config[server] = config end
+	vim.lsp.enable(server)
+end
+-- Setup handlers for each server
+for server_name, config in pairs(servers) do
+	lspsetup(server_name, config)
+end
+
+
+
+
 
 -- mason_lspconfig.setup_handlers({
 -- 	function(server_name)
@@ -67,7 +81,7 @@ vim.g.rustaceanvim = {
 	},
 	-- LSP configuration
 	server = {
-		on_attach = on_attach,
+		-- on_attach = on_attach,
 		default_settings = {
 			-- rust-analyzer language server configuration
 			['rust-analyzer'] = {
