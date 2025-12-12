@@ -32,14 +32,6 @@ export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.shorebird/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
 export PATH="$PATH:/home/rcarrier/.shorebird/bin"
-#RUBY
-
-if command -v gem >/dev/null 2>&1; then
-	GEM_HOME="$(gem env user_gemhome)"
-	export PATH="$PATH:$GEM_HOME/bin"
-	export GEM_HOME
-
-fi
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
