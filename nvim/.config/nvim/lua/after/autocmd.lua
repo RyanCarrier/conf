@@ -25,10 +25,10 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 -- 	command = "set formatprg=jq",
 -- })
 -- GIT STUFF FIGURE OUT LATER
-local ThePrimeagen_Fugitive = vim.api.nvim_create_augroup("ThePrimeagen_Fugitive", {})
+local fugugitiveGroup = vim.api.nvim_create_augroup("fugugitiveGroup", {})
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = ThePrimeagen_Fugitive,
+	group = fugugitiveGroup,
 	pattern = "*",
 	callback = function()
 		-- print("help", vim.bo.ft)
@@ -103,6 +103,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		end
 		--eslint instead yo
 		if client.name == 'tsserver' then return end
+		if client.name == 'ts_ls' then return end
 		-- Create an autocmd that will run *before* we save the buffer.
 		--  Run the formatting command for the LSP that has just attached.
 		vim.api.nvim_create_autocmd('BufWritePre', {
@@ -187,3 +188,12 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	pattern = "*.dart",
 	callback = reload_dartls_if_inactive,
 })
+
+
+
+local onAttachGroup = vim.api.nvim_create_augroup("default-on-attach", {})
+vim.api.nvim_create_autocmd(
+	'LspAttach', {
+		group = onAttachGroup,
+		callback = require('after.lsp.on_attach').on_attach
+	})

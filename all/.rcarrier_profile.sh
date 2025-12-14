@@ -102,6 +102,7 @@ alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
 alias vimlc="vim leetcode.nvim"
+alias claude_api="unset CLAUDE_CODE_OAUTH_TOKEN && claude"
 if [ "$TERM" = "xterm-kitty" ]; then
 	alias ssh="kitty +kitten ssh"
 	alias icat="kitty +kitten icat"
@@ -128,7 +129,6 @@ function ai() {
 	cd - || return
 	rm -rf /tmp/ai
 }
-
 function ta() {
 	if [ -z "$1" ]; then
 		tmux attach

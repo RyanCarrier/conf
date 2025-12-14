@@ -39,7 +39,7 @@ return {
           "shfmt",
           "shellcheck",
           "eslint_d",
-          "typescript-language-server",
+          -- "typescript-language-server",
           "rust-analyzer",
           "lua-language-server",
           "json-lsp",
