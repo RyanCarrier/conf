@@ -10,8 +10,9 @@ return {
         end
     },
     {
-        'nvim-flutter/flutter-tools.nvim',
-        -- 'RyanCarrier/flutter-tools.nvim',
+        -- 'nvim-flutter/flutter-tools.nvim',
+        'RyanCarrier/flutter-tools.nvim',
+        branch = 'dtd',
         lazy = false,
         dependencies = {
             'nvim-lua/plenary.nvim',
@@ -19,7 +20,7 @@ return {
             'mfussenegger/nvim-dap',
         },
         config = function()
-            require("telescope").load_extension("flutter")
+            -- require("telescope").load_extension("flutter")
             require("flutter-tools").setup({
                 dev_log = {
                     enabled = false,
@@ -44,18 +45,15 @@ return {
                         },
                         updateImportsOnRename = true,
                     },
-                    -- capabilities = function(config)
-                    --     config.enableSdkFormatter = false
-                    -- end,
-                    -- lol?
-                    on_attach = require("after.lsp.on_attach").on_attach,
+                    capabilities = require('blink.cmp').get_lsp_capabilities(),
+                    -- on_attach = require("after.lsp.on_attach").on_attach,
                 },
-                decorations = {
-                    statusline = {
-                        app_version = true,
-                        device = true,
-                    },
-                },
+                -- decorations = {
+                --     statusline = {
+                --         app_version = true,
+                --         device = true,
+                --     },
+                -- },
                 debugger = {
                     -- integrate with nvim dap + install dart code debugger
                     enabled = true,
@@ -89,6 +87,9 @@ return {
             -- flutter outline
             vim.keymap.set("n", "<leader>fo", "<CMD>FlutterOutlineToggle<cr>"
             , { desc = "[F]lutter [O]utline" })
-        end
+        end,
+        -- cmd = { "opt/flutter/bin/dart", "language-server", "--protocol=lsp", "--instrumentation-log-file", "/home/rcarrier/dartls.log" }
+        -- cmd = { "opt/flutter/bin/dart", "language-server", "--instrumentation-log-file", "/home/rcarrier/dartls.log" }
+
     },
 }
