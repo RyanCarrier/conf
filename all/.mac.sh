@@ -24,6 +24,8 @@ if command -v rbenv &>/dev/null; then
 	eval "$(rbenv init - zsh)"
 fi
 
+export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
+
 #RUBY
 if command -v gem >/dev/null 2>&1; then
 	GEM_HOME="$(gem env user_gemhome)"
