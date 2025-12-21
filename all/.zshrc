@@ -39,3 +39,6 @@ source ~/.rcarrier_profile.sh
 
 # opencode
 export PATH=/home/rcarrier/.opencode/bin:$PATH
+
+# Turso
+export PATH="$PATH:/home/rcarrier/.turso"
