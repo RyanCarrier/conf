@@ -39,3 +39,6 @@ source ~/.rcarrier_profile.sh
 
 # opencode
 export PATH=/home/rcarrier/.opencode/bin:$PATH
+
+# Added by Antigravity
+export PATH="/Users/rcarrier/.antigravity/antigravity/bin:$PATH"
