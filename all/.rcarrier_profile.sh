@@ -149,14 +149,35 @@ function gwta() {
 # remove the worktree, if we are in the work tree, then cd back out
 # then remove the directory
 function gwtr() {
-	if [ -z "$1" ]; then
-		echo "gib branch name"
-		return
+	local branch="$1"
+	local repo_root
+
+	# Get the main repository root (first worktree listed)
+	repo_root=$(git worktree list | head -1 | awk '{print $1}')
+
+	# If no branch name provided, try to detect from current worktree
+	if [ -z "$branch" ]; then
+		local current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
+
+		# Check if we're in a .worktrees/ subdirectory
+		if [[ "$current_worktree" == *"/.worktrees/"* ]]; then
+			branch="$(basename "$current_worktree")"
+			echo "detected current worktree: $branch"
+		else
+			echo "gib branch name or run from within a .worktrees/ worktree"
+			return
+		fi
 	fi
-	if [ "$(basename "$PWD")" = "$1" ] || [ "$(basename "$(dirname "$PWD")")" = "$1" ]; then
-		cd ../../ || return
+
+	# cd to repo root if we're currently in the worktree being removed
+	local current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
+	if [[ "$current_worktree" == *"/.worktrees/$branch" ]]; then
+		echo "cd to repo root: $repo_root"
+		cd "$repo_root" || return
 	fi
-	git worktree remove ".worktrees/$1"
+
+	echo "removing worktree: .worktrees/$branch"
+	git worktree remove ".worktrees/$branch"
 }
 
 alias lns="ln -s"
