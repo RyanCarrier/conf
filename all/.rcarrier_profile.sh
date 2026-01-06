@@ -42,7 +42,9 @@ export PATH=$PATH:"$JAVA_HOME/bin"
 export PATH="$PATH:/home/rcarrier/.shorebird/bin"
 export PATH=/home/rcarrier/.opencode/bin:$PATH
 export PATH="$PATH:/home/rcarrier/.turso"
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+	. "$HOME/.cargo/env"
+fi
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
