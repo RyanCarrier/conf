@@ -75,7 +75,11 @@ alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-update="rsync -avzu --progress -h"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rm="rm" #overwrite oh my zsh rm -i
-alias xo="xdg-open"
+if [ "$(uname)" = "Darwin" ]; then
+	alias xo="open"
+else
+	alias xo="xdg-open"
+fi
 alias p1="ping 1.1.1.1"
 alias ip='ip -color=auto'
 alias vim='nvim'
