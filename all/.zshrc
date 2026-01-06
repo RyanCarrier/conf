@@ -27,18 +27,11 @@ export UPDATE_ZSH_DAYS=60
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 plugins=(git golang colored-man-pages rust command-not-found common-aliases pip python ssh-agent web-search zsh-autosuggestions)
 
-source $ZSH/oh-my-zsh.sh
-source ~/.rcarrier_profile.sh
 
 ## [Completion]
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /home/rcarrier/.dart-cli-completion/zsh-config.zsh ]] && . /home/rcarrier/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+source $ZSH/oh-my-zsh.sh
 
-
-
-# opencode
-export PATH=/home/rcarrier/.opencode/bin:$PATH
-
-# Turso
-export PATH="$PATH:/home/rcarrier/.turso"
+source ~/.rcarrier_profile.sh

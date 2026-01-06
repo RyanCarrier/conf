@@ -1,4 +1,12 @@
 #!/bin/bash
+
+# if RCARRIER_PROFILE_LOADED is set, return
+# if [ -n "$RCARRIER_PROFILE_LOADED" ]; then
+# 	echo "RCARRIER_PROFILE_LOADED is set, returning"
+# 	return
+# fi
+# export RCARRIER_PROFILE_LOADED=1
+
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/Projects
 # check if Android/Sdk exists
@@ -32,6 +40,9 @@ export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.shorebird/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
 export PATH="$PATH:/home/rcarrier/.shorebird/bin"
+export PATH=/home/rcarrier/.opencode/bin:$PATH
+export PATH="$PATH:/home/rcarrier/.turso"
+. "$HOME/.cargo/env"
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
@@ -55,8 +66,11 @@ else
 fi
 
 unset fd
+unalias rm
 unset rm #overwrite oh my zsh rm -i
+unalias t
 unset t
+
 #lol
 alias vimm="\$(which vim)"
 #lolol
@@ -98,6 +112,51 @@ alias l='ls -a'
 alias cdfzf='cd $(find . -type d | fzf)'
 alias gb="git branch"
 alias gc="git checkout"
+unalias gwta
+
+# git worktree add $1 .worktrees/$1
+# (or with -b if the branch doesn't exist)
+function gwta() {
+	if [ -z "$1" ]; then
+		echo "gib branch name"
+		return
+	fi
+	# if does not worktree exists, create it
+	if [ -d ".worktrees/$1" ]; then
+		echo ".worktrees/$1 already exists"
+	else
+		mkdir -p .worktrees
+		# check if branch exists
+		if git show-ref --verify --quiet "refs/heads/$1"; then
+			echo "branch $1 exists, checking out"
+			git worktree add ".worktrees/$1" "$1"
+			echo "checked out to .worktrees/$1"
+		else
+			git worktree add -b "$1" ".worktrees/$1"
+			echo "created and checked out to .worktrees/$1"
+		fi
+	fi
+	# by default cd into the new worktree, unless they anwer n to the prompt
+	echo -n "cd into .worktrees/$1? (Y/n) "
+	read -r response
+	if [[ "$response" != "n" && "$response" != "N" ]]; then
+		cd ".worktrees/$1" || return
+	fi
+}
+
+# remove the worktree, if we are in the work tree, then cd back out
+# then remove the directory
+function gwtr() {
+	if [ -z "$1" ]; then
+		echo "gib branch name"
+		return
+	fi
+	if [ "$(basename "$PWD")" = "$1" ] || [ "$(basename "$(dirname "$PWD")")" = "$1" ]; then
+		cd ../../ || return
+	fi
+	git worktree remove ".worktrees/$1"
+}
+
 alias lns="ln -s"
 alias t="tmux"
 # alias ta="tmux attach"

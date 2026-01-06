@@ -88,10 +88,6 @@ fi
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-if [ -f ~/.rcarrier_profile.sh ]; then
-    . ~/.rcarrier_profile.sh
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -102,5 +98,7 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-. "$HOME/.cargo/env"
-export PATH="/home/rcarrier/.shorebird/bin:$PATH"
+
+if [ -f ~/.rcarrier_profile.sh ]; then
+    . ~/.rcarrier_profile.sh
+fi
