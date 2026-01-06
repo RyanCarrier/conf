@@ -42,5 +42,3 @@ export PATH=/home/rcarrier/.opencode/bin:$PATH
 
 # Turso
 export PATH="$PATH:/home/rcarrier/.turso"
-# Added by Antigravity
-export PATH="/Users/rcarrier/.antigravity/antigravity/bin:$PATH"
