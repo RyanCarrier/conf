@@ -123,28 +123,54 @@ function gwta() {
 		echo "gib branch name"
 		return
 	fi
+	# replace / with _ for directory name
+	local dir_name="${1//\//_}"
 	# if does not worktree exists, create it
-	if [ -d ".worktrees/$1" ]; then
-		echo ".worktrees/$1 already exists"
+	if [ -d ".worktrees/$dir_name" ]; then
+		echo ".worktrees/$dir_name already exists"
 	else
 		mkdir -p .worktrees
-		# check if branch exists
+		# check if local branch exists
 		if git show-ref --verify --quiet "refs/heads/$1"; then
-			echo "branch $1 exists, checking out"
-			git worktree add ".worktrees/$1" "$1"
-			echo "checked out to .worktrees/$1"
+			echo "branch $1 exists locally, checking out"
+			git worktree add ".worktrees/$dir_name" "$1"
+			echo "checked out to .worktrees/$dir_name"
+		# check if remote branch exists
+		elif git show-ref --verify --quiet "refs/remotes/origin/$1"; then
+			echo "branch $1 exists on remote, checking out"
+			git worktree add ".worktrees/$dir_name" "$1"
+			echo "checked out to .worktrees/$dir_name"
 		else
-			git worktree add -b "$1" ".worktrees/$1"
-			echo "created and checked out to .worktrees/$1"
+			git worktree add -b "$1" ".worktrees/$dir_name"
+			echo "created and checked out to .worktrees/$dir_name"
 		fi
 	fi
 	# by default cd into the new worktree, unless they anwer n to the prompt
-	echo -n "cd into .worktrees/$1? (Y/n) "
+	echo -n "cd into .worktrees/$dir_name? (Y/n) "
 	read -r response
 	if [[ "$response" != "n" && "$response" != "N" ]]; then
-		cd ".worktrees/$1" || return
+		cd ".worktrees/$dir_name" || return
 	fi
 }
+
+# completion for gwta - complete on local and remote branches
+_gwta_completions() {
+	local cur="${COMP_WORDS[COMP_CWORD]}"
+	local branches
+	# get local and remote branches, strip remote prefix
+	branches=$(git branch -a 2>/dev/null | sed 's/^[* ]*//' | sed 's|remotes/origin/||' | grep -v '^HEAD' | sort -u)
+	COMPREPLY=($(compgen -W "$branches" -- "$cur"))
+}
+complete -F _gwta_completions gwta gwtat
+
+# completion for gwtr - complete on existing worktrees
+_gwtr_completions() {
+	local cur="${COMP_WORDS[COMP_CWORD]}"
+	local worktrees
+	worktrees=$(ls -1 .worktrees 2>/dev/null)
+	COMPREPLY=($(compgen -W "$worktrees" -- "$cur"))
+}
+complete -F _gwtr_completions gwtr
 
 # remove the worktree, if we are in the work tree, then cd back out
 # then remove the directory
@@ -169,15 +195,18 @@ function gwtr() {
 		fi
 	fi
 
+	# replace / with _ for directory name
+	local dir_name="${branch//\//_}"
+
 	# cd to repo root if we're currently in the worktree being removed
 	local current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
-	if [[ "$current_worktree" == *"/.worktrees/$branch" ]]; then
+	if [[ "$current_worktree" == *"/.worktrees/$dir_name" ]]; then
 		echo "cd to repo root: $repo_root"
 		cd "$repo_root" || return
 	fi
 
-	echo "removing worktree: .worktrees/$branch"
-	git worktree remove ".worktrees/$branch"
+	echo "removing worktree: .worktrees/$dir_name"
+	git worktree remove ".worktrees/$dir_name"
 }
 
 alias lns="ln -s"
@@ -236,6 +265,17 @@ function tng() {
 	tmux send-keys -t gym_score:1.2 'gemini' Enter
 	tmux send-keys -t gym_score:0 'vim ./' Enter
 	ta gym_score
+}
+
+function gwtat() {
+	if [ -z "$1" ]; then
+		echo "gib branch name"
+		return 1
+	fi
+	gwta "$1"
+	tn "$1" -d
+	# tmux send-keys -t "$1":0 'claude' Enter
+	ta "$1"
 }
 
 function touche() {
