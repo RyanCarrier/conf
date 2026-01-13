@@ -116,40 +116,49 @@ alias gb="git branch"
 alias gc="git checkout"
 unalias gwta
 
-# git worktree add $1 .worktrees/$1
+# git worktree add in parent directory as reponame_branchname
 # (or with -b if the branch doesn't exist)
 function gwta() {
 	if [ -z "$1" ]; then
 		echo "gib branch name"
 		return
 	fi
+	# get repo root and name
+	local repo_root
+	repo_root=$(git worktree list | head -1 | awk '{print $1}')
+	local repo_name
+	repo_name=$(basename "$repo_root")
+	local parent_dir
+	parent_dir=$(dirname "$repo_root")
+
 	# replace / with _ for directory name
-	local dir_name="${1//\//_}"
-	# if does not worktree exists, create it
-	if [ -d ".worktrees/$dir_name" ]; then
-		echo ".worktrees/$dir_name already exists"
+	local branch_dir="${1//\//_}"
+	local worktree_path="${parent_dir}/${repo_name}_${branch_dir}"
+
+	# if worktree already exists, just offer to cd
+	if [ -d "$worktree_path" ]; then
+		echo "$worktree_path already exists"
 	else
-		mkdir -p .worktrees
 		# check if local branch exists
 		if git show-ref --verify --quiet "refs/heads/$1"; then
 			echo "branch $1 exists locally, checking out"
-			git worktree add ".worktrees/$dir_name" "$1"
-			echo "checked out to .worktrees/$dir_name"
+			git worktree add "$worktree_path" "$1"
+			echo "checked out to $worktree_path"
 		# check if remote branch exists
 		elif git show-ref --verify --quiet "refs/remotes/origin/$1"; then
 			echo "branch $1 exists on remote, checking out"
-			git worktree add ".worktrees/$dir_name" "$1"
-			echo "checked out to .worktrees/$dir_name"
+			git worktree add "$worktree_path" "$1"
+			echo "checked out to $worktree_path"
 		else
-			git worktree add -b "$1" ".worktrees/$dir_name"
-			echo "created and checked out to .worktrees/$dir_name"
+			git worktree add -b "$1" "$worktree_path"
+			echo "created and checked out to $worktree_path"
 		fi
 	fi
-	# by default cd into the new worktree, unless they anwer n to the prompt
-	echo -n "cd into .worktrees/$dir_name? (Y/n) "
+	# by default cd into the new worktree, unless they answer n to the prompt
+	echo -n "cd into $worktree_path? (Y/n) "
 	read -r response
 	if [[ "$response" != "n" && "$response" != "N" ]]; then
-		cd ".worktrees/$dir_name" || return
+		cd "$worktree_path" || return
 	fi
 }
 
@@ -163,50 +172,60 @@ _gwta_completions() {
 }
 complete -F _gwta_completions gwta gwtat
 
-# completion for gwtr - complete on existing worktrees
+# completion for gwtr - complete on existing worktrees in parent directory
 _gwtr_completions() {
 	local cur="${COMP_WORDS[COMP_CWORD]}"
-	local worktrees
-	worktrees=$(ls -1 .worktrees 2>/dev/null)
+	local repo_root repo_name parent_dir worktrees
+	repo_root=$(git worktree list 2>/dev/null | head -1 | awk '{print $1}')
+	repo_name=$(basename "$repo_root" 2>/dev/null)
+	parent_dir=$(dirname "$repo_root" 2>/dev/null)
+	# find directories matching reponame_* and strip the prefix
+	worktrees=$(ls -1d "${parent_dir}/${repo_name}_"* 2>/dev/null | xargs -n1 basename | sed "s/^${repo_name}_//")
 	COMPREPLY=($(compgen -W "$worktrees" -- "$cur"))
 }
 complete -F _gwtr_completions gwtr
 
-# remove the worktree, if we are in the work tree, then cd back out
-# then remove the directory
+# remove the worktree from parent directory
 function gwtr() {
 	local branch="$1"
-	local repo_root
+	local repo_root repo_name parent_dir
 
 	# Get the main repository root (first worktree listed)
 	repo_root=$(git worktree list | head -1 | awk '{print $1}')
+	repo_name=$(basename "$repo_root")
+	parent_dir=$(dirname "$repo_root")
 
 	# If no branch name provided, try to detect from current worktree
 	if [ -z "$branch" ]; then
-		local current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
+		local current_worktree
+		current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
+		local current_name
+		current_name=$(basename "$current_worktree")
 
-		# Check if we're in a .worktrees/ subdirectory
-		if [[ "$current_worktree" == *"/.worktrees/"* ]]; then
-			branch="$(basename "$current_worktree")"
+		# Check if we're in a reponame_* worktree
+		if [[ "$current_name" == "${repo_name}_"* ]]; then
+			branch="${current_name#${repo_name}_}"
 			echo "detected current worktree: $branch"
 		else
-			echo "gib branch name or run from within a .worktrees/ worktree"
+			echo "gib branch name or run from within a worktree"
 			return
 		fi
 	fi
 
 	# replace / with _ for directory name
-	local dir_name="${branch//\//_}"
+	local branch_dir="${branch//\//_}"
+	local worktree_path="${parent_dir}/${repo_name}_${branch_dir}"
 
 	# cd to repo root if we're currently in the worktree being removed
-	local current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
-	if [[ "$current_worktree" == *"/.worktrees/$dir_name" ]]; then
+	local current_worktree
+	current_worktree=$(git rev-parse --show-toplevel 2>/dev/null)
+	if [[ "$current_worktree" == "$worktree_path" ]]; then
 		echo "cd to repo root: $repo_root"
 		cd "$repo_root" || return
 	fi
 
-	echo "removing worktree: .worktrees/$dir_name"
-	git worktree remove ".worktrees/$dir_name"
+	echo "removing worktree: $worktree_path"
+	git worktree remove "$worktree_path"
 }
 
 alias lns="ln -s"
@@ -250,8 +269,14 @@ function ta() {
 	else
 		tmux attach -t "$1"
 	fi
-
 }
+
+_ta_completion() {
+	local sessions
+	sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null)
+	COMPREPLY=($(compgen -W "$sessions" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+complete -F _ta_completion ta
 
 #lol
 function tng() {
