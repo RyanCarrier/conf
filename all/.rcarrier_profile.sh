@@ -39,9 +39,10 @@ export PATH=$PATH:"$HOME/.pub-cache/bin"
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.shorebird/bin"
 export PATH=$PATH:"$JAVA_HOME/bin"
-export PATH="$PATH:/home/rcarrier/.shorebird/bin"
-export PATH=/home/rcarrier/.opencode/bin:$PATH
-export PATH="$PATH:/home/rcarrier/.turso"
+export PATH="$PATH:$HOME/.shorebird/bin"
+export PATH="$PATH:$HOME/.opencode/bin"
+export PATH="$PATH:$HOME/.turso"
+export PATH="$PATH:$HOME/.bun/bin"
 if [ -f "$HOME/.cargo/env" ]; then
 	. "$HOME/.cargo/env"
 fi
