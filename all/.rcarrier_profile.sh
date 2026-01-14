@@ -115,6 +115,7 @@ alias l='ls -a'
 alias cdfzf='cd $(find . -type d | fzf)'
 alias gb="git branch"
 alias gc="git checkout"
+alias gcamend="git commit --amend"
 unalias gwta
 
 # git worktree add in parent directory as reponame_branchname
