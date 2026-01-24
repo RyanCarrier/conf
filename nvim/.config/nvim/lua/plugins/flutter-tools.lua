@@ -20,22 +20,22 @@ return {
             'mfussenegger/nvim-dap',
         },
         config = function()
-            -- require("telescope").load_extension("flutter")
+            require("telescope").load_extension("flutter")
             require("flutter-tools").setup({
-                dev_log = {
-                    enabled = false,
-                },
-                widget_guides = {
-                    enabled = false,
-                },
-                closing_tags = {
-                    enabled = true,
-                },
+                -- dev_log = {
+                --     enabled = false,
+                -- },
+                -- widget_guides = {
+                --     enabled = false,
+                -- },
+                -- closing_tags = {
+                --     enabled = true,
+                -- },
                 lsp = {
-                    color = {
-                        enabled = true,
-                        virtual_text = true,
-                    },
+                    -- color = {
+                    --     enabled = true,
+                    --     virtual_text = true,
+                    -- },
                     settings = {
                         showTodos = false,
                         analysisExcludedFolders = {
@@ -46,7 +46,7 @@ return {
                         updateImportsOnRename = true,
                     },
                     capabilities = require('blink.cmp').get_lsp_capabilities(),
-                    -- on_attach = require("after.lsp.on_attach").on_attach,
+                    on_attach = require("after.lsp.on_attach").on_attach,
                 },
                 -- decorations = {
                 --     statusline = {
@@ -67,10 +67,10 @@ return {
                         require("dap.ext.vscode").load_launchjs()
                     end
                 },
-                dev_tools = {
-                    autostart = true,
-                    auto_open_browser = false,
-                },
+                -- dev_tools = {
+                --     autostart = true,
+                --     auto_open_browser = false,
+                -- },
             })
             require("dap").adapters.dart = {
                 type = "executable",
