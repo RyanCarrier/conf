@@ -56,8 +56,7 @@ if command -v rustc >/dev/null 2>&1; then
 	export RUST_SRC_PATH
 fi
 
-#?? idk
-fpath+=~/.zfunc
+# fpath is set in .zshrc before oh-my-zsh compinit
 
 if [ -z "$ZSH_NAME" ]; then
 	alias omg='sudo "$BASH" -c "$(history -p !!)"'
@@ -252,6 +251,20 @@ fi
 alias feh="feh --scale-down"
 if command -v go-task &>/dev/null; then
 	alias task="go-task"
+	# check for zsh completions
+	if [ -n "$ZSH_NAME" ]; then
+		task_completion_file="$HOME/.zfunc/_task"
+		if [ ! -f "$task_completion_file" ]; then
+			echo "task completion file not found: $task_completion_file"
+			echo -n "generate it? (Y/n) "
+			read -r response
+			if [[ "$response" != "n" && "$response" != "N" ]]; then
+				mkdir -p "$HOME/.zfunc"
+				go-task --completion zsh >"$task_completion_file"
+				echo "generated $task_completion_file"
+			fi
+		fi
+	fi
 fi
 
 # clear /tmp/ai if it exists,	 and make it, then jump into it, and run 'claude' then exit back out of the dir and remove it

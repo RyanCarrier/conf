@@ -32,6 +32,17 @@ plugins=(git golang colored-man-pages rust command-not-found common-aliases pip 
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /home/rcarrier/.dart-cli-completion/zsh-config.zsh ]] && . /home/rcarrier/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+
+# custom completions (must be before oh-my-zsh compinit)
+fpath+=~/.zfunc
+export TASK_EXE=go-task
+
 source $ZSH/oh-my-zsh.sh
+
+# register task completion for both command names
+if [[ -f ~/.zfunc/_task ]]; then
+	source ~/.zfunc/_task
+	compdef _go_task task go-task
+fi
 
 source ~/.rcarrier_profile.sh
