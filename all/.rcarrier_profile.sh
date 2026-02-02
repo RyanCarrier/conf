@@ -55,6 +55,12 @@ if command -v rustc >/dev/null 2>&1; then
 	RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 	export RUST_SRC_PATH
 fi
+#RUBY
+if command -v gem >/dev/null 2>&1; then
+	GEM_HOME="$(gem env user_gemhome)"
+	export PATH="$PATH:$GEM_HOME/bin"
+	export GEM_HOME
+fi
 
 # fpath is set in .zshrc before oh-my-zsh compinit
 
