@@ -18,12 +18,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh" # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
-# eval "$(rbenv init -)"
-# check if rbenv is installed
-if command -v rbenv &>/dev/null; then
-	eval "$(rbenv init - zsh)"
-fi
-
 export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 
 export PATH="/Users/rcarrier/.antigravity/antigravity/bin:$PATH"

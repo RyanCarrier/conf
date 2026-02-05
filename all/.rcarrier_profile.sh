@@ -56,6 +56,11 @@ if command -v rustc >/dev/null 2>&1; then
 	export RUST_SRC_PATH
 fi
 #RUBY
+# eval "$(rbenv init -)"
+# check if rbenv is installed
+if command -v rbenv &>/dev/null; then
+	eval "$(rbenv init - zsh)"
+fi
 if command -v gem >/dev/null 2>&1; then
 	GEM_HOME="$(gem env user_gemhome)"
 	export PATH="$PATH:$GEM_HOME/bin"
