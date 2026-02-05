@@ -236,7 +236,47 @@ function gwtr() {
 }
 
 alias lns="ln -s"
-alias t="tmux"
+function t() {
+	# If arguments passed, just run tmux with them
+	if [ -n "$1" ]; then
+		tmux "$@"
+		return
+	fi
+
+	# Check if we're in a git repo
+	local git_root
+	git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+
+	if [ -z "$git_root" ]; then
+		# Not in a git repo, just run tmux
+		tmux
+		return
+	fi
+
+	local root_name current_dir session_name
+	root_name=$(basename "$git_root")
+	current_dir=$(pwd)
+
+	if [ "$current_dir" = "$git_root" ]; then
+		# At git root
+		session_name="$root_name"
+	else
+		# In subdirectory
+		local current_name
+		current_name=$(basename "$current_dir")
+		session_name="${root_name}_${current_name}"
+	fi
+
+	# Check for existing sessions with this name and append number if needed
+	local base_name="$session_name"
+	local counter=1
+	while tmux has-session -t "=$session_name" 2>/dev/null; do
+		counter=$((counter + 1))
+		session_name="${base_name}_${counter}"
+	done
+
+	tmux new-session -s "$session_name"
+}
 # alias ta="tmux attach"
 alias tn="tmux new-session -s"
 alias tl="tmux ls"
