@@ -21,3 +21,4 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 
 export PATH="/Users/rcarrier/.antigravity/antigravity/bin:$PATH"
+export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock
