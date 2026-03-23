@@ -22,3 +22,13 @@ export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 
 export PATH="/Users/rcarrier/.antigravity/antigravity/bin:$PATH"
 export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock
+# check if java 21 is installed and set JAVA_HOME
+if [ -d "/opt/homebrew/opt/openjdk@21" ]; then
+	export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+fi
+if [ -d "/opt/homebrew/share/android-commandlinetools" ]; then
+	export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
+	export ANDROID_SDK_ROOT=$ANDROID_HOME
+	export PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
+eval "$(/usr/libexec/path_helper)"
