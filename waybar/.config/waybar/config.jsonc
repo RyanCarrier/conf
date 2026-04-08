@@ -22,6 +22,7 @@
 			"network",
 			"pulseaudio",
 			"battery",
+			"custom/caffeine",
 			"clock",
 		],
 	},
@@ -150,5 +151,13 @@
 		},
 		"on-click": "pamixer --toggle-mute",
 		"on-click-right": "/home/fra/scripts/volume/on-off.sh",
+	},
+	"custom/caffeine": {
+		"format": "{}",
+		"exec": "~/.config/waybar/scripts/caffeine-status.sh",
+		"on-click": "~/.config/waybar/scripts/caffeine-toggle.sh",
+		"interval": 2,
+		"tooltip": true,
+		"return-type": "json",
 	},
 }
