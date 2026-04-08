@@ -125,6 +125,7 @@ alias l='ls -a'
 alias cdfzf='cd $(find . -type d | fzf)'
 alias gb="git branch"
 alias gc="git checkout"
+alias gpl="git pull"
 alias gcamend="git commit --amend"
 unalias gwta
 

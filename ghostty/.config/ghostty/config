@@ -14,5 +14,7 @@ window-decoration = false
 copy-on-select = true
 
 working-directory = home
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
 keybind = shift+enter=text:\x1b\r
 macos-option-as-alt = true
