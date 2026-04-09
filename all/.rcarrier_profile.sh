@@ -55,17 +55,8 @@ if command -v rustc >/dev/null 2>&1; then
 	RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 	export RUST_SRC_PATH
 fi
-#RUBY
+#RUBY - rbenv init moved to end of file (after .mac.sh include) to avoid PATH clobbering
 # eval "$(rbenv init -)"
-# check if rbenv is installed
-if command -v rbenv &>/dev/null; then
-	eval "$(rbenv init - zsh)"
-fi
-if command -v gem >/dev/null 2>&1; then
-	GEM_HOME="$(gem env user_gemhome)"
-	export PATH="$PATH:$GEM_HOME/bin"
-	export GEM_HOME
-fi
 
 # fpath is set in .zshrc before oh-my-zsh compinit
 
@@ -450,4 +441,14 @@ else
 	elif [ -f "$HOME/.nvm/nvm.sh" ]; then
 		include "$HOME/.nvm/nvm.sh"
 	fi
+fi
+
+# rbenv init must run after .mac.sh to ensure shims are at front of PATH
+if command -v rbenv &>/dev/null; then
+	eval "$(rbenv init - zsh)"
+fi
+if command -v gem >/dev/null 2>&1; then
+	GEM_HOME="$(gem env user_gemhome)"
+	export PATH="$PATH:$GEM_HOME/bin"
+	export GEM_HOME
 fi
