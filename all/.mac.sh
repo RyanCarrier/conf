@@ -31,4 +31,5 @@ if [ -d "/opt/homebrew/share/android-commandlinetools" ]; then
 	export ANDROID_SDK_ROOT=$ANDROID_HOME
 	export PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
+PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 eval "$(/usr/libexec/path_helper)"
