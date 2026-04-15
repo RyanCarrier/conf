@@ -31,4 +31,5 @@ if [ -d "/opt/homebrew/share/android-commandlinetools" ]; then
 	export ANDROID_SDK_ROOT=$ANDROID_HOME
 	export PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
-eval "$(/usr/libexec/path_helper)"
+# PATH="/opt/homebrew/opt/ruby/bin:$PATH"  # conflicts with rbenv shims
+# eval "$(/usr/libexec/path_helper)"  # reshuffles PATH, pushes system ruby ahead of rbenv
