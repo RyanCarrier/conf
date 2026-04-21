@@ -336,6 +336,49 @@ _ta_completion() {
 }
 complete -F _ta_completion ta
 
+function stl() {
+	if [ -z "$1" ]; then
+		echo "usage: stl <host>"
+		return 1
+	fi
+	ssh "$1" 'bash -lc "tmux ls"'
+}
+
+function sta() {
+	if [ -n "$TMUX" ]; then
+		echo "already in tmux"
+		return 1
+	fi
+	if [ -z "$1" ]; then
+		echo "usage: sta <host> [session]"
+		return 1
+	fi
+	if [ -z "$2" ]; then
+		ssh -t "$1" 'bash -lc "tmux attach"'
+	else
+		ssh -t "$1" "bash -lc 'tmux attach -t \"$2\"'"
+	fi
+}
+
+_sta_completion() {
+	local cur="${COMP_WORDS[COMP_CWORD]}"
+	if [ "$COMP_CWORD" -eq 1 ]; then
+		local hosts
+		hosts=$(
+			{ cat ~/.ssh/config 2>/dev/null | grep -i '^Host ' | awk '{for(i=2;i<=NF;i++) print $i}' | grep -v '[*?]';
+			  cat ~/.ssh/known_hosts 2>/dev/null | cut -d' ' -f1 | tr ',' '\n' | sed 's/\[//;s/\].*//'; } | sort -u
+		)
+		COMPREPLY=($(compgen -W "$hosts" -- "$cur"))
+	elif [ "$COMP_CWORD" -eq 2 ]; then
+		local host="${COMP_WORDS[1]}"
+		local sessions
+		sessions=$(ssh -o ConnectTimeout=2 "$host" 'bash -lc "tmux list-sessions -F \"#{session_name}\""' 2>/dev/null)
+		COMPREPLY=($(compgen -W "$sessions" -- "$cur"))
+	fi
+}
+complete -F _sta_completion sta
+complete -F _sta_completion stl
+
 #lol
 function tng() {
 	jg
