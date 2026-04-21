@@ -341,7 +341,7 @@ function stl() {
 		echo "usage: stl <host>"
 		return 1
 	fi
-	ssh "$1" 'bash -lc "tmux ls"'
+	ssh "$1" '$SHELL -lc "tmux ls"'
 }
 
 function sta() {
@@ -354,9 +354,9 @@ function sta() {
 		return 1
 	fi
 	if [ -z "$2" ]; then
-		ssh -t "$1" 'bash -lc "tmux attach"'
+		ssh -t "$1" '$SHELL -lc "tmux attach"'
 	else
-		ssh -t "$1" "bash -lc 'tmux attach -t \"$2\"'"
+		ssh -t "$1" "\$SHELL -lc 'tmux attach -t \"$2\"'"
 	fi
 }
 
@@ -372,7 +372,7 @@ _sta_completion() {
 	elif [ "$COMP_CWORD" -eq 2 ]; then
 		local host="${COMP_WORDS[1]}"
 		local sessions
-		sessions=$(ssh -o ConnectTimeout=2 "$host" 'bash -lc "tmux list-sessions -F \"#{session_name}\""' 2>/dev/null)
+		sessions=$(ssh -o ConnectTimeout=2 "$host" '$SHELL -lc "tmux list-sessions -F \"#{session_name}\""' 2>/dev/null)
 		COMPREPLY=($(compgen -W "$sessions" -- "$cur"))
 	fi
 }
