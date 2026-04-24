@@ -3,9 +3,8 @@ return {
         "nvim-treesitter/nvim-treesitter-textobjects",
         branch = "main",
         config = function()
-            local tspre = "TS"
-            local tsselect = tspre .. " Select: "
-            local tsmove = tspre .. " Move: "
+            local tsselect = "TS Select: "
+            local tsmove = "TS Move: "
 
             require("nvim-treesitter-textobjects").setup({
                 select = {
@@ -35,30 +34,21 @@ return {
             end
 
             local move = require("nvim-treesitter-textobjects.move")
-            vim.keymap.set({ "n", "x", "o" }, "]f", function()
-                move.goto_next_start("@function.outer", "textobjects")
-            end, { desc = tsmove .. "Next Function Start" })
-            vim.keymap.set({ "n", "x", "o" }, "]c", function()
-                move.goto_next_start("@class.outer", "textobjects")
-            end, { desc = tsmove .. "Next Class Start" })
-            vim.keymap.set({ "n", "x", "o" }, "]F", function()
-                move.goto_next_end("@function.outer", "textobjects")
-            end, { desc = tsmove .. "Next Function End" })
-            vim.keymap.set({ "n", "x", "o" }, "]C", function()
-                move.goto_next_end("@class.outer", "textobjects")
-            end, { desc = tsmove .. "Next Class End" })
-            vim.keymap.set({ "n", "x", "o" }, "[f", function()
-                move.goto_previous_start("@function.outer", "textobjects")
-            end, { desc = tsmove .. "Previous Function Start" })
-            vim.keymap.set({ "n", "x", "o" }, "[c", function()
-                move.goto_previous_start("@class.outer", "textobjects")
-            end, { desc = tsmove .. "Previous Class Start" })
-            vim.keymap.set({ "n", "x", "o" }, "[F", function()
-                move.goto_previous_end("@function.outer", "textobjects")
-            end, { desc = tsmove .. "Previous Function End" })
-            vim.keymap.set({ "n", "x", "o" }, "[C", function()
-                move.goto_previous_end("@class.outer", "textobjects")
-            end, { desc = tsmove .. "Previous Class End" })
+            local move_maps = {
+                { "]f", "goto_next_start",     "@function.outer", "Next Function Start" },
+                { "]c", "goto_next_start",     "@class.outer",    "Next Class Start" },
+                { "]F", "goto_next_end",       "@function.outer", "Next Function End" },
+                { "]C", "goto_next_end",       "@class.outer",    "Next Class End" },
+                { "[f", "goto_previous_start", "@function.outer", "Previous Function Start" },
+                { "[c", "goto_previous_start", "@class.outer",    "Previous Class Start" },
+                { "[F", "goto_previous_end",   "@function.outer", "Previous Function End" },
+                { "[C", "goto_previous_end",   "@class.outer",    "Previous Class End" },
+            }
+            for _, m in ipairs(move_maps) do
+                vim.keymap.set({ "n", "x", "o" }, m[1], function()
+                    move[m[2]](m[3], "textobjects")
+                end, { desc = tsmove .. m[4] })
+            end
 
             local swap = require("nvim-treesitter-textobjects.swap")
             vim.keymap.set("n", "<leader>an", function()
@@ -81,12 +71,10 @@ return {
         init = function()
             vim.api.nvim_create_autocmd("FileType", {
                 callback = function()
-                    if vim.bo.filetype == "python" then
-                        pcall(vim.treesitter.start)
-                        return
-                    end
                     pcall(vim.treesitter.start)
-                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    if vim.bo.filetype ~= "python" then
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
                 end,
             })
             vim.filetype.add({ pattern = { [".*/hyprland%.conf"] = "hyprlang" } })
@@ -99,10 +87,10 @@ return {
             local mts = require("modules.treesitter")
             local tsmove = "TS Move: "
             vim.keymap.set("n", "[[", function()
-                mts:move_parent("list_literal", true)
+                mts.move_parent("list_literal", true)
             end, { desc = tsmove .. "Previous List Start" })
             vim.keymap.set("n", "]]", function()
-                mts:move_parent("list_literal", false)
+                mts.move_parent("list_literal", false)
             end, { desc = tsmove .. "Next List End" })
         end,
     },

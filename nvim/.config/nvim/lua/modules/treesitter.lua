@@ -1,7 +1,7 @@
 local M = {}
 ---@param node_type string
 ---@param goto_start boolean
-function M:move_parent(node_type, goto_start)
+function M.move_parent(node_type, goto_start)
     local cur_node = vim.treesitter.get_node()
     while cur_node and cur_node:type() ~= node_type do
         cur_node = cur_node:parent()

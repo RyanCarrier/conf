@@ -21,9 +21,6 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 
 require('luasnip.session.snippet_collection').clear_snippets("rust")
 
-local ts_utils = require("nvim-treesitter.ts_utils")
-local get_node_text = vim.treesitter.get_node_text
-
 ls.add_snippets("rust", {
 	s({ trig = "der", name = "Derive" },
 		fmt("#[derive({})]", i(1, ""))
