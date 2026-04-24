@@ -22,7 +22,7 @@ return {
         })
     end
   },
-  "luckasRanarison/tree-sitter-hypr",
+  -- tree-sitter-hypr no longer needed, hyprlang parser is in nvim-treesitter
   "ThePrimeagen/vim-be-good",
   "nvim-tree/nvim-web-devicons",
   -- Git related plugins
@@ -189,12 +189,12 @@ return {
     'numToStr/Comment.nvim',
     opts = {},
   },
+  -- treesitter playground replaced by built-in :InspectTree in nvim 0.12
   {
-    'nvim-treesitter/playground',
-    config = function()
-      vim.keymap.set('n', '<leader>tp', ':TSPlaygroundToggle<CR>',
-        { desc = "[T]reesitter [P]layground", noremap = true, silent = true })
-    end
+    'nvim-treesitter/nvim-treesitter',
+    keys = {
+      { '<leader>tp', '<cmd>InspectTree<CR>', desc = '[T]reesitter [P]layground (InspectTree)' },
+    },
   },
   {
     "HampusHauffman/block.nvim",

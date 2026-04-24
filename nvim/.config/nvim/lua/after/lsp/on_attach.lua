@@ -69,11 +69,9 @@ M.on_attach = function(client, bufnr)
 		end
 		vim.lsp.buf.format()
 	end, '[FF]ormat')
-	-- See `:help K` for why this keymap
-	nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-	-- REMOVED to allow for j and k
-	-- I don't think this does need to be removed (it doesn't, C-k is used in insert mode for selection, not normal)
-	nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+	local _border = vim.g.lsp_float_border or "single"
+	nmap('K', function() vim.lsp.buf.hover({ border = _border }) end, 'Hover Documentation')
+	nmap('<C-k>', function() vim.lsp.buf.signature_help({ border = _border }) end, 'Signature Documentation')
 
 	-- Lesser used LSP functionality
 	nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')

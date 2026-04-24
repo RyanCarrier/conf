@@ -69,10 +69,18 @@ return {
                 return vim.bo.filetype == 'markdown' and 2 or 0
             end,
             default = {
+                'lazydev',
                 'lsp',
                 'path',
                 'snippets',
                 'buffer',
+            },
+            providers = {
+                lazydev = {
+                    name = 'LazyDev',
+                    module = 'lazydev.integrations.blink',
+                    score_offset = 100,
+                },
             },
         },
     },
