@@ -1,5 +1,6 @@
 return {
   {
+    -- fancy notification popups
     'rcarriga/nvim-notify',
     config = function()
       vim.notify = require('notify')
@@ -22,11 +23,13 @@ return {
         })
     end
   },
-  "luckasRanarison/tree-sitter-hypr",
+  -- vim motion practice game
   "ThePrimeagen/vim-be-good",
+  -- file type icons
   "nvim-tree/nvim-web-devicons",
-  -- Git related plugins
+  -- git wrapper (:Git, :Gdiff, etc.)
   'tpope/vim-fugitive',
+  -- GitHub integration for fugitive (:GBrowse)
   'tpope/vim-rhubarb',
 
   -- multi line ctrl-n
@@ -37,11 +40,11 @@ return {
 
   -- bottom bar stuff make fancy
   -- 'gelguy/wilder.nvim', -- this might be cool but need to set keymaps etc(does cmdline highlithgting and auto complete)
-  'stevearc/dressing.nvim', --nice selector ui
+  -- improved vim.ui.select and vim.ui.input
+  'stevearc/dressing.nvim',
   {
-    'saecki/crates.nvim',   -- it is nice for rust crates stuff, TODO: more here, cause you can  prompt for things like features to select from
-    -- but also can rustaceanvim do it?
-    -- https://github.com/Saecki/crates.nvim/wiki/Documentation-v0.4.0
+    -- Cargo.toml dependency management (versions, features, docs)
+    'saecki/crates.nvim',
     tag = 'stable',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
@@ -49,14 +52,14 @@ return {
     end,
   },
   {
-    --regex explanation
+    -- interactive regex explanation
     'tomiis4/hypersonic.nvim',
     config = function()
       require('hypersonic').setup({})
     end
   },
   {
-    -- tasks
+    -- task runner and job management
     'stevearc/overseer.nvim',
     config = function()
       require('overseer').setup()
@@ -66,7 +69,7 @@ return {
   -- i dont' think i use this cause i don't use tabs tbh
   -- 'akinsho/bufferline.nvim',
   {
-    --highlights when you undo, is nice
+    -- highlights changed text on undo/redo
     'tzachar/highlight-undo.nvim',
     config = function()
       require('highlight-undo').setup({
@@ -80,7 +83,7 @@ return {
     end
   },
   {
-    -- this bad boy is slow but also i like it lets me jump out of nvim to tmux too
+    -- navigate and resize splits seamlessly between nvim and tmux
     'mrjones2014/smart-splits.nvim',
     config = function()
       require('smart-splits').setup({
@@ -90,20 +93,20 @@ return {
   },
 
   {
-    -- just fancy things
+    -- replaces cmdline, messages, and popupmenu with fancy UI
     'folke/noice.nvim',
     opts = {},
     -- enabled = false,
   },
 
-  --undo list
+  -- visual undo history tree
   'mbbill/undotree',
-  -- surround stuff
+  -- surround text objects (sa/sd/sr)
   'machakann/vim-sandwich',
   -- zenmode, never used it tho
   -- 'folke/zen-mode.nvim',
   {
-    -- bless file browser
+    -- file browser as editable buffer
     'stevearc/oil.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
@@ -115,23 +118,23 @@ return {
   --   end
   -- },
 
-  --highlight hovered
+  -- highlight other occurrences of word under cursor
   "RRethy/vim-illuminate",
-  --highlight when cursor jumps
+  -- flash beacon on cursor jumps
   "danilamihailov/beacon.nvim",
-  -- make buffer collapse
+  -- fun cell automaton animation on buffer (:CellularAutomaton)
   "eandrju/cellular-automaton.nvim",
   -- dim other windows
   "levouh/tint.nvim",
   {
-    --scrollbar ... lol
+    -- scrollbar with search/diagnostics markers
     'petertriho/nvim-scrollbar',
     config = function()
       require('scrollbar').setup()
     end
   },
   {
-    -- shows up top what you in/where u is
+    -- winbar breadcrumbs showing current code location
     "utilyre/barbecue.nvim",
     name = "barbecue",
     version = "*",
@@ -164,6 +167,7 @@ return {
       })
     end
   },
+  -- enhanced Rust tooling (LSP, DAP, crate graph)
   'mrcjkb/rustaceanvim',
   {
     -- Set lualine as statusline
@@ -190,13 +194,14 @@ return {
     opts = {},
   },
   {
-    'nvim-treesitter/playground',
-    config = function()
-      vim.keymap.set('n', '<leader>tp', ':TSPlaygroundToggle<CR>',
-        { desc = "[T]reesitter [P]layground", noremap = true, silent = true })
-    end
+    -- keybind for built-in :InspectTree (treesitter AST viewer)
+    'nvim-treesitter/nvim-treesitter',
+    keys = {
+      { '<leader>tp', '<cmd>InspectTree<CR>', desc = '[T]reesitter [P]layground (InspectTree)' },
+    },
   },
   {
+    -- visual indent guide blocks
     "HampusHauffman/block.nvim",
     config = function()
       require("block").setup({
@@ -231,7 +236,7 @@ return {
       require('numb').setup({})
     end
   },
-  -- shoudl be able to just tab to get out of things that aren't strings
+  -- tab to jump out of brackets/quotes
   'abecodes/tabout.nvim',
   -- {
   --   -- testing this idk if i will keep it
@@ -239,10 +244,13 @@ return {
   --   event = "VeryLazy",
   -- },
   {
+    -- preview code actions in a picker before applying
     "aznhe21/actions-preview.nvim",
   },
+  -- Firestore security rules syntax highlighting
   "delphinus/vim-firestore",
   {
+    -- render markdown inline in buffer (headings, lists, etc.)
     'MeanderingProgrammer/render-markdown.nvim',
     opts = {},
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
@@ -250,19 +258,14 @@ return {
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   },
   {
+    -- unix shell commands (:Delete, :Rename, :Chmod, :Move, etc.)
     "tpope/vim-eunuch",
-    -- :Delete
-    -- don't remember why i just added but look it up
   },
   {
-    -- mark things off in markdown files
+    -- toggle checkboxes in markdown files
     "bngarren/checkmate.nvim",
-    ft = "markdown", -- Lazy loads for Markdown files matching patterns in 'files'
-    opts = {
-      -- your configuration here
-      -- or leave empty to use defaults
-    },
-
+    ft = "markdown",
+    opts = {},
   }
   -- {
   --   "kevinhwang91/nvim-ufo",

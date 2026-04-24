@@ -195,5 +195,10 @@ local onAttachGroup = vim.api.nvim_create_augroup("default-on-attach", {})
 vim.api.nvim_create_autocmd(
 	'LspAttach', {
 		group = onAttachGroup,
-		callback = require('after.lsp.on_attach').on_attach
+		callback = function(args)
+			local client = vim.lsp.get_client_by_id(args.data.client_id)
+			if client then
+				require('after.lsp.on_attach').on_attach(client, args.buf)
+			end
+		end,
 	})

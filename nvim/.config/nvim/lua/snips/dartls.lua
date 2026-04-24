@@ -21,7 +21,6 @@ local conds_expand = require("luasnip.extras.conditions.expand")
 
 require('luasnip.session.snippet_collection').clear_snippets("dart")
 
-local ts_utils = require("nvim-treesitter.ts_utils")
 local get_node_text = vim.treesitter.get_node_text
 
 local function get_first_single_child(node, child_type)
@@ -84,7 +83,7 @@ end
 local function get_parameters_without_query()
 	--we have officially given up on figuring out how to get query to work...
 	local bufnr = vim.api.nvim_get_current_buf()
-	local node = ts_utils.get_node_at_cursor()
+	local node = vim.treesitter.get_node()
 	while node ~= nil and node:type() ~= "class_definition" do
 		node = node:parent()
 	end

@@ -7,3 +7,5 @@ hypr/.config/hypr/host-specific.conf
 *.DS_Store
 all/.secret*
 
+tmp
+
