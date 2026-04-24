@@ -39,11 +39,11 @@ return {
           "yaml-language-server",
           "dockerfile-language-server",
           "actionlint",
+          "hadolint",
         },
         run_on_start = true,
         integrations = {
           ['mason-lspconfig'] = true,
-          ['mason-null-lspconfig'] = true,
           ['mason-nvim-dap'] = true,
         },
       })

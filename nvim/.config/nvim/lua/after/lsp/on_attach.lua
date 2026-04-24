@@ -64,10 +64,7 @@ M.on_attach = function(client, bufnr)
 	nmap('<leader>wOs', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[WO]rkspace [S]ymbols')
 
 	nmap('<leader>ff', function()
-		if isDebug then
-			vim.notify('Formatting with ' .. vim.inspect(vim.lsp.client.name))
-		end
-		vim.lsp.buf.format()
+		require('conform').format({ async = true, lsp_format = "fallback" })
 	end, '[FF]ormat')
 	local _border = vim.g.lsp_float_border or "single"
 	nmap('K', function() vim.lsp.buf.hover({ border = _border }) end, 'Hover Documentation')
