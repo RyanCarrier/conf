@@ -33,6 +33,7 @@ end
 local mason_lspconfig = require('mason-lspconfig')
 mason_lspconfig.setup({
 	ensure_installed = vim.tbl_keys(servers),
+	-- rust_analyzer is managed by rustaceanvim
 	automatic_enable = {
 		exclude = { 'rust_analyzer' },
 	},

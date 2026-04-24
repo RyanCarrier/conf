@@ -60,13 +60,18 @@ vim.api.nvim_create_user_command('FormatToggle', function()
 	print('Setting autoformatting to: ' .. tostring(not vim.g.disable_autoformat))
 end, {})
 
--- ensure eslint and dartls advertise formatting so conform's lsp fallback picks them up
+-- eslint/dartls don't always advertise formatting; force it so conform's LSP fallback uses them.
+-- ts_ls formatting is disabled so eslint handles JS/TS formatting exclusively.
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('lsp-format-capabilities', { clear = true }),
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client and (client.name == "eslint" or client.name == "dartls") then
+		if not client then return end
+		if client.name == "eslint" or client.name == "dartls" then
 			client.server_capabilities.documentFormattingProvider = true
+		end
+		if client.name == "ts_ls" then
+			client.server_capabilities.documentFormattingProvider = false
 		end
 	end,
 })
