@@ -1,13 +1,18 @@
 return {
   {
+    -- LSP client configuration
     'neovim/nvim-lspconfig',
     dependencies = {
+      -- portable package manager for LSP servers, linters, formatters
       { 'mason-org/mason.nvim', config = true },
+      -- bridges mason and lspconfig (auto-enable installed servers)
       'mason-org/mason-lspconfig.nvim',
+      -- LSP progress spinner in bottom right
       { 'j-hui/fidget.nvim', opts = {} },
     },
   },
   {
+    -- Lua LSP setup for neovim config development
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
@@ -17,6 +22,7 @@ return {
     },
   },
   {
+    -- auto-install formatters, linters, and other tools via mason
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     config = function()
       require("mason-tool-installer").setup({

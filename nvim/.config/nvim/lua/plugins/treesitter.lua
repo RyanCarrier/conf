@@ -1,5 +1,6 @@
 return {
     {
+        -- treesitter-aware text objects (select/move/swap functions, classes, params)
         "nvim-treesitter/nvim-treesitter-textobjects",
         branch = "main",
         config = function()
@@ -60,6 +61,7 @@ return {
         end,
     },
     {
+        -- syntax highlighting and indentation via treesitter
         "nvim-treesitter/nvim-treesitter",
         branch = "main",
         lazy = false,
@@ -95,6 +97,7 @@ return {
         end,
     },
     {
+        -- treesitter parser auto-installer
         "lewis6991/ts-install.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         config = function()
