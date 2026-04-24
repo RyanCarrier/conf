@@ -33,5 +33,7 @@ end
 local mason_lspconfig = require('mason-lspconfig')
 mason_lspconfig.setup({
 	ensure_installed = vim.tbl_keys(servers),
-	automatic_enable = true,
+	automatic_enable = {
+		exclude = { 'rust_analyzer' },
+	},
 })
