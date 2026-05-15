@@ -7,7 +7,8 @@
 # fi
 # export RCARRIER_PROFILE_LOADED=1
 
-export GOROOT=/usr/lib/go
+# doesn't need to be set anymore and macos is different to arch
+# export GOROOT=/usr/lib/go
 export GOPATH=$HOME/Projects
 # check if Android/Sdk exists
 if [ -d "$HOME/Android/Sdk" ]; then
@@ -279,6 +280,7 @@ alias tn="tmux new-session -s"
 alias tl="tmux ls"
 ## Project specific
 alias jg="j gym_"
+alias ja="j again_"
 alias vimlc="vim leetcode.nvim"
 alias claude_api="unset CLAUDE_CODE_OAUTH_TOKEN && claude"
 if [ "$TERM" = "xterm-kitty" ]; then
@@ -365,8 +367,10 @@ _sta_completion() {
 	if [ "$COMP_CWORD" -eq 1 ]; then
 		local hosts
 		hosts=$(
-			{ cat ~/.ssh/config 2>/dev/null | grep -i '^Host ' | awk '{for(i=2;i<=NF;i++) print $i}' | grep -v '[*?]';
-			  cat ~/.ssh/known_hosts 2>/dev/null | cut -d' ' -f1 | tr ',' '\n' | sed 's/\[//;s/\].*//'; } | sort -u
+			{
+				cat ~/.ssh/config 2>/dev/null | grep -i '^Host ' | awk '{for(i=2;i<=NF;i++) print $i}' | grep -v '[*?]'
+				cat ~/.ssh/known_hosts 2>/dev/null | cut -d' ' -f1 | tr ',' '\n' | sed 's/\[//;s/\].*//'
+			} | sort -u
 		)
 		COMPREPLY=($(compgen -W "$hosts" -- "$cur"))
 	elif [ "$COMP_CWORD" -eq 2 ]; then
