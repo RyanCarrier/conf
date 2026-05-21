@@ -36,6 +36,8 @@ plugins=(git golang colored-man-pages rust command-not-found common-aliases pip 
 fpath+=~/.zfunc
 export TASK_EXE=go-task
 
+# skip compaudit directory security check on startup
+ZSH_DISABLE_COMPFIX=true
 source $ZSH/oh-my-zsh.sh
 
 # register task completion for both command names

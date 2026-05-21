@@ -52,9 +52,18 @@ if [ -d "$HOME/bin" ]; then
 	PATH=$PATH:"$HOME/bin"
 fi
 
+# cache rustc sysroot; auto-invalidates when toolchain dir no longer exists
 if command -v rustc >/dev/null 2>&1; then
-	RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+	_rustc_cache="$HOME/.cache/rustc_sysroot"
+	if [[ -f "$_rustc_cache" ]] && [[ -d "$(<"$_rustc_cache")" ]]; then
+		RUST_SRC_PATH="$(<"$_rustc_cache")/lib/rustlib/src/rust/src"
+	else
+		mkdir -p "$HOME/.cache"
+		rustc --print sysroot > "$_rustc_cache"
+		RUST_SRC_PATH="$(<"$_rustc_cache")/lib/rustlib/src/rust/src"
+	fi
 	export RUST_SRC_PATH
+	unset _rustc_cache
 fi
 #RUBY - rbenv init moved to end of file (after .mac.sh include) to avoid PATH clobbering
 # eval "$(rbenv init -)"
@@ -457,11 +466,7 @@ include "$HOME/.copilot.zsh"
 include "$HOME/.secret_profile"
 
 if command -v fzf &>/dev/null; then
-	fzfversion=$(fzf --version | awk '{print $1}')
-	# if fzfversion >= 0.48
-	if [ "$fzfversion" = "$(echo -e "$fzfversion\n0.48" | sort -V | tail -n1)" ]; then
-		eval "$(fzf --zsh)"
-	fi
+	eval "$(fzf --zsh 2>/dev/null)" || true
 fi
 if command -v zoxide &>/dev/null; then
 	eval "$(zoxide init zsh --cmd j)"
@@ -469,10 +474,12 @@ fi
 if command -v emulator &>/dev/null; then
 	complete -W "$(emulator -list-avds | sed '1d' | sed 's/^/@/g')" emulator
 fi
+# lazy-load pyenv; shims on PATH immediately, full init deferred until first use
 if command -v pyenv &>/dev/null; then
 	export PYENV_ROOT="$HOME/.pyenv"
 	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-	eval "$(pyenv init - zsh)"
+	export PATH="$PYENV_ROOT/shims:$PATH"
+	pyenv() { unset -f pyenv; eval "$(command pyenv init - zsh)"; pyenv "$@"; }
 fi
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
@@ -483,10 +490,23 @@ unsetopt nomatch
 if [ "$(uname)" = "Darwin" ]; then
 	include "$HOME/.mac.sh"
 else
+	_nvm_init=""
 	if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
-		include /usr/share/nvm/init-nvm.sh
+		_nvm_init="/usr/share/nvm/init-nvm.sh"
 	elif [ -f "$HOME/.nvm/nvm.sh" ]; then
-		include "$HOME/.nvm/nvm.sh"
+		_nvm_init="$HOME/.nvm/nvm.sh"
+	fi
+# lazy-load nvm; only sources init script on first nvm/node/npm/npx call
+	if [ -n "$_nvm_init" ]; then
+		_nvm_lazy_load() {
+			unset -f nvm node npm npx _nvm_lazy_load
+			source "$_nvm_init"
+			unset _nvm_init
+		}
+		nvm() { _nvm_lazy_load; nvm "$@"; }
+		node() { _nvm_lazy_load; node "$@"; }
+		npm() { _nvm_lazy_load; npm "$@"; }
+		npx() { _nvm_lazy_load; npx "$@"; }
 	fi
 fi
 
@@ -494,8 +514,17 @@ fi
 if command -v rbenv &>/dev/null; then
 	eval "$(rbenv init - zsh)"
 fi
+# cache gem home dir; auto-invalidates when ruby version changes
 if command -v gem >/dev/null 2>&1; then
-	GEM_HOME="$(gem env user_gemhome)"
+	_gem_cache="$HOME/.cache/gem_home"
+	if [[ -f "$_gem_cache" ]] && [[ -d "$(<"$_gem_cache")" ]]; then
+		GEM_HOME="$(<"$_gem_cache")"
+	else
+		GEM_HOME="$(gem env user_gemhome)"
+		mkdir -p "$HOME/.cache"
+		printf '%s' "$GEM_HOME" > "$_gem_cache"
+	fi
 	export PATH="$PATH:$GEM_HOME/bin"
 	export GEM_HOME
+	unset _gem_cache
 fi
