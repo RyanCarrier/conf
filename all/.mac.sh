@@ -33,3 +33,9 @@ if [ -d "/opt/homebrew/share/android-commandlinetools" ]; then
 fi
 # PATH="/opt/homebrew/opt/ruby/bin:$PATH"  # conflicts with rbenv shims
 # eval "$(/usr/libexec/path_helper)"  # reshuffles PATH, pushes system ruby ahead of rbenv
+
+# Added by Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity IDE
+export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
