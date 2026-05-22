@@ -62,5 +62,7 @@ return {
     -- Install golang specific config
     -- wot
     require('dap-go').setup()
+
+    require('dap.ext.vscode').load_launchjs()
   end,
 }
