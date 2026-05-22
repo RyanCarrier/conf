@@ -63,8 +63,17 @@ return {
 					-- exception_breakpoints = { "Unhandled" },
 					exception_breakpoints = {},
 					register_configurations = function(_)
-						require("dap").configurations.dart = {}
-						require("dap.ext.vscode").load_launchjs()
+						-- flutter-tools reads dap.configurations.dart directly,
+						-- bypassing nvim-dap's provider system, so we populate
+						-- it from .vscode/launch.json ourselves
+						local configs = require("dap.ext.vscode").getconfigs() or {}
+						local dart_configs = {}
+						for _, c in ipairs(configs) do
+							if c.type == "dart" then
+								table.insert(dart_configs, c)
+							end
+						end
+						require("dap").configurations.dart = dart_configs
 					end,
 				},
 				dev_tools = {
