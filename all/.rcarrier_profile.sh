@@ -490,23 +490,35 @@ unsetopt nomatch
 if [ "$(uname)" = "Darwin" ]; then
 	include "$HOME/.mac.sh"
 else
+	export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 	_nvm_init=""
 	if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
-		_nvm_init="/usr/share/nvm/init-nvm.sh"
-	elif [ -f "$HOME/.nvm/nvm.sh" ]; then
-		_nvm_init="$HOME/.nvm/nvm.sh"
+		_nvm_init="/usr/share/nvm/nvm.sh"
+	elif [ -f "$NVM_DIR/nvm.sh" ]; then
+		_nvm_init="$NVM_DIR/nvm.sh"
 	fi
-# lazy-load nvm; only sources init script on first nvm/node/npm/npx call
 	if [ -n "$_nvm_init" ]; then
-		_nvm_lazy_load() {
-			unset -f nvm node npm npx _nvm_lazy_load
-			source "$_nvm_init"
+		# add default node bin to PATH immediately so all global binaries work
+		if [ -f "$NVM_DIR/alias/default" ]; then
+			_nvm_ver="$(< "$NVM_DIR/alias/default")"
+			while [ -f "$NVM_DIR/alias/$_nvm_ver" ]; do
+				_nvm_ver="$(< "$NVM_DIR/alias/$_nvm_ver")"
+			done
+			case "$_nvm_ver" in
+				stable) _nvm_node_path="$(ls -d "$NVM_DIR/versions/node/"* 2>/dev/null | sort -rV | head -1)" ;;
+				*)      _nvm_node_path="$(ls -d "$NVM_DIR/versions/node/v${_nvm_ver#v}"* 2>/dev/null | sort -rV | head -1)" ;;
+			esac
+			[ -d "$_nvm_node_path/bin" ] && export PATH="$_nvm_node_path/bin:$PATH"
+			unset _nvm_ver _nvm_node_path
+		fi
+		# lazy-load nvm function only; node/npm/tsc/etc already work via PATH
+		nvm() {
+			unset -f nvm
+			source "$_nvm_init" --no-use
+			[ -f "/usr/share/nvm/bash_completion" ] && source /usr/share/nvm/bash_completion
 			unset _nvm_init
+			nvm "$@"
 		}
-		nvm() { _nvm_lazy_load; nvm "$@"; }
-		node() { _nvm_lazy_load; node "$@"; }
-		npm() { _nvm_lazy_load; npm "$@"; }
-		npx() { _nvm_lazy_load; npx "$@"; }
 	fi
 fi
 
