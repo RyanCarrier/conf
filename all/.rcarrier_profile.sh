@@ -20,7 +20,14 @@ export JAVA_HOME='/usr/lib/jvm/default'
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 CHROME_EXECUTABLE=$(which google-chrome-stable)
 export CHROME_EXECUTABLE
-export EDITOR=vim
+for _ed in nvim vim vi; do
+	if command -v "$_ed" >/dev/null 2>&1; then
+		export EDITOR="$_ed"
+		export VISUAL="$_ed"
+		break
+	fi
+done
+unset _ed
 
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
@@ -59,7 +66,7 @@ if command -v rustc >/dev/null 2>&1; then
 		RUST_SRC_PATH="$(<"$_rustc_cache")/lib/rustlib/src/rust/src"
 	else
 		mkdir -p "$HOME/.cache"
-		rustc --print sysroot > "$_rustc_cache"
+		rustc --print sysroot >"$_rustc_cache"
 		RUST_SRC_PATH="$(<"$_rustc_cache")/lib/rustlib/src/rust/src"
 	fi
 	export RUST_SRC_PATH
@@ -479,7 +486,11 @@ if command -v pyenv &>/dev/null; then
 	export PYENV_ROOT="$HOME/.pyenv"
 	[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 	export PATH="$PYENV_ROOT/shims:$PATH"
-	pyenv() { unset -f pyenv; eval "$(command pyenv init - zsh)"; pyenv "$@"; }
+	pyenv() {
+		unset -f pyenv
+		eval "$(command pyenv init - zsh)"
+		pyenv "$@"
+	}
 fi
 
 if [ ! -f "$HOME/.tmux-themepack/powerline/default/cyan.tmuxtheme" ]; then
@@ -500,13 +511,13 @@ else
 	if [ -n "$_nvm_init" ]; then
 		# add default node bin to PATH immediately so all global binaries work
 		if [ -f "$NVM_DIR/alias/default" ]; then
-			_nvm_ver="$(< "$NVM_DIR/alias/default")"
+			_nvm_ver="$(<"$NVM_DIR/alias/default")"
 			while [ -f "$NVM_DIR/alias/$_nvm_ver" ]; do
-				_nvm_ver="$(< "$NVM_DIR/alias/$_nvm_ver")"
+				_nvm_ver="$(<"$NVM_DIR/alias/$_nvm_ver")"
 			done
 			case "$_nvm_ver" in
-				stable) _nvm_node_path="$(ls -d "$NVM_DIR/versions/node/"* 2>/dev/null | sort -rV | head -1)" ;;
-				*)      _nvm_node_path="$(ls -d "$NVM_DIR/versions/node/v${_nvm_ver#v}"* 2>/dev/null | sort -rV | head -1)" ;;
+			stable) _nvm_node_path="$(ls -d "$NVM_DIR/versions/node/"* 2>/dev/null | sort -rV | head -1)" ;;
+			*) _nvm_node_path="$(ls -d "$NVM_DIR/versions/node/v${_nvm_ver#v}"* 2>/dev/null | sort -rV | head -1)" ;;
 			esac
 			[ -d "$_nvm_node_path/bin" ] && export PATH="$_nvm_node_path/bin:$PATH"
 			unset _nvm_ver _nvm_node_path
@@ -534,7 +545,7 @@ if command -v gem >/dev/null 2>&1; then
 	else
 		GEM_HOME="$(gem env user_gemhome)"
 		mkdir -p "$HOME/.cache"
-		printf '%s' "$GEM_HOME" > "$_gem_cache"
+		printf '%s' "$GEM_HOME" >"$_gem_cache"
 	fi
 	export PATH="$PATH:$GEM_HOME/bin"
 	export GEM_HOME
