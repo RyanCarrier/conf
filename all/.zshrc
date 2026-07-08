@@ -1,3 +1,11 @@
+# If launched in a directory that no longer exists (e.g. a removed git worktree
+# inherited from a long-lived tmux pane), fall back to $HOME before anything that
+# calls getcwd() (rustup via omz 'rust' plugin, zoxide, the prompt) errors out.
+# /bin/pwd is the only reliable check — the pwd builtin prints the cached path.
+if ! /bin/pwd >/dev/null 2>&1; then
+	builtin cd "$HOME"
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
