@@ -34,7 +34,14 @@ plugins=(git golang colored-man-pages rust command-not-found common-aliases pip 
 
 # custom completions (must be before oh-my-zsh compinit)
 fpath+=~/.zfunc
-export TASK_EXE=go-task
+# the AUR package installs the binary as `go-task`, homebrew's as `task`.
+# the completion shells out to $TASK_EXE to list tasks, so it must be the real
+# name or task-name completion silently comes back empty.
+if command -v go-task &>/dev/null; then
+	export TASK_EXE=go-task
+else
+	export TASK_EXE=task
+fi
 
 # skip compaudit directory security check on startup
 ZSH_DISABLE_COMPFIX=true
@@ -43,7 +50,7 @@ source $ZSH/oh-my-zsh.sh
 # register task completion for both command names
 if [[ -f ~/.zfunc/_task ]]; then
 	source ~/.zfunc/_task
-	compdef _go_task task go-task
+	compdef _task task go-task
 fi
 
 source ~/.rcarrier_profile.sh
