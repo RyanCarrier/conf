@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 CARD_ID=card1
-HWMON_ID=hwmon0
+# HWMON_ID=hwmon0
+HWMON_ID=hwmon6
 
 # check user is root
 if [[ $EUID -ne 0 ]]; then

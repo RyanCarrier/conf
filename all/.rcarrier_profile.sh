@@ -139,11 +139,15 @@ unalias gwta
 
 # git worktree add in parent directory as reponame_branchname
 # (or with -b if the branch doesn't exist)
+# optional second arg is a start point (tag, branch or commit) to cut the new
+# branch from, e.g. `gwta v19.9.0-hotfix v19.9.0`
 function gwta() {
 	if [ -z "$1" ]; then
 		echo "gib branch name"
-		return
+		return 1
 	fi
+	local branch="$1"
+	local start_point="$2"
 	# get repo root and name
 	local repo_root
 	repo_root=$(git worktree list | head -1 | awk '{print $1}')
@@ -153,25 +157,41 @@ function gwta() {
 	parent_dir=$(dirname "$repo_root")
 
 	# replace / with _ for directory name
-	local branch_dir="${1//\//_}"
+	local branch_dir="${branch//\//_}"
 	local worktree_path="${parent_dir}/${repo_name}_${branch_dir}"
 
 	# if worktree already exists, just offer to cd
 	if [ -d "$worktree_path" ]; then
 		echo "$worktree_path already exists"
+	elif [ -n "$start_point" ]; then
+		# explicit start point: always cut a fresh branch from it
+		if ! git rev-parse --verify --quiet "${start_point}^{commit}" >/dev/null; then
+			echo "start point $start_point not found (if it's a new tag: git fetch --tags)"
+			return 1
+		fi
+		if git show-ref --verify --quiet "refs/heads/$branch"; then
+			echo "branch $branch already exists locally, refusing to move it to $start_point"
+			echo "use \`gwta $branch\` to check it out as-is, or pick another name"
+			return 1
+		fi
+		if git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+			echo "warning: origin/$branch already exists, cutting from $start_point anyway"
+		fi
+		git worktree add -b "$branch" "$worktree_path" "$start_point" || return 1
+		echo "created $branch from $start_point at $worktree_path"
 	else
 		# check if local branch exists
-		if git show-ref --verify --quiet "refs/heads/$1"; then
-			echo "branch $1 exists locally, checking out"
-			git worktree add "$worktree_path" "$1"
+		if git show-ref --verify --quiet "refs/heads/$branch"; then
+			echo "branch $branch exists locally, checking out"
+			git worktree add "$worktree_path" "$branch"
 			echo "checked out to $worktree_path"
 		# check if remote branch exists
-		elif git show-ref --verify --quiet "refs/remotes/origin/$1"; then
-			echo "branch $1 exists on remote, checking out"
-			git worktree add "$worktree_path" "$1"
+		elif git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+			echo "branch $branch exists on remote, checking out"
+			git worktree add "$worktree_path" "$branch"
 			echo "checked out to $worktree_path"
 		else
-			git worktree add -b "$1" "$worktree_path"
+			git worktree add -b "$branch" "$worktree_path"
 			echo "created and checked out to $worktree_path"
 		fi
 	fi
@@ -183,13 +203,19 @@ function gwta() {
 	fi
 }
 
-# completion for gwta - complete on local and remote branches
+# completion for gwta - branches for the branch name, tags too for the optional
+# start point in second position
 _gwta_completions() {
 	local cur="${COMP_WORDS[COMP_CWORD]}"
-	local branches
+	local branches candidates
 	# get local and remote branches, strip remote prefix
-	branches=$(git branch -a 2>/dev/null | sed 's/^[* ]*//' | sed 's|remotes/origin/||' | grep -v '^HEAD' | sort -u)
-	COMPREPLY=($(compgen -W "$branches" -- "$cur"))
+	branches=$(git branch -a 2>/dev/null | sed 's/^[* ]*//' | sed 's|remotes/origin/||' | grep -v '^HEAD')
+	if [ "$COMP_CWORD" -ge 2 ]; then
+		candidates=$(printf '%s\n%s\n' "$(git tag 2>/dev/null)" "$branches" | sort -u)
+	else
+		candidates=$(echo "$branches" | sort -u)
+	fi
+	COMPREPLY=($(compgen -W "$candidates" -- "$cur"))
 }
 complete -F _gwta_completions gwta gwtat
 
@@ -250,6 +276,25 @@ function gwtr() {
 }
 
 alias lns="ln -s"
+
+# Anchor the tmux server to $HOME. The server keeps the cwd of whatever first
+# starts it for its entire life; if that first `tmux` ran in a git worktree that
+# later gets removed, the server (and every new session/shell that falls back to
+# it) is left pointing at a dead dir. Birthing it from $HOME avoids that.
+# `exit-empty off` is what lets us do this without a keepalive session: by
+# default a server with no sessions exits immediately, so a bare `start-server`
+# would die before the real session arrives. With it off the server sticks
+# around holding the $HOME anchor and `tmux ls` stays clean -- only the sessions
+# you actually asked for. Tradeoff: the server no longer exits on its own when
+# the last session goes away; `tmux kill-server` still does it. This shadows the
+# tmux binary, so the helpers below (t, tn, tl) route through it automatically.
+function tmux() {
+	if ! command tmux has-session 2>/dev/null; then
+		( builtin cd -- "$HOME" && command tmux start-server \; set -s exit-empty off )
+	fi
+	command tmux "$@"
+}
+
 function t() {
 	# If arguments passed, just run tmux with them
 	if [ -n "$1" ]; then
@@ -413,15 +458,22 @@ function tng() {
 	ta gym_score
 }
 
+# gwta + a tmux session sitting in the new worktree. Optional second arg is a
+# start point, so a hotfix off a release tag is:
+#   gwtat v19.9.0-hotfix v19.9.0
 function gwtat() {
 	if [ -z "$1" ]; then
 		echo "gib branch name"
 		return 1
 	fi
-	gwta "$1"
-	tn "$1" -d
-	# tmux send-keys -t "$1":0 'claude' Enter
-	ta "$1"
+	gwta "$1" "$2" || return 1
+	# tmux splits -t targets on . and : (session:window.pane), so a tag-shaped
+	# branch like v19.9.0-hotfix has to be flattened or the attach below fails
+	# with "can't find pane: 9.0-hotfix"
+	local session="${1//[.:]/_}"
+	tn "$session" -d
+	# tmux send-keys -t "$session":0 'claude' Enter
+	ta "$session"
 }
 
 function touche() {
