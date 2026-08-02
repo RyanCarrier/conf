@@ -344,6 +344,27 @@ alias jg="j gym_"
 alias ja="j again_"
 alias vimlc="vim leetcode.nvim"
 alias claude_api="unset CLAUDE_CODE_OAUTH_TOKEN && claude"
+# Run Claude Code through OpenRouter with each tier mapped to a different model,
+# leaving the plain `claude` command pointed at Anthropic. Needs $OPENROUTER_API_KEY.
+# The /model opus|sonnet|haiku picker resolves through the DEFAULT_* vars below;
+# the haiku tier also drives background work (titles, summaries), so it's the
+# cheap-offload knob. ANTHROPIC_MODEL is left unset so the tier picker wins.
+# Env is set in a subshell so it never leaks into the calling shell.
+function claude-or() {
+	if [ -z "$OPENROUTER_API_KEY" ]; then
+		echo "OPENROUTER_API_KEY not set" >&2
+		return 1
+	fi
+	(
+		export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+		export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"
+		export ANTHROPIC_API_KEY=""
+		export ANTHROPIC_DEFAULT_OPUS_MODEL="z-ai/glm-5.2"
+		export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek/deepseek-v4-pro"
+		export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek/deepseek-v4-flash"
+		claude "$@"
+	)
+}
 if [ "$TERM" = "xterm-kitty" ]; then
 	alias ssh="kitty +kitten ssh"
 	alias icat="kitty +kitten icat"
