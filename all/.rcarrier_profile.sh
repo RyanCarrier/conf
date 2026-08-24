@@ -497,6 +497,105 @@ function gwtat() {
 	ta "$session"
 }
 
+# the default way to start work: hand it what you'd give /auto-branch (an issue
+# number or a task description), a headless haiku names the branch, then it
+# worktrees+tmuxes into it and leaves claude open with the auto-branch command
+# typed but NOT submitted, so there's still room to set model/effort first.
+#   gwtatauto 123
+#   gwtatauto make the retry backoff jittered
+function gwtatauto() {
+	if [ -z "$1" ]; then
+		echo "gib issue number or description"
+		return 1
+	fi
+	local desc="$*"
+
+	# bare issue number: pull the title so haiku has something to name the
+	# branch after, falling back to issue/N if gh can't
+	local naming_input="$desc"
+	local issue_num="" issue_re='^#?[0-9]+$'
+	if [[ "$desc" =~ $issue_re ]]; then
+		issue_num="${desc#\#}"
+		local title
+		title=$(gh issue view "$issue_num" --json title -q .title 2>/dev/null)
+		if [ -n "$title" ]; then
+			naming_input="GitHub issue #${issue_num}: ${title}"
+		else
+			echo "couldn't fetch issue #${issue_num} via gh, falling back to issue/${issue_num}"
+			naming_input=""
+		fi
+	fi
+
+	local branch=""
+	if [ -z "$naming_input" ]; then
+		branch="issue/${issue_num}"
+	else
+		echo "asking haiku for a branch name..."
+		local raw attempt branch_re='^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$'
+		for attempt in 1 2; do
+			raw=$(claude --model haiku -p "Reply with ONLY a git branch name for this task, nothing else - no prose, no quotes, no backticks. Format: type/short-kebab-description, where type is one of feat, fix, chore, refactor, docs or test and the description is 2-6 lowercase words joined by hyphens (a-z, 0-9 and - only, exactly one /). If the task references an issue number, start the description with it, e.g. fix/123-flaky-retry. Task: ${naming_input}")
+			# last non-empty line, stripped of whitespace/quotes/backticks
+			branch=$(printf '%s\n' "$raw" | awk 'NF{l=$0} END{print l}' | tr -d "[:space:]\`\"'")
+			if [[ "$branch" =~ $branch_re ]] &&
+				git check-ref-format --branch "$branch" >/dev/null 2>&1; then
+				break
+			fi
+			branch=""
+		done
+		if [ -z "$branch" ]; then
+			echo "haiku couldn't produce a valid branch name, last answer:"
+			echo "$raw"
+			return 1
+		fi
+	fi
+	echo "branch: $branch"
+
+	# gwta asks before cd'ing into the worktree; feed it a y to stay hands-off
+	# (redirection only feeds the read -- the cd still lands in this shell)
+	gwta "$branch" <<<"y" || return 1
+
+	# gwtat's .: flattening, plus / since these names always carry one
+	local session="${branch//\//_}"
+	session="${session//[.:]/_}"
+	if tmux has-session -t "=$session" 2>/dev/null; then
+		echo "session $session already exists, attaching"
+		ta "$session"
+		return
+	fi
+	tn "$session" -d
+	tmux send-keys -t "$session" 'claude' Enter
+	# type the auto-branch command once claude's TUI is actually ready. Runs as
+	# a detached background poller so the attach below is instant and a fresh
+	# worktree's trust-folder dialog can be answered first -- the poller waits
+	# for claude to own the pane, then for the dialog to clear, then types the
+	# command but does NOT send it, leaving room to set model/effort first.
+	# Gives up quietly after ~2min (e.g. claude never started). ; is escaped so
+	# tmux doesn't read it as a command separator.
+	(
+		{
+			deadline=$((SECONDS + 120))
+			while [ "$SECONDS" -lt "$deadline" ]; do
+				case "$(tmux display-message -p -t "$session" '#{pane_current_command}' 2>/dev/null)" in
+				claude | node) break ;;
+				esac
+				sleep 0.5
+			done
+			sleep 1
+			while [ "$SECONDS" -lt "$deadline" ] &&
+				tmux capture-pane -p -t "$session" 2>/dev/null | grep -qi 'trust this folder'; do
+				sleep 0.5
+			done
+			sleep 1
+			case "$(tmux display-message -p -t "$session" '#{pane_current_command}' 2>/dev/null)" in
+			claude | node)
+				tmux send-keys -t "$session" -l "/rc-toolkit:auto-branch ${desc//;/\\;}"
+				;;
+			esac
+		} >/dev/null 2>&1 &
+	)
+	ta "$session"
+}
+
 function touche() {
 	if [ -z "$1" ]; then
 		echo "gib filename"
