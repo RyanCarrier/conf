@@ -504,9 +504,32 @@ function gwtat() {
 # number or a task description), a headless haiku names the branch, then it
 # worktrees+tmuxes into it and leaves claude open with the auto-branch command
 # typed but NOT submitted, so there's still room to set model/effort first.
+# An optional leading -m/--model picks the model claude launches with (e.g.
+# opus, fable); the haiku branch-namer is unaffected.
 #   gwtatauto 123
 #   gwtatauto make the retry backoff jittered
+#   gwtatauto -m opus 123
+#   gwtatauto --model fable make the retry backoff jittered
 function gwtatauto() {
+	# optional leading -m/--model <model>; everything after is the issue number
+	# or task description, so the flag has to be parsed off the front first
+	local model=""
+	while [ "$#" -gt 0 ]; do
+		case "$1" in
+		-m | --model)
+			if [ -z "$2" ]; then
+				echo "gib a model name after $1"
+				return 1
+			fi
+			model="$2"
+			shift 2
+			;;
+		--model=*) model="${1#--model=}"; shift ;;
+		-m=*) model="${1#-m=}"; shift ;;
+		*) break ;;
+		esac
+	done
+
 	if [ -z "$1" ]; then
 		echo "gib issue number or description"
 		return 1
@@ -566,12 +589,15 @@ function gwtatauto() {
 		return
 	fi
 	tn "$session" -d
-	tmux send-keys -t "$session" 'claude' Enter
+	local claude_cmd='claude'
+	[ -n "$model" ] && claude_cmd="claude --model ${model}"
+	tmux send-keys -t "$session" "$claude_cmd" Enter
 	# type the auto-branch command once claude's TUI is actually ready. Runs as
 	# a detached background poller so the attach below is instant and a fresh
 	# worktree's trust-folder dialog can be answered first -- the poller waits
 	# for claude to own the pane, then for the dialog to clear, then types the
-	# command but does NOT send it, leaving room to set model/effort first.
+	# command but does NOT send it, leaving room to set effort (and model, if
+	# -m wasn't passed) first.
 	# Gives up quietly after ~2min (e.g. claude never started). ; is escaped so
 	# tmux doesn't read it as a command separator.
 	(
