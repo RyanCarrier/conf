@@ -33,6 +33,9 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:/opt/flutter/bin
 export PATH=$PATH:/usr/local/flutter/bin
+# fvm (Flutter Version Management) isn't installed on every host that uses this conf;
+# prepend so its flutter/dart shims take precedence over any system install
+[ -d "$HOME/fvm/bin" ] && export PATH="$HOME/fvm/bin:$PATH"
 export PATH=$PATH:/usr/local/android-studio/bin
 export PATH=$PATH:"$HOME/.cargo/bin"
 export PATH=$PATH:"$HOME/.local/bin"
