@@ -625,6 +625,99 @@ function gwtatauto() {
 	ta "$session"
 }
 
+# gwtatauto without the tmux: a headless haiku names the branch, gwta worktrees
+# + cds into it, then claude opens right here in the current terminal. A plain
+# foreground claude can't be handed the command typed-but-unsubmitted (that was a
+# tmux send-keys trick), so the /auto-branch command is printed for you to paste,
+# leaving room to set effort/model in the TUI first.
+# An optional leading -m/--model picks the model claude launches with (e.g. opus,
+# fable); the haiku branch-namer is unaffected.
+#   gwtauto 123
+#   gwtauto make the retry backoff jittered
+#   gwtauto -m opus 123
+#   gwtauto --model fable make the retry backoff jittered
+function gwtauto() {
+	# optional leading -m/--model <model>; everything after is the issue number
+	# or task description, so the flag has to be parsed off the front first
+	local model=""
+	while [ "$#" -gt 0 ]; do
+		case "$1" in
+		-m | --model)
+			if [ -z "$2" ]; then
+				echo "gib a model name after $1"
+				return 1
+			fi
+			model="$2"
+			shift 2
+			;;
+		--model=*) model="${1#--model=}"; shift ;;
+		-m=*) model="${1#-m=}"; shift ;;
+		*) break ;;
+		esac
+	done
+
+	if [ -z "$1" ]; then
+		echo "gib issue number or description"
+		return 1
+	fi
+	local desc="$*"
+
+	# bare issue number: pull the title so haiku has something to name the
+	# branch after, falling back to issue/N if gh can't
+	local naming_input="$desc"
+	local issue_num="" issue_re='^#?[0-9]+$'
+	if [[ "$desc" =~ $issue_re ]]; then
+		issue_num="${desc#\#}"
+		local title
+		title=$(gh issue view "$issue_num" --json title -q .title 2>/dev/null)
+		if [ -n "$title" ]; then
+			naming_input="GitHub issue #${issue_num}: ${title}"
+		else
+			echo "couldn't fetch issue #${issue_num} via gh, falling back to issue/${issue_num}"
+			naming_input=""
+		fi
+	fi
+
+	local branch=""
+	if [ -z "$naming_input" ]; then
+		branch="issue/${issue_num}"
+	else
+		echo "asking haiku for a branch name..."
+		local raw attempt branch_re='^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$'
+		for attempt in 1 2; do
+			raw=$(claude --model haiku -p "Reply with ONLY a git branch name for this task, nothing else - no prose, no quotes, no backticks. Format: type/short-kebab-description, where type is one of feat, fix, chore, refactor, docs or test and the description is 2-6 lowercase words joined by hyphens (a-z, 0-9 and - only, exactly one /). If the task references an issue number, start the description with it, e.g. fix/123-flaky-retry. Task: ${naming_input}")
+			# last non-empty line, stripped of whitespace/quotes/backticks
+			branch=$(printf '%s\n' "$raw" | awk 'NF{l=$0} END{print l}' | tr -d "[:space:]\`\"'")
+			if [[ "$branch" =~ $branch_re ]] &&
+				git check-ref-format --branch "$branch" >/dev/null 2>&1; then
+				break
+			fi
+			branch=""
+		done
+		if [ -z "$branch" ]; then
+			echo "haiku couldn't produce a valid branch name, last answer:"
+			echo "$raw"
+			return 1
+		fi
+	fi
+	echo "branch: $branch"
+
+	# gwta asks before cd'ing into the worktree; feed it a y to stay hands-off
+	# (redirection only feeds the read -- the cd still lands in this shell)
+	gwta "$branch" <<<"y" || return 1
+
+	# no tmux, so claude runs in this terminal. Print the command to paste (it
+	# scrolls into scrollback once claude takes over), then launch claude in the
+	# worktree gwta just cd'd us into.
+	echo "paste into claude:"
+	echo "/rc-toolkit:auto-branch ${desc}"
+	if [ -n "$model" ]; then
+		claude --model "$model"
+	else
+		claude
+	fi
+}
+
 function touche() {
 	if [ -z "$1" ]; then
 		echo "gib filename"
