@@ -1,0 +1,33 @@
+# herdr configuration
+# Managed via stow: ~/conf/herdr/.config/herdr/config.toml -> ~/.config/herdr/config.toml
+# Reload after edits with: herdr server reload-config
+
+[keys]
+# tmux-style tab navigation (mirrors ~/.tmux.conf: M-, / M-.)
+# tmux "window" == herdr "tab"
+previous_tab = "alt+comma"
+next_tab = "alt+period"
+
+# alt+shift+, / alt+shift+. move between spaces (herdr "workspace" == tmux "session")
+# Mirrors the tab bindings above, with shift to distinguish spaces from tabs.
+previous_workspace = "alt+shift+comma"
+next_workspace = "alt+shift+period"
+
+# new space: prefix+n ("n = new") or prefix+shift+c (shift variant of new-tab prefix+c)
+new_workspace = ["prefix+n", "prefix+shift+c"]
+
+# vim-style pane resize: prefix, then alt+h/j/k/l (one nudge per prefix press).
+# For continuous resizing use resize mode instead: prefix+r, then h/j/k/l, esc to exit.
+resize_pane_left = "prefix+alt+h"
+resize_pane_down = "prefix+alt+j"
+resize_pane_up = "prefix+alt+k"
+resize_pane_right = "prefix+alt+l"
+
+[ui]
+show_agent_labels_on_pane_borders = false
+
+# Create tabs immediately instead of prompting for a name (tmux-style).
+prompt_new_tab_name = false
+
+[ui.toast]
+delivery = "terminal"

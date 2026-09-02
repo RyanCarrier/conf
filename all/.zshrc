@@ -54,3 +54,17 @@ if [[ -f ~/.zfunc/_task ]]; then
 fi
 
 source ~/.rcarrier_profile.sh
+
+# --- herdr: tmux-style automatic tab rename -------------------------------
+# Herdr has no native automatic-rename, so mimic tmux: label the current tab
+# after the running command, and fall back to the directory name when idle.
+# Only active inside a herdr-managed pane (HERDR_TAB_ID is injected per pane).
+if [[ "${HERDR_ENV:-}" == 1 && -n "${HERDR_TAB_ID:-}" ]] && command -v herdr >/dev/null 2>&1; then
+  _herdr_rename_tab() { herdr tab rename "$HERDR_TAB_ID" "$1" >/dev/null 2>&1 }
+  _herdr_preexec() { local w=${1%% *}; _herdr_rename_tab "${w:t}" }        # running: command name
+  _herdr_precmd()  { local d=${PWD:t}; [[ $PWD == $HOME ]] && d="~"; _herdr_rename_tab "$d" }  # idle: dir name
+  autoload -Uz add-zsh-hook
+  add-zsh-hook preexec _herdr_preexec
+  add-zsh-hook precmd  _herdr_precmd
+fi
+# -------------------------------------------------------------------------
