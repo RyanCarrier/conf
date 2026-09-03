@@ -718,6 +718,128 @@ function gwtauto() {
 	fi
 }
 
+# gwtatauto, but for herdr instead of tmux. Opens a fresh herdr workspace, has a
+# headless haiku name the branch, gwta worktrees into it, then claude opens in
+# the new workspace with the /auto-branch command TYPED BUT NOT SUBMITTED -- same
+# hands-off-until-effort-is-set flow as gwtatauto, using `herdr pane send-text`
+# (literal text, no Enter) where gwtatauto used tmux `send-keys -l`.
+# Must run inside herdr (HERDR_ENV=1); needs jq.
+# An optional leading -m/--model picks claude's launch model; the namer is haiku.
+#   gwthauto 123
+#   gwthauto -m opus 123
+#   gwthauto --model fable make the retry backoff jittered
+function gwthauto() {
+	[ "${HERDR_ENV:-}" = 1 ] || { echo "gwthauto must run inside herdr (HERDR_ENV=1)"; return 1; }
+	command -v jq >/dev/null 2>&1 || { echo "gwthauto needs jq"; return 1; }
+
+	# optional leading -m/--model <model>, same front-parse as gwtauto
+	local model=""
+	while [ "$#" -gt 0 ]; do
+		case "$1" in
+		-m | --model)
+			if [ -z "$2" ]; then echo "gib a model name after $1"; return 1; fi
+			model="$2"; shift 2 ;;
+		--model=*) model="${1#--model=}"; shift ;;
+		-m=*) model="${1#-m=}"; shift ;;
+		*) break ;;
+		esac
+	done
+	if [ -z "$1" ]; then echo "gib issue number or description"; return 1; fi
+	local desc="$*"
+
+	# bare issue number: pull the title so haiku has something to name after
+	local naming_input="$desc" issue_num="" issue_re='^#?[0-9]+$'
+	if [[ "$desc" =~ $issue_re ]]; then
+		issue_num="${desc#\#}"
+		local title
+		title=$(gh issue view "$issue_num" --json title -q .title 2>/dev/null)
+		if [ -n "$title" ]; then
+			naming_input="GitHub issue #${issue_num}: ${title}"
+		else
+			echo "couldn't fetch issue #${issue_num} via gh, falling back to issue/${issue_num}"
+			naming_input=""
+		fi
+	fi
+
+	# haiku names the branch (same prompt + validation as gwtauto)
+	local branch=""
+	if [ -z "$naming_input" ]; then
+		branch="issue/${issue_num}"
+	else
+		echo "asking haiku for a branch name..."
+		local raw attempt branch_re='^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$'
+		for attempt in 1 2; do
+			raw=$(claude --model haiku -p "Reply with ONLY a git branch name for this task, nothing else - no prose, no quotes, no backticks. Format: type/short-kebab-description, where type is one of feat, fix, chore, refactor, docs or test and the description is 2-6 lowercase words joined by hyphens (a-z, 0-9 and - only, exactly one /). If the task references an issue number, start the description with it, e.g. fix/123-flaky-retry. Task: ${naming_input}")
+			branch=$(printf '%s\n' "$raw" | awk 'NF{l=$0} END{print l}' | tr -d "[:space:]\`\"'")
+			if [[ "$branch" =~ $branch_re ]] &&
+				git check-ref-format --branch "$branch" >/dev/null 2>&1; then
+				break
+			fi
+			branch=""
+		done
+		if [ -z "$branch" ]; then
+			echo "haiku couldn't produce a valid branch name, last answer:"
+			echo "$raw"
+			return 1
+		fi
+	fi
+	echo "branch: $branch"
+
+	# make the worktree in a SUBSHELL so gwta's cd doesn't move this pane; the
+	# subshell's final pwd is the worktree path (gwta cds into it on the fed y).
+	local repo_root worktree
+	repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+	worktree=$( (gwta "$branch" <<<"y" >/dev/null 2>&1 && pwd) )
+	if [ -z "$worktree" ] || [ "$worktree" = "$repo_root" ]; then
+		echo "gwta didn't produce a worktree for $branch"
+		return 1
+	fi
+	echo "worktree: $worktree"
+
+	# fresh herdr workspace rooted in the worktree; claude launches inside it
+	local claude_cmd="claude"
+	[ -n "$model" ] && claude_cmd="claude --model ${model}"
+	local ws_json ws_id pane
+	ws_json=$(herdr workspace create --cwd "$worktree" --label "$branch" --no-focus 2>&1) ||
+		{ echo "herdr workspace create failed:"; echo "$ws_json"; return 1; }
+	ws_id=$(printf '%s' "$ws_json" | jq -r '.result.workspace.workspace_id')
+	pane=$(printf '%s' "$ws_json" | jq -r '.result.root_pane.pane_id')
+	if [ -z "$ws_id" ] || [ "$ws_id" = null ] || [ -z "$pane" ] || [ "$pane" = null ]; then
+		echo "couldn't read workspace/pane id from herdr:"
+		echo "$ws_json"
+		return 1
+	fi
+	sleep 1.5 # let the new pane's shell reach its prompt before we drive it
+	herdr pane run "$pane" "$claude_cmd" >/dev/null 2>&1
+	herdr workspace focus "$ws_id" >/dev/null 2>&1
+	echo "herdr workspace $ws_id (pane $pane): claude opening in $worktree"
+
+	# background poller: once claude owns the pane and a fresh-worktree trust
+	# dialog has cleared, type -- but do NOT submit -- the /auto-branch command,
+	# leaving room to set effort/model first. Gives up quietly after ~2 min.
+	(
+		{
+			deadline=$((SECONDS + 120))
+			while [ "$SECONDS" -lt "$deadline" ]; do
+				case "$(herdr pane process-info --pane "$pane" 2>/dev/null | jq -r '.result.process_info.foreground_processes[]?.name' 2>/dev/null)" in
+				*claude* | *node*) break ;;
+				esac
+				sleep 0.5
+			done
+			sleep 1
+			while [ "$SECONDS" -lt "$deadline" ] &&
+				herdr pane read "$pane" --source visible --lines 40 2>/dev/null | grep -qi 'trust.*folder'; do
+				sleep 0.5
+			done
+			sleep 1
+			case "$(herdr pane process-info --pane "$pane" 2>/dev/null | jq -r '.result.process_info.foreground_processes[]?.name' 2>/dev/null)" in
+			*claude* | *node*)
+				herdr pane send-text "$pane" "/rc-toolkit:auto-branch ${desc}" >/dev/null 2>&1 ;;
+			esac
+		} >/dev/null 2>&1 &
+	)
+}
+
 function touche() {
 	if [ -z "$1" ]; then
 		echo "gib filename"
