@@ -46,30 +46,33 @@ window_title = "{hostname}: herdr"
 # Create tabs immediately instead of prompting for a name (tmux-style).
 prompt_new_tab_name = false
 
+# Hide the tab bar when a space has only one tab (reclaim the row).
+hide_tab_bar_when_single_tab = true
+
 # Spaces sidebar: 3 rows per space -> state icon + project / branch / git status.
 # $project is a custom token fed via `herdr workspace report-metadata --token project=<repo>`
 # (gwthauto sets it for worktree spaces). Spaces without it just drop that token.
 # Custom tokens are locked to the dim "secondary" color (mauve when focused,
 # overlay0 grey otherwise); herdr reserves the bright primary color for the built-in
-# workspace token. So pin $project to the default theme's text color (#cdd6f4,
-# Catppuccin Mocha) + bold to match herdr's original bright label. NOTE: this is
-# theme-fixed -- if you switch to a light theme, change this hex.
+# workspace token. So $project/$dirty_* are pinned to explicit hex matching the
+# active theme (rose-pine: text #e0def4, pine #31748f, love #eb6f92). NOTE: these
+# are THEME-FIXED -- update the hexes below if you change [theme] name.
 # git_status renders ↑ahead ↓behind (only when an upstream exists and diverges);
-# $dirty is the custom uncommitted (+ins,-del) token from herdr-dirty.sh.
+# $dirty_ins (+N, green/pine) and $dirty_del (-N, red/love) come from herdr-dirty.sh.
 agent_panel_sort = "spaces"
 [ui.sidebar.spaces]
 rows = [
 	[
 		"state_icon",
-		{ token = "$project", fg = "#cdd6f4", bold = true },
+		{ token = "$project", fg = "#e0def4", bold = true },
 	],
 	[
 		"branch",
 	],
 	[
 		"git_status",
-		{ token = "$dirty_ins", fg = "#a6e3a1" },
-		{ token = "$dirty_del", fg = "#f38ba8" },
+		{ token = "$dirty_ins", fg = "#31748f" },
+		{ token = "$dirty_del", fg = "#eb6f92" },
 	],
 ]
 
