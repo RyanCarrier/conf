@@ -1,3 +1,4 @@
+onboarding = false
 # herdr configuration
 # Managed via stow: ~/conf/herdr/.config/herdr/config.toml -> ~/.config/herdr/config.toml
 # Reload after edits with: herdr server reload-config
@@ -23,11 +24,64 @@ resize_pane_down = "prefix+alt+j"
 resize_pane_up = "prefix+alt+k"
 resize_pane_right = "prefix+alt+l"
 
+# prefix+s splits the pane horizontally (stacked, top/bottom); keeps the default
+# prefix+minus too. Side-by-side is split_vertical (default prefix+v).
+split_horizontal = ["prefix+minus", "prefix+s"]
+# settings moves to prefix+S (capital) to free prefix+s for the split above
+# (settings defaults to prefix+s).
+settings = "prefix+shift+s"
+
 [ui]
 show_agent_labels_on_pane_borders = false
+
+# Tighten pane chrome (terminal borders are a fixed 1 cell; you can only drop
+# layers, not thin them). Drop the outer border ring around the pane area, and let
+# split panes share a divider instead of a gap. Set pane_borders = false for none.
+pane_outer_borders = false
+pane_gaps = false
+
+# Terminal/window title -> "<server hostname>: herdr" ({hostname} is a built-in token).
+window_title = "{hostname}: herdr"
 
 # Create tabs immediately instead of prompting for a name (tmux-style).
 prompt_new_tab_name = false
 
+# Spaces sidebar: 3 rows per space -> state icon + project / branch / git status.
+# $project is a custom token fed via `herdr workspace report-metadata --token project=<repo>`
+# (gwthauto sets it for worktree spaces). Spaces without it just drop that token.
+# Custom tokens are locked to the dim "secondary" color (mauve when focused,
+# overlay0 grey otherwise); herdr reserves the bright primary color for the built-in
+# workspace token. So pin $project to the default theme's text color (#cdd6f4,
+# Catppuccin Mocha) + bold to match herdr's original bright label. NOTE: this is
+# theme-fixed -- if you switch to a light theme, change this hex.
+# git_status renders ↑ahead ↓behind (only when an upstream exists and diverges);
+# $dirty is the custom uncommitted (+ins,-del) token from herdr-dirty.sh.
+agent_panel_sort = "spaces"
+[ui.sidebar.spaces]
+rows = [
+	[
+		"state_icon",
+		{ token = "$project", fg = "#cdd6f4", bold = true },
+	],
+	[
+		"branch",
+	],
+	[
+		"git_status",
+		{ token = "$dirty_ins", fg = "#a6e3a1" },
+		{ token = "$dirty_del", fg = "#f38ba8" },
+	],
+]
+
 [ui.toast]
 delivery = "terminal"
+
+# Experimental Kitty graphics rendering for attached clients. Works with ghostty
+# (it implements the Kitty graphics protocol). May need a client detach/reattach
+# to take effect, since it's applied at client startup.
+[experimental]
+kitty_graphics = true
+
+[theme]
+name = "rose-pine"
+auto_switch = false

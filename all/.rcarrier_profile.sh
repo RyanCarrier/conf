@@ -967,3 +967,64 @@ if command -v gem >/dev/null 2>&1; then
 	export GEM_HOME
 	unset _gem_cache
 fi
+
+# Populate the herdr spaces-sidebar $project token for this pane's workspace.
+# Shows the git repo name inside a repo, else the plain folder name. Runs at shell
+# startup AND on every directory change, because a space often starts in the wrong
+# folder and then cd's to the project. Reports are deduped (only when the name
+# changes) and backgrounded so the socket call never delays the prompt.
+_herdr_report_project() {
+	[ "${HERDR_ENV:-}" = 1 ] || return 0
+	[ -n "${HERDR_WORKSPACE_ID:-}" ] || return 0
+	command -v herdr >/dev/null 2>&1 || return 0
+	local name common
+	# common-dir parent = the main checkout, so linked worktrees resolve to the
+	# repo name (e.g. gym_score) rather than the worktree/branch folder.
+	if common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) && [ -n "$common" ]; then
+		name=$(basename "$(dirname "$common")")
+	elif [ "$PWD" = "$HOME" ]; then
+		name="~"
+	else
+		name=$(basename "$PWD")
+	fi
+	[ -n "$name" ] || return 0
+	[ "$name" = "${_HERDR_LAST_PROJECT:-}" ] && return 0
+	_HERDR_LAST_PROJECT="$name"
+	( herdr workspace report-metadata "$HERDR_WORKSPACE_ID" \
+		--source shell-project --token project="$name" >/dev/null 2>&1 & )
+}
+if [ "${HERDR_ENV:-}" = 1 ] && [ -n "${HERDR_WORKSPACE_ID:-}" ]; then
+	case $- in
+	*i*)
+		_herdr_report_project
+		if [ -n "${ZSH_VERSION:-}" ]; then
+			autoload -Uz add-zsh-hook 2>/dev/null && add-zsh-hook chpwd _herdr_report_project
+		elif [ -n "${BASH_VERSION:-}" ]; then
+			case ";${PROMPT_COMMAND:-};" in
+			*";_herdr_report_project;"*) ;;
+			*) PROMPT_COMMAND="_herdr_report_project${PROMPT_COMMAND:+;$PROMPT_COMMAND}" ;;
+			esac
+		fi
+		;;
+	esac
+fi
+
+# Background poller that fills each space's $dirty sidebar token (uncommitted
+# +ins,-del). It runs on the herdr SERVER host, where the panes/repos are, so it
+# works whether the TUI is local or remote (a tab-bar command can't -- that runs
+# client-side). flock keeps a single instance no matter how many shells start;
+# nohup detaches it so closing the launching pane doesn't kill it; it exits on its
+# own when the herdr server goes away, and any later shell re-launches it.
+if [ "${HERDR_ENV:-}" = 1 ] && command -v flock >/dev/null 2>&1; then
+	case $- in
+	*i*)
+		HERDR_DIRTY_LOCK="${XDG_RUNTIME_DIR:-/tmp}/herdr-dirty-$(id -u).lock" \
+			nohup sh -c '
+				exec 9>"$HERDR_DIRTY_LOCK" || exit 0
+				flock -n 9 || exit 0
+				while "$HOME/.config/herdr/herdr-dirty.sh" >/dev/null 2>&1; do sleep 5; done
+			' >/dev/null 2>&1 </dev/null &
+		disown 2>/dev/null || true
+		;;
+	esac
+fi
