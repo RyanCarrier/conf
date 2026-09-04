@@ -67,4 +67,3 @@ if [[ "${HERDR_ENV:-}" == 1 && -n "${HERDR_TAB_ID:-}" ]] && command -v herdr >/d
   add-zsh-hook preexec _herdr_preexec
   add-zsh-hook precmd  _herdr_precmd
 fi
-# -------------------------------------------------------------------------
