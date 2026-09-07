@@ -31,6 +31,11 @@ SCLK_MAX=(2600 2895 2900) # mhz
 MCLK_MAX=(1075 1250 1200) # mhz
 VOLT_OFF=(-130 0 -50)     # mvolts
 TEMP_TGT=(70 95 85)       # c but does this even do anything
+# Pin the VRAM (memory) clock so it can't idle down to 96MHz, which starves
+# dual high-refresh displays -> DCN underflow -> horizontal-band artifacts.
+# "top" = highest DPM state (safest). A lower state (e.g. 2) saves idle power
+# if it still avoids artifacts; "off" leaves memory fully dynamic (buggy).
+MCLK_PIN=(top top top) # per profile: james default gaming
 
 # fan curve (celcius, percentage)
 FAN_CURVE1=(
@@ -71,6 +76,9 @@ GPU_SYSFS="/sys/class/drm/$CARD_ID/device"
 HWMON_SYSFS="$GPU_SYSFS/hwmon/$HWMON_ID"
 FAN_CTRL_SYSFS="$GPU_SYSFS/gpu_od/fan_ctrl"
 
+# switch to manual so overdrive + per-clock DPM pins below take effect
+echo "manual" >"$GPU_SYSFS/power_dpm_force_performance_level"
+
 # set power limit
 echo -e "Power limit;\t${PL[$I]}W"
 echo "$((${PL[$I]} * 10 ** 6))" >"$HWMON_SYSFS/power1_cap"
@@ -99,3 +107,21 @@ for i in "${!FAN_CURVE[@]}"; do
 done
 echo "Applying..."
 echo "c" >"$FAN_CTRL_SYSFS/fan_curve"
+
+# --- stop multi-monitor VRAM underflow (horizontal-band artifacts) ---
+# Keep the core clock (sclk) fully dynamic so it still idles low and boosts
+# under load, but pin the memory clock (mclk) high so it never drops to the
+# 96MHz idle state that can't feed dual high-refresh displays.
+SCLK_MASK=$(seq 0 "$(($(grep -c ':' "$GPU_SYSFS/pp_dpm_sclk") - 1))" | tr '\n' ' ')
+echo "$SCLK_MASK" >"$GPU_SYSFS/pp_dpm_sclk"
+if [[ "${MCLK_PIN[$I]}" == "off" ]]; then
+    echo -e "Mem pin;\toff (memory left fully dynamic)"
+else
+    if [[ "${MCLK_PIN[$I]}" == "top" ]]; then
+        MCLK_STATE=$(($(grep -c ':' "$GPU_SYSFS/pp_dpm_mclk") - 1))
+    else
+        MCLK_STATE="${MCLK_PIN[$I]}"
+    fi
+    echo -e "Mem pin;\tsclk [$SCLK_MASK] dynamic, mclk pinned to state $MCLK_STATE"
+    echo "$MCLK_STATE" >"$GPU_SYSFS/pp_dpm_mclk"
+fi
