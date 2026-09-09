@@ -725,15 +725,22 @@ function gwtauto() {
 # (literal text, no Enter) where gwtatauto used tmux `send-keys -l`.
 # Must run inside herdr (HERDR_ENV=1); needs jq.
 # An optional leading -m/--model picks claude's launch model; the namer is haiku.
+# Runs in the BACKGROUND by default: the new workspace is created unfocused and a
+# desktop notification fires once claude is ready, so you can stay where you are.
+# -f/--focus switches to it instead.
 #   gwthauto 123
 #   gwthauto -m opus 123
 #   gwthauto --model fable make the retry backoff jittered
+#   gwthauto -g 123            # also press enter to launch /auto-branch right away
+#   gwthauto -f 123            # switch to the new workspace (default: background + notify)
 function gwthauto() {
 	[ "${HERDR_ENV:-}" = 1 ] || { echo "gwthauto must run inside herdr (HERDR_ENV=1)"; return 1; }
 	command -v jq >/dev/null 2>&1 || { echo "gwthauto needs jq"; return 1; }
 
-	# optional leading -m/--model <model>, same front-parse as gwtauto
-	local model=""
+	# optional leading -m/--model <model>, same front-parse as gwtauto.
+	# -g/--go/--enter/--submit also presses enter to launch /auto-branch (default: typed, not submitted).
+	# -f/--focus switches to the new workspace (default: background, notify when ready).
+	local model="" submit="" focus=""
 	while [ "$#" -gt 0 ]; do
 		case "$1" in
 		-m | --model)
@@ -741,6 +748,8 @@ function gwthauto() {
 			model="$2"; shift 2 ;;
 		--model=*) model="${1#--model=}"; shift ;;
 		-m=*) model="${1#-m=}"; shift ;;
+		-g | --go | --enter | --submit) submit=1; shift ;;
+		-f | --focus) focus=1; shift ;;
 		*) break ;;
 		esac
 	done
@@ -811,31 +820,49 @@ function gwthauto() {
 	fi
 	sleep 1.5 # let the new pane's shell reach its prompt before we drive it
 	herdr pane run "$pane" "$claude_cmd" >/dev/null 2>&1
-	herdr workspace focus "$ws_id" >/dev/null 2>&1
-	echo "herdr workspace $ws_id (pane $pane): claude opening in $worktree"
+	# background by default so a launch never yanks you out of the workspace you are
+	# in; -f/--focus opts into switching. The poller notifies when claude is ready.
+	local mode="background; you'll be notified when it's ready"
+	if [ -n "$focus" ]; then herdr workspace focus "$ws_id" >/dev/null 2>&1; mode="focused"; fi
+	echo "herdr workspace $ws_id (pane $pane): claude opening in $worktree ($mode)"
 
-	# background poller: once claude owns the pane and a fresh-worktree trust
-	# dialog has cleared, type -- but do NOT submit -- the /auto-branch command,
-	# leaving room to set effort/model first. Gives up quietly after ~2 min.
+	# background poller: drive the launch through herdr's agent lifecycle API
+	# instead of scraping process names / the trust dialog (tier 3). Wait for the
+	# agent to be detected, then for `idle` -- which herdr reports only AFTER the
+	# trust dialog (a `blocked` state) clears and claude sits at a ready prompt --
+	# then hand over /auto-branch and notify. Handover uses `pane send-text` (types,
+	# proven reliable) plus a `send-keys enter` for -g (submit) -- `agent prompt`
+	# was flaky at actually submitting, so it is deliberately not used.
+	# Verified: claude's trust dialog reads as `blocked`, so `--until idle` never
+	# fires while it is up. Gives up quietly after ~2 min.
 	(
 		{
-			deadline=$((SECONDS + 120))
-			while [ "$SECONDS" -lt "$deadline" ]; do
-				case "$(herdr pane process-info --pane "$pane" 2>/dev/null | jq -r '.result.process_info.foreground_processes[]?.name' 2>/dev/null)" in
-				*claude* | *node*) break ;;
-				esac
-				sleep 0.5
+			# 1) wait (bounded) for herdr to detect the launched claude agent
+			det=$((SECONDS + 30))
+			until herdr agent get "$pane" 2>/dev/null | jq -e '.result.agent.agent_status' >/dev/null 2>&1 ||
+				[ "$SECONDS" -ge "$det" ]; do
+				sleep 0.25
 			done
+			# 2) wait for claude to settle: `blocked` = a first-run trust dialog is
+			#    up, `idle` = ready. In the background you are not there to clear the
+			#    trust prompt, so notify and keep waiting for idle (longer window).
+			herdr agent wait "$pane" --until blocked --until idle --timeout 120000 >/dev/null 2>&1 || exit 0
+			if [ "$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_status')" = blocked ]; then
+				herdr notification show "worktree needs you: ${branch}" --body "Open ${ws_id} and trust the folder to continue" --sound request >/dev/null 2>&1
+				herdr agent wait "$pane" --until idle --timeout 600000 >/dev/null 2>&1 || exit 0
+			fi
+			# 3) type the /auto-branch command; press enter only for -g (submit).
+			#    A send-text fired on the exact idle edge can be dropped, so give the
+			#    TUI a moment to become input-ready first.
 			sleep 1
-			while [ "$SECONDS" -lt "$deadline" ] &&
-				herdr pane read "$pane" --source visible --lines 40 2>/dev/null | grep -qi 'trust.*folder'; do
+			herdr pane send-text "$pane" "/rc-toolkit:auto-branch ${desc}" >/dev/null 2>&1
+			if [ -n "$submit" ]; then
 				sleep 0.5
-			done
-			sleep 1
-			case "$(herdr pane process-info --pane "$pane" 2>/dev/null | jq -r '.result.process_info.foreground_processes[]?.name' 2>/dev/null)" in
-			*claude* | *node*)
-				herdr pane send-text "$pane" "/rc-toolkit:auto-branch ${desc}" >/dev/null 2>&1 ;;
-			esac
+				herdr pane send-keys "$pane" enter >/dev/null 2>&1
+				herdr notification show "worktree launched: ${branch}" --body "/auto-branch running in ${ws_id}" --sound done >/dev/null 2>&1
+			else
+				herdr notification show "worktree ready: ${branch}" --body "/auto-branch typed in ${ws_id}. Set effort and submit." --sound request >/dev/null 2>&1
+			fi
 		} >/dev/null 2>&1 &
 	)
 }
