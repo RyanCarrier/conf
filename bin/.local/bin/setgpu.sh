@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 CARD_ID=card1
-# HWMON_ID=hwmon0
-HWMON_ID=hwmon6
 
 # check user is root
 if [[ $EUID -ne 0 ]]; then
@@ -73,7 +71,24 @@ else
 fi
 
 GPU_SYSFS="/sys/class/drm/$CARD_ID/device"
-HWMON_SYSFS="$GPU_SYSFS/hwmon/$HWMON_ID"
+
+# hwmonN indices are assigned by the kernel in registration order and are NOT
+# stable across boots, so discover the amdgpu hwmon dir instead of hardcoding it
+# (a stale index made line 84's power1_cap write fail, aborting before the
+# display-artifact fix below could run).
+HWMON_SYSFS=""
+for d in "$GPU_SYSFS"/hwmon/hwmon*; do
+    [[ -r "$d/name" ]] || continue
+    if [[ "$(cat "$d/name")" == "amdgpu" ]]; then
+        HWMON_SYSFS="$d"
+        break
+    fi
+done
+if [[ -z "$HWMON_SYSFS" ]]; then
+    echo "Could not find amdgpu hwmon under $GPU_SYSFS/hwmon" >&2
+    exit 1
+fi
+
 FAN_CTRL_SYSFS="$GPU_SYSFS/gpu_od/fan_ctrl"
 
 # switch to manual so overdrive + per-clock DPM pins below take effect
