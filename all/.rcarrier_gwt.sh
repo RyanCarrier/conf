@@ -22,7 +22,9 @@ unalias gwta
 # branch from, e.g. `gwta v19.9.0-hotfix v19.9.0`
 function gwta() {
 	if [ -z "$1" ]; then
-		echo "gib branch name"
+		echo "usage: gwta <branch> [start-point]"
+		echo "  git worktree add as reponame_branch (with -b if new), then cd into it"
+		echo "  start-point (tag/branch/commit) cuts a fresh branch: gwta v19.9.0-hotfix v19.9.0"
 		return 1
 	fi
 	local branch="$1"
@@ -159,7 +161,9 @@ function gwtr() {
 #   gwtat v19.9.0-hotfix v19.9.0
 function gwtat() {
 	if [ -z "$1" ]; then
-		echo "gib branch name"
+		echo "usage: gwtat <branch> [start-point]"
+		echo "  gwta + a tmux session sitting in the new worktree"
+		echo "  start-point cuts a fresh branch: gwtat v19.9.0-hotfix v19.9.0"
 		return 1
 	fi
 	gwta "$1" "$2" || return 1
@@ -224,6 +228,12 @@ _gwt_branch() {
 #   gwtauto make the retry backoff jittered
 #   gwtauto -m opus 123
 #   gwtauto --model fable make the retry backoff jittered
+_gwtauto_usage() {
+	echo "usage: gwtauto [-m model] <issue# | description>"
+	echo "  haiku names the branch, worktrees + cds in, opens claude here"
+	echo "  /auto-branch is printed to paste (a foreground claude can't be pre-typed)"
+	echo "  e.g. gwtauto 123 | gwtauto -m opus make the retry backoff jittered"
+}
 function gwtauto() {
 	# optional leading -m/--model <model>; everything after is the issue number
 	# or task description, so the flag has to be parsed off the front first
@@ -240,12 +250,16 @@ function gwtauto() {
 			;;
 		--model=*) model="${1#--model=}"; shift ;;
 		-m=*) model="${1#-m=}"; shift ;;
+		# reject unknown flags instead of letting *) swallow them into the
+		# description (a stray -f would silently drop -m and pollute the task
+		# text); a real description never starts with a dash
+		-*) echo "unknown flag: $1"; _gwtauto_usage; return 1 ;;
 		*) break ;;
 		esac
 	done
 
 	if [ -z "$1" ]; then
-		echo "gib issue number or description"
+		_gwtauto_usage
 		return 1
 	fi
 	local desc="$*"
@@ -278,6 +292,11 @@ function gwtauto() {
 #   gwtatauto make the retry backoff jittered
 #   gwtatauto -m opus 123
 #   gwtatauto --model fable make the retry backoff jittered
+_gwtatauto_usage() {
+	echo "usage: gwtatauto [-m model] <issue# | description>"
+	echo "  like gwtauto but a new tmux session with /auto-branch typed (not submitted)"
+	echo "  e.g. gwtatauto 123 | gwtatauto -m opus make the retry backoff jittered"
+}
 function gwtatauto() {
 	local model=""
 	while [ "$#" -gt 0 ]; do
@@ -292,12 +311,13 @@ function gwtatauto() {
 			;;
 		--model=*) model="${1#--model=}"; shift ;;
 		-m=*) model="${1#-m=}"; shift ;;
+		-*) echo "unknown flag: $1"; _gwtatauto_usage; return 1 ;;
 		*) break ;;
 		esac
 	done
 
 	if [ -z "$1" ]; then
-		echo "gib issue number or description"
+		_gwtatauto_usage
 		return 1
 	fi
 	local desc="$*"
@@ -371,6 +391,12 @@ function gwtatauto() {
 #   gwthcauto --model fable make the retry backoff jittered
 #   gwthcauto -g 123            # also press enter to launch /auto-branch right away
 #   gwthcauto -f 123            # switch to the new workspace (default: background + notify)
+_gwthcauto_usage() {
+	echo "usage: gwthcauto [-m model] [-f] [-g] <issue# | description>"
+	echo "  herdr CREATE: new workspace + worktree, backgrounded + notifies when ready"
+	echo "  -f focus the new workspace, -g also submit /auto-branch (default: typed)"
+	echo "  e.g. gwthcauto 123 | gwthcauto -m opus -f make the retry backoff jittered"
+}
 function gwthcauto() {
 	[ "${HERDR_ENV:-}" = 1 ] || { echo "gwthcauto must run inside herdr (HERDR_ENV=1)"; return 1; }
 	command -v jq >/dev/null 2>&1 || { echo "gwthcauto needs jq"; return 1; }
@@ -388,10 +414,14 @@ function gwthcauto() {
 		-m=*) model="${1#-m=}"; shift ;;
 		-g | --go | --enter | --submit) submit=1; shift ;;
 		-f | --focus) focus=1; shift ;;
+		-*) echo "unknown flag: $1"; _gwthcauto_usage; return 1 ;;
 		*) break ;;
 		esac
 	done
-	if [ -z "$1" ]; then echo "gib issue number or description"; return 1; fi
+	if [ -z "$1" ]; then
+		_gwthcauto_usage
+		return 1
+	fi
 	local desc="$*"
 
 	local branch
@@ -484,6 +514,13 @@ function gwthcauto() {
 #   gwthauto make the retry backoff jittered
 #   gwthauto -m opus 123
 #   gwthauto -g 123            # also press enter to launch /auto-branch right away
+_gwthauto_usage() {
+	echo "usage: gwthauto [-m model] [-g] <issue# | description>"
+	echo "  herdr in-place: names branch, worktrees + cds THIS pane in, opens claude here"
+	echo "  -g also submit /auto-branch (default: typed, not submitted)"
+	echo "  (-f/--focus is gwthcauto only -- in-place has nothing to focus)"
+	echo "  e.g. gwthauto 123 | gwthauto -m opus make the retry backoff jittered"
+}
 function gwthauto() {
 	[ "${HERDR_ENV:-}" = 1 ] || { echo "gwthauto must run inside a herdr workspace (HERDR_ENV=1)"; return 1; }
 	command -v jq >/dev/null 2>&1 || { echo "gwthauto needs jq"; return 1; }
@@ -500,10 +537,16 @@ function gwthauto() {
 		--model=*) model="${1#--model=}"; shift ;;
 		-m=*) model="${1#-m=}"; shift ;;
 		-g | --go | --enter | --submit) submit=1; shift ;;
+		# -f/--focus lands here too: gwthauto is in-place, so it's rejected rather
+		# than swallowed into the description (which dropped -m and broke naming)
+		-*) echo "unknown flag: $1"; _gwthauto_usage; return 1 ;;
 		*) break ;;
 		esac
 	done
-	if [ -z "$1" ]; then echo "gib issue number or description"; return 1; fi
+	if [ -z "$1" ]; then
+		_gwthauto_usage
+		return 1
+	fi
 	local desc="$*"
 
 	# our own pane id -- herdr sets HERDR_WORKSPACE_ID/HERDR_TAB_ID for a pane's
@@ -524,15 +567,32 @@ function gwthauto() {
 	# to avoid moving; here moving is the point)
 	gwta "$branch" <<<"y" || return 1
 
+	# snapshot the pane's current claude session id (empty at a plain shell prompt,
+	# or a just-exited haiku's) BEFORE launching claude, so the poller can tell our
+	# fresh claude apart from whatever was here and never types into a stale one.
+	local prev_session
+	prev_session=$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_session.value // empty')
+
 	# background poller: same lifecycle approach as gwthcauto, but self-targeting
-	# and quiet. First wait for our freshly-launched claude to actually come up
-	# (working, or blocked on the trust dialog) -- otherwise a stale idle from a
-	# previous agent in this pane could make us type too early -- then wait for it
-	# to settle at a ready prompt, then type. Gives up quietly after its timeouts.
+	# and quiet. Wait for OUR claude to become the pane's agent (a session id that
+	# is set and differs from prev_session), then for it to settle at a ready
+	# prompt -- blocked = trust dialog (you're here to clear it), idle = ready. We
+	# wait on blocked AND idle, so an already-trusted worktree (claude goes straight
+	# to idle, no dialog) still gets typed into; the old working/blocked-only wait
+	# timed out there and never typed. Gives up quietly after its timeouts.
 	(
 		{
-			herdr agent wait "$pane" --until working --until blocked --timeout 60000 >/dev/null 2>&1 || exit 0
-			herdr agent wait "$pane" --until idle --timeout 600000 >/dev/null 2>&1 || exit 0
+			det=$((SECONDS + 30))
+			while :; do
+				cur=$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_session.value // empty')
+				[ -n "$cur" ] && [ "$cur" != "$prev_session" ] && break
+				[ "$SECONDS" -ge "$det" ] && exit 0
+				sleep 0.25
+			done
+			herdr agent wait "$pane" --until blocked --until idle --timeout 120000 >/dev/null 2>&1 || exit 0
+			if [ "$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_status')" = blocked ]; then
+				herdr agent wait "$pane" --until idle --timeout 600000 >/dev/null 2>&1 || exit 0
+			fi
 			sleep 1
 			herdr pane send-text "$pane" "/rc-toolkit:auto-branch ${desc}" >/dev/null 2>&1
 			if [ -n "$submit" ]; then
