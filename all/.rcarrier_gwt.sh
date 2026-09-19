@@ -521,9 +521,26 @@ _gwthauto_usage() {
 	echo "  (-f/--focus is gwthcauto only -- in-place has nothing to focus)"
 	echo "  e.g. gwthauto 123 | gwthauto -m opus make the retry backoff jittered"
 }
+# Diagnostic log for gwthauto's background poller. The poller drives a FOREGROUND
+# claude, so it must stay silent (everything it prints goes to /dev/null) -- which
+# is exactly why a misfire leaves no trace of where it stopped. This appends
+# timestamped, pane-tagged lines to a file you can `tail -f` while a launch runs.
+# Reads $logf and $pane from gwthauto's scope (dynamic scoping; visible in its
+# subshell poller too). Empty $logf mutes it. Best-effort: never fails a run.
+_gwthauto_log() {
+	[ -n "${logf:-}" ] || return 0
+	printf '%s [%s] %s\n' \
+		"$(date '+%H:%M:%S.%3N' 2>/dev/null || date '+%H:%M:%S')" \
+		"${pane:-?}" "$*" >>"$logf" 2>/dev/null
+}
 function gwthauto() {
 	[ "${HERDR_ENV:-}" = 1 ] || { echo "gwthauto must run inside a herdr workspace (HERDR_ENV=1)"; return 1; }
 	command -v jq >/dev/null 2>&1 || { echo "gwthauto needs jq"; return 1; }
+
+	# where the poller writes its trace. On by default; GWTHAUTO_LOG=<path> redirects
+	# it, GWTHAUTO_LOG= (empty) mutes it. pane isn't resolved yet, so early lines are
+	# tagged '?'. `local logf` is visible in the background poller subshell below.
+	local logf="${GWTHAUTO_LOG-/tmp/gwthauto.log}"
 
 	# optional leading -m/--model <model>, same front-parse as gwthcauto.
 	# -g/--go/--enter/--submit also presses enter to launch /auto-branch (default: typed, not submitted).
@@ -548,6 +565,7 @@ function gwthauto() {
 		return 1
 	fi
 	local desc="$*"
+	_gwthauto_log "=== run: model='${model:-<default>}' submit='${submit:-0}' desc='$desc'"
 
 	# our own pane id -- herdr sets HERDR_WORKSPACE_ID/HERDR_TAB_ID for a pane's
 	# shell but no HERDR_PANE_ID, so ask which pane this shell is in. Grab it up
@@ -556,54 +574,89 @@ function gwthauto() {
 	pane=$(herdr pane current 2>/dev/null | jq -r '.result.pane.pane_id')
 	if [ -z "$pane" ] || [ "$pane" = null ]; then
 		echo "couldn't resolve the current herdr pane"
+		_gwthauto_log "abort: couldn't resolve current pane"
 		return 1
 	fi
+	_gwthauto_log "pane resolved: $pane"
 
 	local branch
-	branch=$(_gwt_branch "$desc") || return 1
+	branch=$(_gwt_branch "$desc") || { _gwthauto_log "abort: _gwt_branch failed"; return 1; }
 	echo "branch: $branch"
+	_gwthauto_log "branch: $branch"
 
 	# in-place: let gwta cd THIS pane into the worktree (gwthcauto used a subshell
 	# to avoid moving; here moving is the point)
-	gwta "$branch" <<<"y" || return 1
+	gwta "$branch" <<<"y" || { _gwthauto_log "abort: gwta failed for $branch"; return 1; }
+	_gwthauto_log "gwta: cd'd this pane into worktree for $branch"
 
-	# snapshot the pane's current claude session id (empty at a plain shell prompt,
-	# or a just-exited haiku's) BEFORE launching claude, so the poller can tell our
-	# fresh claude apart from whatever was here and never types into a stale one.
+	# snapshot the pane's agent session id just for the log. We used to gate the
+	# poller on this id CHANGING once our claude launched -- but herdr tracks one
+	# agent record per pane and reuses its session id, so the id the haiku namer
+	# (_gwt_branch, run in THIS pane) registered carries straight over to our
+	# interactive claude and never changes. That gate hung 30s then gave up on
+	# every launch whose pane had already run the namer; only a pane with no prior
+	# agent slipped through. So we no longer compare ids -- see the poller below.
 	local prev_session
 	prev_session=$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_session.value // empty')
+	_gwthauto_log "prev_session=${prev_session:-<none>} (informational; no longer gated on)"
 
-	# background poller: same lifecycle approach as gwthcauto, but self-targeting
-	# and quiet. Wait for OUR claude to become the pane's agent (a session id that
-	# is set and differs from prev_session), then for it to settle at a ready
-	# prompt -- blocked = trust dialog (you're here to clear it), idle = ready. We
-	# wait on blocked AND idle, so an already-trusted worktree (claude goes straight
-	# to idle, no dialog) still gets typed into; the old working/blocked-only wait
-	# timed out there and never typed. Gives up quietly after its timeouts.
+	# background poller: self-targeting and quiet. Our claude launches in THIS
+	# pane's foreground right after this poller starts. We can't tell it apart by
+	# session id (see above), so instead we watch the agent LEAVE idle -- claude
+	# always passes through starting/working (or a blocked trust dialog) on launch
+	# -- which proves our fresh claude has taken the pane. Then we wait for it to
+	# settle at a ready prompt (blocked = trust dialog you clear, idle = ready) and
+	# type. Gives up quietly after its timeouts.
 	(
 		{
-			det=$((SECONDS + 30))
-			while :; do
-				cur=$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_session.value // empty')
-				[ -n "$cur" ] && [ "$cur" != "$prev_session" ] && break
-				[ "$SECONDS" -ge "$det" ] && exit 0
+			_gwthauto_log "poller: started (watching for our claude to boot, up to 20s)"
+			# 1) wait for our foreground claude to take the pane: watch the agent
+			#    leave idle (starting/working/blocked). Bounded -- if a trusted
+			#    worktree somehow boots straight past our polls to idle, fall
+			#    through on the timer and let the settle-wait below carry it.
+			booted=""
+			boot=$((SECONDS + 20))
+			while [ "$SECONDS" -lt "$boot" ]; do
+				booted=$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_status // empty')
+				[ -n "$booted" ] && [ "$booted" != idle ] && break
 				sleep 0.25
 			done
-			herdr agent wait "$pane" --until blocked --until idle --timeout 120000 >/dev/null 2>&1 || exit 0
-			if [ "$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_status')" = blocked ]; then
-				herdr agent wait "$pane" --until idle --timeout 600000 >/dev/null 2>&1 || exit 0
+			_gwthauto_log "poller: claude boot observed (status=${booted:-<none>}); waiting for blocked|idle (<=120s)"
+			# 2) wait for claude to settle: blocked = trust dialog (clear it), idle = ready
+			if ! herdr agent wait "$pane" --until blocked --until idle --timeout 120000 >/dev/null 2>&1; then
+				_gwthauto_log "poller: GAVE UP -- 'agent wait --until blocked|idle' errored/timed out (status now: $(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_status // "?"'))"
+				exit 0
 			fi
+			status=$(herdr agent get "$pane" 2>/dev/null | jq -r '.result.agent.agent_status // "?"')
+			_gwthauto_log "poller: settled at status=$status"
+			if [ "$status" = blocked ]; then
+				_gwthauto_log "poller: trust dialog up (blocked) -- clear it; waiting for idle (<=600s)"
+				if ! herdr agent wait "$pane" --until idle --timeout 600000 >/dev/null 2>&1; then
+					_gwthauto_log "poller: GAVE UP -- 'agent wait --until idle' after blocked errored/timed out"
+					exit 0
+				fi
+				_gwthauto_log "poller: cleared -- now idle"
+			fi
+			# 3) type the command; a send-text on the exact idle edge can be dropped, so
+			#    let the TUI become input-ready first. Capture the rc/output that the old
+			#    code silently discarded -- this is where "text never entered" shows up.
 			sleep 1
-			herdr pane send-text "$pane" "/rc-toolkit:auto-branch ${desc}" >/dev/null 2>&1
+			_gwthauto_log "poller: typing /auto-branch (send-text)"
+			out=$(herdr pane send-text "$pane" "/rc-toolkit:auto-branch ${desc}" 2>&1); rc=$?
+			_gwthauto_log "poller: send-text rc=$rc${out:+ out=[$out]}"
 			if [ -n "$submit" ]; then
 				sleep 0.5
-				herdr pane send-keys "$pane" enter >/dev/null 2>&1
+				_gwthauto_log "poller: submitting (send-keys enter)"
+				out=$(herdr pane send-keys "$pane" enter 2>&1); rc=$?
+				_gwthauto_log "poller: send-keys enter rc=$rc${out:+ out=[$out]}"
 			fi
+			_gwthauto_log "poller: done"
 		} >/dev/null 2>&1 &
 	)
 
 	# claude takes over this pane in the foreground; the poller above drives it.
 	echo "claude opening here (pane $pane); /auto-branch will be typed when ready"
+	[ -n "$logf" ] && echo "gwthauto log: $logf  (tail -f from another pane to watch)"
 	if [ -n "$model" ]; then
 		claude --model "$model"
 	else
