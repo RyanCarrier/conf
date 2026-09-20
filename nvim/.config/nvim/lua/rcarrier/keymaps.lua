@@ -121,6 +121,10 @@ vim.keymap.set('n', '<leader>gmd',
 vim.keymap.set('n', '<leader>gMd',
     function() vim.cmd('DiffviewOpen HEAD..origin/main') end
     , { desc = "[G]it [M]ain [D]iff (remote)" })
+-- Review the current branch as a PR: merge-base diff, matches GitHub "Files changed".
+vim.keymap.set('n', '<leader>gpr',
+    function() vim.cmd('DiffviewOpen origin/main...HEAD') end
+    , { desc = "[G]it [P]R [R]eview diff (origin/main...HEAD)" })
 vim.keymap.set('n', '<leader><leader>v',
     function() if next(require('diffview.lib').views) == nil then vim.cmd('DiffviewOpen') else vim.cmd('DiffviewClose') end end)
 
@@ -285,4 +289,23 @@ wk.add({ {
     { "<leader>T", group = "[T]odo (markdown checkmate.nvim)" },
     -- { "<leader>TT", "<CMD>:CheckmateToggle<CR>",               { desc = "[T]odo [T]oggle" } },
     -- { "<leader>Tc", "<CMD>:CheckmateCreate<CR>",               { desc = "[T]odo [C]reate" } },
+} });
+
+-- Octo: GitHub PR review inside nvim (loads octo lazily via its `Octo` command).
+-- Worktree flow (already on the branch): `gor` starts a review on the current
+-- branch's PR (octo auto-detects it, no checkout) -> `gpr` for the diff, gd/gr/K
+-- already live since files are on disk -> comment on lines -> `gos` submit.
+-- `goc` opens the current branch's PR buffer (description, checks, top-level reply).
+-- `gol` picks any other PR to review.
+wk.add({ {
+    mode = { "n" },
+    { "<leader>go",  group = "[G]it [O]cto (GitHub)" },
+    { "<leader>gol", "<cmd>Octo pr list<CR>",       desc = "[O]cto PR [L]ist (pick any)" },
+    { "<leader>goc", "<cmd>Octo pr<CR>",            desc = "[O]cto PR of [C]urrent branch" },
+    { "<leader>goo", ":Octo pr edit ",              desc = "[O]cto PR [O]pen by number" },
+    { "<leader>gor", "<cmd>Octo review start<CR>",  desc = "[O]cto [R]eview current branch's PR" },
+    { "<leader>goR", "<cmd>Octo review resume<CR>", desc = "[O]cto [R]eview resume" },
+    { "<leader>gos", "<cmd>Octo review submit<CR>", desc = "[O]cto review [S]ubmit" },
+    { "<leader>goC", "<cmd>Octo comment add<CR>",   desc = "[O]cto [C]omment add" },
+    { "<leader>gok", "<cmd>Octo pr checks<CR>",     desc = "[O]cto PR chec[K]s (CI)" },
 } });
