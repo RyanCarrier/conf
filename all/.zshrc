@@ -67,3 +67,8 @@ if [[ "${HERDR_ENV:-}" == 1 && -n "${HERDR_TAB_ID:-}" ]] && command -v herdr >/d
   add-zsh-hook preexec _herdr_preexec
   add-zsh-hook precmd  _herdr_precmd
 fi
+
+# claude.ai connectors (Gmail, Drive, Calendar…) off by default in Claude Code.
+# Use `claudemail` to start a session with them enabled.
+export ENABLE_CLAUDEAI_MCP_SERVERS=false
+claudemail() { ENABLE_CLAUDEAI_MCP_SERVERS=true command claude "$@" }
