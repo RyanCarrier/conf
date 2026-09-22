@@ -168,12 +168,13 @@ bind("mouse:272", hl.dsp.window.drag(),   { mouse = true })
 bind("mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Media / hardware keys
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd --output-volume raise"),       { repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd --output-volume lower"),       { repeating = true })
-hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd --output-volume mute-toggle"), { repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"),       { repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"),       { repeating = true })
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"))
+hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"))
 
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness/raise.sh"), { repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness/lower.sh"), { repeating = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("swayosd-client --brightness raise"), { repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lower"), { repeating = true })
 
 -- Swallow Caps_Lock (kb_options remaps it to Escape)
 hl.bind("Caps_Lock", hl.dsp.no_op(), { repeating = true })
