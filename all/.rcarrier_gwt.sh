@@ -1,7 +1,7 @@
 # All gwt* worktree commands, split out of .rcarrier_profile.sh to keep that file
 # from ballooning. Sourced from there (guarded). Grouped top-down: the worktree
 # primitives (gwta add+cd, gwtr remove, gwtat tmux-open) and their bash completions,
-# then the shared _gwt_branch namer, then the auto-launchers that tie them together.
+# then the shared __gwt_branch namer, then the auto-launchers that tie them together.
 #
 # The tmux helpers gwtat/gwtatauto lean on (tn/ta) stay in the profile; shell
 # functions resolve at call time, so living in separate files is fine as long as
@@ -176,12 +176,12 @@ function gwtat() {
 	ta "$session"
 }
 
-# _gwt_branch <issue-number | task description>: resolve the arg(s) to a validated
+# __gwt_branch <issue-number | task description>: resolve the arg(s) to a validated
 # git branch name, printed on stdout. Progress ("asking haiku...") goes to stderr
 # so callers can capture just the name. A bare #?N looks up the issue title via gh
 # so haiku has something to name after, falling back to issue/N if gh can't reach
 # it. Returns non-zero only when haiku can't produce a valid name for a real desc.
-_gwt_branch() {
+__gwt_branch() {
 	local desc="$*"
 	local naming_input="$desc" issue_num="" issue_re='^#?[0-9]+$'
 	if [[ "$desc" =~ $issue_re ]]; then
@@ -265,7 +265,7 @@ function gwtauto() {
 	local desc="$*"
 
 	local branch
-	branch=$(_gwt_branch "$desc") || return 1
+	branch=$(__gwt_branch "$desc") || return 1
 	echo "branch: $branch"
 
 	# gwta asks before cd'ing into the worktree; feed it a y to stay hands-off
@@ -323,7 +323,7 @@ function gwtatauto() {
 	local desc="$*"
 
 	local branch
-	branch=$(_gwt_branch "$desc") || return 1
+	branch=$(__gwt_branch "$desc") || return 1
 	echo "branch: $branch"
 
 	# gwta asks before cd'ing into the worktree; feed it a y to stay hands-off
@@ -425,7 +425,7 @@ function gwthcauto() {
 	local desc="$*"
 
 	local branch
-	branch=$(_gwt_branch "$desc") || return 1
+	branch=$(__gwt_branch "$desc") || return 1
 	echo "branch: $branch"
 
 	# make the worktree in a SUBSHELL so gwta's cd doesn't move this pane; the
@@ -580,7 +580,7 @@ function gwthauto() {
 	_gwthauto_log "pane resolved: $pane"
 
 	local branch
-	branch=$(_gwt_branch "$desc") || { _gwthauto_log "abort: _gwt_branch failed"; return 1; }
+	branch=$(__gwt_branch "$desc") || { _gwthauto_log "abort: __gwt_branch failed"; return 1; }
 	echo "branch: $branch"
 	_gwthauto_log "branch: $branch"
 
@@ -592,7 +592,7 @@ function gwthauto() {
 	# snapshot the pane's agent session id just for the log. We used to gate the
 	# poller on this id CHANGING once our claude launched -- but herdr tracks one
 	# agent record per pane and reuses its session id, so the id the haiku namer
-	# (_gwt_branch, run in THIS pane) registered carries straight over to our
+	# (__gwt_branch, run in THIS pane) registered carries straight over to our
 	# interactive claude and never changes. That gate hung 30s then gave up on
 	# every launch whose pane had already run the namer; only a pane with no prior
 	# agent slipped through. So we no longer compare ids -- see the poller below.
