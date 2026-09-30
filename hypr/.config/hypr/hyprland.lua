@@ -50,6 +50,8 @@ hl.config({
         disable_hyprland_logo  = true,
         animate_manual_resizes = true,
         background_color       = "rgb(000000)",
+        key_press_enables_dpms  = true,
+        mouse_move_enables_dpms = true,
     },
 
     decoration = {
@@ -99,6 +101,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("wl-gammarelay")
     hl.exec_cmd("blueman-applet")
     hl.exec_cmd("swayosd-server")
+    hl.exec_cmd("hypridle")
 end)
 
 ---------------

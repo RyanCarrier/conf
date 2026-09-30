@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Re-apply the internal display refresh rate (apply_internal_monitor in
+# hosts/lent-arch.lua) whenever the charger is plugged in or unplugged.
+
+AC=/sys/class/power_supply/ADP1/online
+[[ -r "$AC" ]] || exit 0
+
+# Single instance per Hyprland session (a stale watcher from a previous
+# session exits on its next failed hyprctl call)
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/refresh-on-power-${HYPRLAND_INSTANCE_SIGNATURE}.lock"
+flock -n 9 || exit 0
+
+last=$(cat "$AC")
+udevadm monitor --udev --subsystem-match=power_supply | while read -r _; do
+    now=$(cat "$AC")
+    [[ "$now" == "$last" ]] && continue
+    last=$now
+    hyprctl eval 'apply_internal_monitor()' >/dev/null || exit
+done

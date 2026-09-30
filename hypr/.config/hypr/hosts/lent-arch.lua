@@ -1,14 +1,26 @@
 -- See https://wiki.hypr.land/configuring/core/monitors/
 -- hyprctl monitors all
 
-hl.monitor({ output = "eDP-1",    mode = "2880x1800",    position = "0x0",        scale = 1.25 })
-hl.monitor({ output = "DP-3",     mode = "3840x2160@30", position = "-384x-1728", scale = 1.25 })
+-- 120Hz on AC, 60Hz on battery (~1W saving). Global so scripts/refresh-on-power
+-- can re-apply it via `hyprctl eval` when the charger is plugged/unplugged.
+function apply_internal_monitor()
+	local f = io.open("/sys/class/power_supply/ADP1/online")
+	local ac = f and f:read("*l") == "1"
+	if f then f:close() end
+	hl.monitor({ output = "eDP-1", mode = ac and "2880x1800@120" or "2880x1800@60", position = "0x0", scale = 1.25 })
+end
+apply_internal_monitor()
+hl.on("hyprland.start", function()
+	hl.exec_cmd("~/.config/hypr/scripts/refresh-on-power")
+end)
+
+hl.monitor({ output = "DP-3", mode = "3840x2160@30", position = "-384x-1728", scale = 1.25 })
 -- hl.monitor({ output = "eDP-1", mode = "2880x1800",    position = "0x0",        scale = 1.5 })
 -- hl.monitor({ output = "DP-3",  mode = "3840x2160@30", position = "-320x-1440", scale = 1.5 })
-hl.monitor({ output = "DP-1",     mode = "3840x2160@30", position = "-320x-1440", scale = 1.5 })
-hl.monitor({ output = "DP-5",     mode = "2560x1440",    position = "1920x0",     scale = 1.0 })
+hl.monitor({ output = "DP-1", mode = "3840x2160@30", position = "-320x-1440", scale = 1.5 })
+hl.monitor({ output = "DP-5", mode = "2560x1440", position = "1920x0", scale = 1.0 })
 -- hl.monitor({ output = "HDMI-A-1", mode = "3840x2160", position = "1920x0",     scale = 1.0 })
-hl.monitor({ output = "HDMI-A-1", mode = "1920x1080",    position = "0x-1080",    scale = 1.0 })
+hl.monitor({ output = "HDMI-A-1", mode = "1920x1080", position = "0x-1080", scale = 1.0 })
 
 -- Workspaces 3/4 follow whichever external output is actually connected.
 -- Connection is read straight from DRM (/sys/class/drm), so it works even
@@ -16,42 +28,50 @@ hl.monitor({ output = "HDMI-A-1", mode = "1920x1080",    position = "0x-1080",  
 local externals = { "DP-1", "DP-3", "DP-5", "HDMI-A-1" } -- priority order
 
 local function pick_external()
-    local present = {}
-    local p = io.popen("grep -lx connected /sys/class/drm/*/status 2>/dev/null")
-    if p then
-        for path in p:lines() do
-            local name = path:match("card%d+%-([^/]+)/status")
-            if name then present[name] = true end
-        end
-        p:close()
-    end
-    for _, o in ipairs(externals) do
-        if present[o] then return o, true end
-    end
-    return "DP-1", false -- fallback name when nothing external is connected
+	local present = {}
+	local p = io.popen("grep -lx connected /sys/class/drm/*/status 2>/dev/null")
+	if p then
+		for path in p:lines() do
+			local name = path:match("card%d+%-([^/]+)/status")
+			if name then
+				present[name] = true
+			end
+		end
+		p:close()
+	end
+	for _, o in ipairs(externals) do
+		if present[o] then
+			return o, true
+		end
+	end
+	return "DP-1", false -- fallback name when nothing external is connected
 end
 
 local function apply_workspaces(move)
-    local external, connected = pick_external()
-    local workspaces = {
-        [1] = "eDP-1",
-        [2] = "eDP-1",
-        [3] = external,
-        [4] = external,
-        [5] = "eDP-1",    -- DP-7
-        [6] = "eDP-1",
-        [8] = "HDMI-A-1",
-    }
-    for ws, mon in pairs(workspaces) do
-        hl.workspace_rule({ workspace = tostring(ws), monitor = mon })
-    end
-    -- On hotplug, pull already-open 3/4 onto the external that just appeared.
-    if move and connected then
-        hl.exec_cmd("hyprctl dispatch moveworkspacetomonitor 3 " .. external)
-        hl.exec_cmd("hyprctl dispatch moveworkspacetomonitor 4 " .. external)
-    end
+	local external, connected = pick_external()
+	local workspaces = {
+		[1] = "eDP-1",
+		[2] = "eDP-1",
+		[3] = external,
+		[4] = external,
+		[5] = "eDP-1", -- DP-7
+		[6] = "eDP-1",
+		[8] = "HDMI-A-1",
+	}
+	for ws, mon in pairs(workspaces) do
+		hl.workspace_rule({ workspace = tostring(ws), monitor = mon })
+	end
+	-- On hotplug, pull already-open 3/4 onto the external that just appeared.
+	if move and connected then
+		hl.dispatch(hl.dsp.workspace.move({ workspace = "3", monitor = external }))
+		hl.dispatch(hl.dsp.workspace.move({ workspace = "4", monitor = external }))
+	end
 end
 
 apply_workspaces(false)
-hl.on("monitor.added",   function() apply_workspaces(true) end)
-hl.on("monitor.removed", function() apply_workspaces(true) end)
+hl.on("monitor.added", function()
+	apply_workspaces(true)
+end)
+hl.on("monitor.removed", function()
+	apply_workspaces(true)
+end)
