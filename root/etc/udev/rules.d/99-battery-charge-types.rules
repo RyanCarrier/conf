@@ -1,0 +1,2 @@
+# Let wheel users switch battery charge mode (waybar charge toggle)
+SUBSYSTEM=="power_supply", KERNEL=="BAT0", RUN+="/bin/chgrp wheel /sys%p/charge_types", RUN+="/bin/chmod g+w /sys%p/charge_types"

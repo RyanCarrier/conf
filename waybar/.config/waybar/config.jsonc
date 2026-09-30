@@ -22,6 +22,7 @@
 			"network",
 			"pulseaudio",
 			"battery",
+			"custom/charge",
 			"custom/caffeine",
 			"clock",
 		],
@@ -38,9 +39,8 @@
 		"exec": "wl-gammarelay-rs watch {t}",
 		"on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +25",
 		"on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -25",
-		"on-click": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 6500",
-		"on-click-right": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 5000",
-		"on-click-middle": "busctl --user set-property rs.wl-gammarelay / rs.wl.gammarelay Temperature q 3000",
+		"on-click": "~/.config/waybar/scripts/temperature-cycle.sh",
+		"on-click-right": "~/.config/waybar/scripts/temperature-cycle.sh warm",
 	},
 	"hyprland/window": {
 		"rewrite": {
@@ -70,8 +70,8 @@
 		// "show-special": true,
 		"on-click": "activate",
 		"warp-on-scroll": false,
-		"on-scroll-up": "hyprctl dispatch workspace e+1",
-		"on-scroll-down": "hyprctl dispatch workspace e-1",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
 		// "format": "{icon}",
 		"format-icons": {
 			"1": "",
@@ -130,6 +130,8 @@
 			"",
 			""
 		],
+		"on-click": "~/.config/waybar/scripts/brightness-cycle.sh",
+		"on-click-right": "~/.config/waybar/scripts/brightness-cycle.sh min",
 		//	"on-scroll-up":,
 		//	"on-scroll-down":,
 	},
@@ -151,6 +153,15 @@
 		},
 		"on-click": "pamixer --toggle-mute",
 		"on-click-right": "/home/fra/scripts/volume/on-off.sh",
+	},
+	"custom/charge": {
+		"format": "{}",
+		"exec": "~/.config/waybar/scripts/charge-status.sh",
+		"on-click": "~/.config/waybar/scripts/charge-toggle.sh",
+		"interval": 60,
+		"signal": 9,
+		"tooltip": true,
+		"return-type": "json",
 	},
 	"custom/caffeine": {
 		"format": "{}",

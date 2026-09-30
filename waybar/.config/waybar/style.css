@@ -41,6 +41,7 @@ window#waybar {
 #pulseaudio,
 #network,
 #backlight,
+#custom-charge,
 #custom-caffeine {
   padding: 0px 8px;
 }
@@ -94,6 +95,15 @@ window#waybar {
 #pulseaudio.muted {
   background-color: #e0af68;
   color: #24283b;
+}
+
+#custom-charge.fast {
+  color: #e0af68;
+}
+
+#custom-charge.standard,
+#custom-charge.longlife {
+  color: #9ece6a;
 }
 
 #custom-caffeine {
