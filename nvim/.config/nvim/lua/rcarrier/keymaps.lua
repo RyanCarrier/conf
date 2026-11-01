@@ -189,8 +189,9 @@ nmapt("(t", nt.jump.prev, "Prev [t]est")
 nmapt(")f", function() nt.jump.next({ status = "failed" }) end, "Next [f]ailed test")
 nmapt("(f", function() nt.jump.prev({ status = "failed" }) end, "Prev [f]ailed test")
 
-vim.keymap.set('n', '<leader>to', '<cmd>TodoTelescope<cr>',
-    { desc = "[To]do list", silent = true, noremap = true })
+-- moved off <leader>to (collided with neotest Show Output) -> <leader>st [S]earch [T]odo
+vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<cr>',
+    { desc = "[S]earch [T]odo list", silent = true, noremap = true })
 
 vim.keymap.set({ "v", "n" }, "<leader>cp", require("actions-preview").code_actions,
     { desc = "[C]ode actions [P]review" })

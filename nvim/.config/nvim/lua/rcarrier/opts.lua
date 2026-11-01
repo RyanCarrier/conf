@@ -30,15 +30,19 @@ vim.opt.timeout = true
 vim.opt.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
--- vim.opt.termguicolors = true
+vim.opt.termguicolors = true
 --scroll 8 lines before top/bottom
 vim.opt.scrolloff = 8
 vim.opt.colorcolumn = "80"
 
 -- smart indent will indent to expected on new line
 vim.opt.smartindent = true
+-- reconciled: was tabstop=2 / shiftwidth=4 (mismatched). 2-wide everywhere, spaces.
+-- (filetype plugins / conform still override per-language, e.g. Go tabs)
 vim.opt.tabstop = 2
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.expandtab = true
 --not suuuuper clear on this one though lol
 vim.opt.isfname:append("@-@")
 vim.opt.ff = "unix"

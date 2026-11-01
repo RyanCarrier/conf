@@ -1,9 +1,6 @@
 local M = {}
 local copilot = require("modules.ai.copilot")
--- local supermaven = require("modules.ai.supermaven")
-local codeium = require("modules.ai.codeium")
--- local providers = { copilot, supermaven, codeium }
-local providers = { copilot, codeium }
+local providers = { copilot }
 local fim_keymaps = {
 	accept = '<M-j>',
 	accept_line = '<M-l>',
@@ -37,7 +34,8 @@ local function set_keymaps()
 	if disabled() then return end
 	local imapai = function(keys, func, desc)
 		if desc then desc = 'AI: ' .. desc end
-		vim.keymap.set('i', keys, func, { desc = desc, noremap = true, expr = codeium.enabled() })
+		-- copilot uses plain-function mappings (codeium.vim needed expr=true; codeium removed)
+		vim.keymap.set('i', keys, func, { desc = desc, noremap = true, expr = false })
 	end
 	local provider = M.activeProvider
 	if not provider then return end
