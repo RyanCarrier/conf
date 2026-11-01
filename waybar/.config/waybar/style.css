@@ -1,115 +1,122 @@
+/* Tokyo Night, tight pills */
+@define-color bg      #1a1b26;
+@define-color pill    #24283b;
+@define-color hover   #2f3549;
+@define-color fg      #c0caf5;
+@define-color dim     #565f89;
+@define-color blue    #7aa2f7;
+@define-color cyan    #7dcfff;
+@define-color green   #9ece6a;
+@define-color yellow  #e0af68;
+@define-color orange  #ff9e64;
+@define-color red     #f7768e;
+@define-color purple  #bb9af7;
+
 * {
   border: none;
   border-radius: 0;
-  font-family: JetBrainsMono Nerd Font;
+  font-family: "JetBrainsMono Nerd Font";
   font-size: 12px;
   min-height: 0;
 }
 
 window#waybar {
   background: transparent;
-  color: white;
+  color: @fg;
 }
 
-#workspaces {
-  background-color: #24283b;
-  margin: 2px;
-  margin-left: 10px;
-  border-radius: 2px;
+tooltip {
+  background: @bg;
+  border: 1px solid @pill;
+  border-radius: 6px;
 }
+tooltip label { color: @fg; }
+
+/* ---- pills ---- */
+#workspaces,
+#right,
+#tray {
+  background-color: @pill;
+  border-radius: 6px;
+  margin: 2px 0;
+}
+#workspaces { margin-left: 2px; padding: 0 2px; }
+#tray { margin-left: 4px; margin-right: 2px; padding: 0 6px; }
+#right { padding: 0 2px; }
+
+/* ---- workspaces ---- */
 #workspaces button {
-  padding: 0px 7px;
-  color: #c0caf5;
+  padding: 0 7px;
+  margin: 2px 1px;
+  color: @dim;
+  border-radius: 4px;
+  transition: all 150ms ease;
 }
-
+#workspaces button:not(.empty) { color: @fg; }
 #workspaces button.active {
-  color: #24283b;
-  background-color: #7aa2f7;
-  border-radius: 2px;
+  color: @bg;
+  background-color: @blue;
 }
-
+#workspaces button.urgent {
+  color: @bg;
+  background-color: @red;
+}
 #workspaces button:hover {
-  background-color: #7dcfff;
-  color: #24283b;
-  border-radius: 2px;
+  background: @hover;
+  color: @cyan;
+  box-shadow: none;
+  text-shadow: none;
 }
 
-#custom-wl-gammarelay-temperature-rs,
-#custom-date,
-#clock,
-#battery,
-#pulseaudio,
-#network,
+/* ---- window title: plain text, no pill ---- */
+#window { color: white; }
+
+/* ---- right-hand modules ---- */
 #backlight,
+#custom-wl-gammarelay-temperature-rs,
+#network,
+#custom-latency,
+#pulseaudio,
+#battery,
 #custom-charge,
-#custom-caffeine {
-  padding: 0px 8px;
-}
-
-#custom-wl-gammarelay-temperature-rs {
-  color: #7dcfff;
-}
-
-#custom-date {
-  color: #7dcfff;
-}
-
-#tray,
-#right {
-  background-color: #24283b;
-  border-radius: 2px;
-  margin: 0px;
-  padding: 2px 5px;
-}
-
+#custom-caffeine,
 #clock {
-  color: #b48ead;
+  padding: 0 7px;
+  margin: 2px 0;
+  border-radius: 4px;
 }
+#backlight:hover,
+#custom-wl-gammarelay-temperature-rs:hover,
+#network:hover,
+#custom-latency:hover,
+#pulseaudio:hover,
+#battery:hover,
+#custom-charge:hover,
+#custom-caffeine:hover,
+#clock:hover { background: @hover; }
 
-#battery {
-  color: #9ece6a;
+#backlight                           { color: @yellow; }
+#custom-wl-gammarelay-temperature-rs { color: @orange; }
+#network                             { color: @cyan; }
+#network.disconnected                { color: @red; }
+#custom-latency.good                 { color: @green; }
+#custom-latency.ok                   { color: @yellow; }
+#custom-latency.bad                  { color: @red; }
+#pulseaudio                          { color: @purple; }
+#pulseaudio.muted                    { color: @dim; }
+#battery                             { color: @green; }
+#battery.charging, #battery.plugged  { color: @green; }
+#battery.warning:not(.charging)      { color: @yellow; }
+#battery.critical:not(.charging) {
+  color: @bg;
+  background: @red;
+  animation: blink 1s steps(2) infinite;
 }
-
-#battery.charging {
-  color: #9ece6a;
-}
-
-#battery.warning:not(.charging) {
-  background-color: #f7768e;
-  color: #24283b;
-}
-
-#backlight {
-  background-color: #24283b;
-  color: #db4b4b;
-}
-
-#network {
-  color: #f7768e;
-}
-
-#pulseaudio {
-  color: #e0af68;
-}
-
-#pulseaudio.muted {
-  background-color: #e0af68;
-  color: #24283b;
-}
-
-#custom-charge.fast {
-  color: #e0af68;
-}
-
+#custom-charge.fast                  { color: @yellow; }
 #custom-charge.standard,
-#custom-charge.longlife {
-  color: #9ece6a;
-}
+#custom-charge.longlife              { color: @green; }
+#custom-caffeine                     { color: @dim; }
+#custom-caffeine.active              { color: @yellow; }
+#clock                               { color: @blue; font-weight: bold; }
 
-#custom-caffeine {
-  color: #bb9af7;
-}
-
-#custom-caffeine.active {
-  color: #9ece6a;
-}
+@keyframes blink { to { background: transparent; color: @red; } }
