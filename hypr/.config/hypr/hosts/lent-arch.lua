@@ -1,3 +1,11 @@
+-- Power tuning notes (lent-arch, Core Ultra 7 155H, measured on battery 2026-09-30):
+--   CPU platform profile (TLP, A/B 2 rounds):  balanced 13.05/12.00 W  vs  low-power 10.67/10.46 W
+--     -> ~1.5-2.4 W saved; TLP sets low-power automatically on battery via
+--        /etc/tlp.d/01-battery.conf (PLATFORM_PROFILE_ON_BAT=low-power). Not in ~/conf/root yet.
+--        AC stays on full power. No waybar toggle.
+--   intel-lpmd (A/B 2 rounds):  off 8.58/8.24 W  vs  on 8.08/8.22 W  -> negligible, test paused
+--   eDP-1 refresh: 60Hz vs 120Hz ~1 W -> auto-switched below (120 on AC, 60 on battery)
+
 -- See https://wiki.hypr.land/configuring/core/monitors/
 -- hyprctl monitors all
 
