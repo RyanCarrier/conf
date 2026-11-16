@@ -117,6 +117,7 @@
 		"exec": "~/.config/waybar/scripts/caffeine-status.sh",
 		"on-click": "~/.config/waybar/scripts/caffeine-toggle.sh",
 		"interval": 2,
+		"signal": 10,
 		"return-type": "json"
 	}
 }

@@ -49,3 +49,7 @@ fi
 
 # Release lock
 flock -u 200
+
+# Refresh the waybar module immediately; without this the icon lags up to
+# the poll interval and a second "did it work?" click toggles it back off
+pkill -RTMIN+10 waybar
