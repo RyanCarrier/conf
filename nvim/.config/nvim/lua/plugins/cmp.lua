@@ -22,6 +22,15 @@ return {
     ---@type blink.cmp.Config
     opts = {
         completion = {
+            list = {
+                selection = {
+                    -- in prose, don't preselect: <CR> inserts a newline unless
+                    -- an item was explicitly picked with <C-j>/<C-k>
+                    preselect = function()
+                        return not vim.tbl_contains({ 'markdown', 'text', 'gitcommit' }, vim.bo.filetype)
+                    end,
+                },
+            },
             menu = {
                 draw = {
                     columns = {
