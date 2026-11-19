@@ -1,0 +1,112 @@
+{
+  "version": 4,
+  "lines": [
+    [
+      {
+        "id": "1",
+        "type": "model",
+        "color": "cyan",
+        "rawValue": true
+      },
+      {
+        "id": "2",
+        "type": "separator"
+      },
+      {
+        "id": "3",
+        "type": "context-bar",
+        "color": "brightBlack",
+        "rawValue": true,
+        "metadata": {
+          "inverse": "false",
+          "display": "slider"
+        }
+      },
+      {
+        "id": "4",
+        "type": "separator"
+      },
+      {
+        "id": "3d1376d8-020a-4e9e-9701-d1b0645c632e",
+        "type": "reset-timer",
+        "color": "yellow",
+        "rawValue": true,
+        "metadata": {
+          "display": "time",
+          "compact": "true",
+          "absolute": "false"
+        }
+      },
+      {
+        "id": "4a215792-9533-453b-aa9b-560f2200a50b",
+        "type": "separator"
+      },
+      {
+        "id": "5e9d653f-e3e2-4922-bb27-ce61ccd4943b",
+        "type": "session-usage",
+        "color": "yellow",
+        "rawValue": false,
+        "metadata": {
+          "display": "slider"
+        }
+      },
+      {
+        "id": "f0db82fe-813d-46a2-b137-f1cd9ba31fa6",
+        "type": "flex-separator"
+      },
+      {
+        "id": "5c166558-3363-4fac-b1b9-5345c0936a19",
+        "type": "weekly-usage",
+        "metadata": {
+          "invert": "false",
+          "display": "progress"
+        }
+      }
+    ],
+    [
+      {
+        "id": "9f2f2416-bcc2-4a1b-b276-c8e3519ae521",
+        "type": "git-branch",
+        "rawValue": false
+      },
+      {
+        "id": "6822d3f2-8107-4b68-a6d2-be2a88267796",
+        "type": "separator"
+      },
+      {
+        "id": "c2d061cc-650c-47f2-b32d-c520f9e87397",
+        "type": "git-ahead-behind"
+      },
+      {
+        "id": "be373e4e-8f40-41f7-9c73-0cb52fe8ee69",
+        "type": "separator"
+      },
+      {
+        "id": "a48cb6c0-b8ee-4be9-8813-75d89896909d",
+        "type": "git-changes",
+        "rawValue": false
+      }
+    ]
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 3,
+  "defaultPaddingSide": "both",
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      "\ue0b0"
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
+  }
+}
